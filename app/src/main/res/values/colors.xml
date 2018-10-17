@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0336ff</color>
+    <color name="colorPrimaryDark">#00000000</color>
+    <color name="colorAccent">#eede03</color>
+    <color name="startBackgroundBlack">#202124</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="owlblue">#0336FF</color>
+    <color name="owlyellow">#EEDE03</color>
+    <color name="ipl_logo_top">#27213B</color>
+    <color name="ipl_logo_bottom_left">#2B6733</color>
+</resources>
