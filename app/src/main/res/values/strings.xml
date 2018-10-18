@@ -5,6 +5,10 @@
     <string name="page1sub">Pick your own dream team by bidding for different players.</string>
     <string name="page2title">Excellent team rules the world</string>
     <string name="page2sub">Choose your players wisely and smartly.You can buy and sell them anytime you want.</string>
+
+
+    <string name="createroom">Create Room</string>
+    <string name="joinroom">Join Room</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
