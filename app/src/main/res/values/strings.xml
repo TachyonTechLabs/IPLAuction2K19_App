@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">IPL Auction 2K19</string>
-    <string name="app_intro_text">intro</string>
+    <string name="app_intro_text">BID IT TO WIN IT</string>
+    <string name="page1title">Make your own team</string>
+    <string name="page1sub">Pick your own dream team by bidding for different players.</string>
+    <string name="page2title">Excellent team rules the world</string>
+    <string name="page2sub">Choose your players wisely and smartly.You can buy and sell them anytime you want.</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>

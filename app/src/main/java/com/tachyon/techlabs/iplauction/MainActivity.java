@@ -33,7 +33,7 @@ import static com.google.android.gms.auth.api.signin.GoogleSignIn.*;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbar;
-    private GoogleSignInButton signInButton;
+    private SignInButton signInButton;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         );
         getWindow().setStatusBarColor(Color.TRANSPARENT);
 
-        signInButton = (GoogleSignInButton) findViewById(R.id.sign_in_button);
-      //  signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         findViewById(R.id.sign_in_button).setOnClickListener(MainActivity.this);
 
@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+       // FirebaseUser currentUser = mAuth.getCurrentUser();
+      //  updateUI(currentUser);
     }
 
     private void signIn() {
@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+
+       // Toast.makeText(this, "fawg", Toast.LENGTH_SHORT).show();
         //Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -135,7 +137,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateUI(FirebaseUser user) {
+      //  Toast.makeText(this, "uui", Toast.LENGTH_SHORT).show();
         if (user != null) {
+            //Toast.makeText(this, "next", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(MainActivity.this,IntroActivity.class));
             finish();
         } else {
@@ -147,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.sign_in_button) {
+           // Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show();
             signIn();
         }
     }

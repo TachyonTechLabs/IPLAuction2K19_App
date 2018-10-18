@@ -7,7 +7,12 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="owlblue">#0336FF</color>
+    <color name="owlbluedark">#0008ca</color>
     <color name="owlyellow">#EEDE03</color>
+    <color name="owlyellowdark">#b7ad00</color>
+    <color name="lightgreen">#9cff57</color>
+    <color name="lightgreenprimary">#00d300</color>
     <color name="ipl_logo_top">#27213B</color>
+    <color name="ipl_logo_top_dark">#000016</color>
     <color name="ipl_logo_bottom_left">#2B6733</color>
 </resources>
