@@ -59,7 +59,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         if(Build.VERSION.SDK_INT>22)
         {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.background_grey));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
