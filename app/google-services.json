@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "235857363096-netmk396uefmf8dfgkk42ke6k6f8ncut.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.techlabs.iplauction",
+            "certificate_hash": "fcd00b16a4d5a52e6409c3bc36bd91a9337b7f8b"
+          }
+        },
+        {
+          "client_id": "235857363096-or5n72ohfest556lc40qc0fvv1o5ie2d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.techlabs.iplauction",
+            "certificate_hash": "e01b3e0408e4c758cea2497a62c52f9aaecdb71b"
+          }
+        },
+        {
           "client_id": "235857363096-a5nan4sver77m49felgnqqbdn8vddcom.apps.googleusercontent.com",
           "client_type": 3
         }

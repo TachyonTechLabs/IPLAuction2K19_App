@@ -28,14 +28,14 @@ public class IntroActivity extends com.heinrichreimersoftware.materialintro.app.
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.page1title)
                 .description(R.string.page1sub)
-                .image(R.drawable.cricket_club)
+                .image(R.drawable.ipl_logo)
                 .background(R.color.owlblue)
                 .backgroundDark(R.color.owlbluedark)
                 .build());
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.page2title)
                 .description(R.string.page2sub)
-                .image(R.drawable.cricket_player)
+                .image(R.drawable.ipl_logo)
                 .background(R.color.owlyellow)
                 .backgroundDark(R.color.owlyellowdark)
                 .build());

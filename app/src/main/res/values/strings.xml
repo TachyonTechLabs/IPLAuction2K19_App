@@ -13,4 +13,5 @@
     <string name="close">Close</string>
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>
+    <string name="join_room_hint">Please Enter Your Joining Code</string>
 </resources>

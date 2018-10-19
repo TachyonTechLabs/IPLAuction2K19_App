@@ -1,6 +1,8 @@
 package com.tachyon.techlabs.iplauction;
 
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -10,15 +12,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,10 +53,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     NavigationView navigationView;
     Toolbar toolbarAppName;
     TextView textViewAppName,textname,textedit;
+    EditText user_entered_code;
     String appName;
     Map<String, Object> user = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail;
+    String user_joincode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,5 +228,64 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 }
             }
         });
+    }
+
+    public void create_room(View view) {
+        Random_id_generate obj=new Random_id_generate();
+        long random_id=obj.id();
+        String id=random_id+"";
+        textname.setText(id);
+
+        user.put("first", textedit.getText().toString());
+        user.put("last", "Two");
+        user.put("born", 3);
+
+        db.collection(id).document(userEmail)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+
+    }
+
+    public void Join_Room(View view)  {
+        //Dialog_fragment dialog=new Dialog_fragment();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(inflater.inflate(R.layout.join_room_dialog, null))
+                // Add action buttons
+                .setPositiveButton(R.string.joinroom, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        user_entered_code=findViewById(R.id.code);
+                        user_joincode=user_entered_code.getText().toString();
+
+                        // sign in the user ...
+                       // Toast.makeText(this,"Joined successfully",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+       AlertDialog alert=builder.create();
+       alert.show();
+
     }
 }
