@@ -9,9 +9,17 @@
 
     <string name="createroom">Create Room</string>
     <string name="joinroom">Join Room</string>
+    <string name="join_room_hint">Please Enter Your Joining Code</string>
+    <string name="joining_code">JOIN CODE</string>
+    <string name="bosstext">Boss</string>
+    <string name="bosstextview">NOW YOU\'RE THE BOSS! TELL YOUR FRIENDS TO ENTER THIS CODE TO JOIN THE GAME </string>
+    <string name="membertextview">IS RULLING LIKE A BOSS</string>
+    <string name="waiting_text">WAITING FOR PEOPLE TO JOIN</string>
+    <string name="start_game">START GAME</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>
-    <string name="join_room_hint">Please Enter Your Joining Code</string>
+
 </resources>
