@@ -386,14 +386,34 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                         user_entered_code = viewlayout.findViewById(R.id.code);
                         user_joincode = user_entered_code.getText().toString();
 
-                        DocumentReference docRef = db.collection("keyValues").document(user_joincode);
-                        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                       DocumentReference docRef = db.collection("keyValues").document(user_joincode);
+                       /* docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                                 if(documentSnapshot.exists())
                                 {
                                     roomID = documentSnapshot.getString("roomId");
-                                    enterRoom();
+
+                                }
+                            }
+                        });*/
+
+
+
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                        roomID = document.getString("roomId");
+                                        enterRoom();
+                                    } else {
+                                        //Log.d(TAG, "No such document");
+                                    }
+                                } else {
+                                    //Log.d(TAG, "get failed with ", task.getException());
                                 }
                             }
                         });
@@ -416,17 +436,38 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     public void enterRoom()
     {
         DocumentReference docRef2 = db.collection(roomID).document("Members");
-        docRef2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+      /*  docRef2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if(documentSnapshot.exists())
                 {
                     numOfMembers = documentSnapshot.getString("numberOfMembers");
-                    proceedFurther();
+
 
                 }
             }
+        });*/
+
+        docRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        numOfMembers = document.getString("numberOfMembers");
+                        proceedFurther();
+                        finish();
+                    } else {
+                        //Log.d(TAG, "No such document");
+                    }
+                } else {
+                    //Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
         });
+
+
 
     }
 
@@ -438,17 +479,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         members.put("numberOfMembers",numofmem+"");
 
         db.collection(roomID).document("Members")
-                .set(keyvalues)
+                .set(members)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void v) {
                         // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-
-                        Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
-                        roomCreated.putExtra("emailId",userEmail);
-                        roomCreated.putExtra("roomId",roomID);
-                        roomCreated.putExtra("joiningKey",joinkey);
-                        startActivity(roomCreated);
+                        joinme();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -457,5 +493,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                         // Log.w(TAG, "Error adding document", e);
                     }
                 });
+    }
+
+    public void joinme()
+    {
+        Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
+        roomCreated.putExtra("emailId",userEmail);
+        roomCreated.putExtra("roomId",roomID);
+        roomCreated.putExtra("joiningKey",joinkey);
+        startActivity(roomCreated);
+        finish();
     }
 }
