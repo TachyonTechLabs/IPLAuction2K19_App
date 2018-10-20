@@ -56,9 +56,13 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     EditText user_entered_code;
     String appName;
     Map<String, Object> user = new HashMap<>();
+    Map<String, Object> members = new HashMap<>();
+    Map<String, Object> keyvalues = new HashMap<>();
+    Map<String, Object> used = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String userEmail;
-    String user_joincode;
+    String userEmail,numUsed;
+    String user_joincode,used_joinKey,joinkey,roomID,numOfMembers;
+    int newjoinkey,numofmem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +100,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         textname = findViewById(R.id.text);
         textedit = findViewById(R.id.edittext);
+
+
 
 
 
@@ -201,6 +207,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     @Override
                     public void onSuccess(Void v) {
                         // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        readData();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -210,7 +217,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     }
                 });
 
+    }
 
+    public void readData()
+    {
         DocumentReference docRef = db.collection("users").document(userEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -233,14 +243,13 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     public void create_room(View view) {
         Random_id_generate obj=new Random_id_generate();
         long random_id=obj.id();
-        String id=random_id+"";
+        final String id=random_id+"";
         textname.setText(id);
 
-        user.put("first", textedit.getText().toString());
-        user.put("last", "Two");
-        user.put("born", 3);
+        user.put("1",userEmail);
+        user.put("numberOfMembers",1+"");
 
-        db.collection(id).document(userEmail)
+        db.collection(id).document("Members")
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -255,7 +264,105 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     }
                 });
 
+        joinkey = id.substring(5);
 
+        keyvalues.put("roomId",id);
+        keyvalues.put("joinKey",joinkey);
+        keyvalues.put("owner",userEmail);
+
+        if(checkAvailability(joinkey))
+        {
+            db.collection("keyValues").document(joinkey)
+                    .set(keyvalues)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void v) {
+                            // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            saveUsedKey();
+
+                            Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
+                            roomCreated.putExtra("emailId",userEmail);
+                            roomCreated.putExtra("roomId",id);
+                            roomCreated.putExtra("joiningKey",joinkey);
+                            startActivity(roomCreated);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Log.w(TAG, "Error adding document", e);
+                        }
+                    });
+
+
+        }
+
+
+    }
+
+    public void saveUsedKey()
+    {
+        int number = Integer.parseInt(numUsed) + 1;
+        used.put(number+"",joinkey);
+        used.put("numUsed",number+"");
+        db.collection("keyValues").document("usedKey")
+                .set(used)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                });
+    }
+
+    public boolean checkAvailability(String joinkey)
+    {
+        DocumentReference docRef = db.collection("keyValues").document("usedKey");
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if(documentSnapshot.exists())
+                {
+                    //textname.setText(documentSnapshot.getString(""));
+                    numUsed = documentSnapshot.getString("numUsed");
+                    checkFurther(documentSnapshot.getString("numUsed"));
+                }
+            }
+        });
+
+        return true;
+    }
+
+    public void checkFurther(final String num)
+    {
+        DocumentReference docRef = db.collection("keyValues").document("usedKey");
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if(documentSnapshot.exists())
+                {
+                    //textname.setText(documentSnapshot.getString(""));
+                    used_joinKey = documentSnapshot.getString(num);
+                    checkStep2(Integer.parseInt(num));
+                }
+            }
+        });
+
+
+    }
+
+    public void checkStep2(int num)
+    {
+        if(joinkey.equals(used_joinKey))
+        {
+            Toast.makeText(this, used_joinKey, Toast.LENGTH_SHORT).show();
+            newjoinkey = Integer.parseInt(joinkey) + 1;
+            joinkey = newjoinkey+"";
+            //checkAvailability(joinkey);
+            num = num - 1;
+            if(num>0)
+            checkFurther(num+"");
+        }
     }
 
     public void Join_Room(View view)  {
@@ -265,16 +372,33 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         // Get the layout inflater
         LayoutInflater inflater = this.getLayoutInflater();
 
+        final View viewlayout = inflater.inflate(R.layout.join_room_dialog, null);
+
+
+
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.join_room_dialog, null))
+        builder.setView(viewlayout)
                 // Add action buttons
                 .setPositiveButton(R.string.joinroom, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        user_entered_code=findViewById(R.id.code);
-                        user_joincode=user_entered_code.getText().toString();
+                        user_entered_code = viewlayout.findViewById(R.id.code);
+                        user_joincode = user_entered_code.getText().toString();
 
+                        DocumentReference docRef = db.collection("keyValues").document(user_joincode);
+                        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                if(documentSnapshot.exists())
+                                {
+                                    roomID = documentSnapshot.getString("roomId");
+                                    enterRoom();
+                                }
+                            }
+                        });
+
+                        dialog.cancel();
                         // sign in the user ...
                        // Toast.makeText(this,"Joined successfully",Toast.LENGTH_SHORT).show();
                     }
@@ -287,5 +411,51 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
        AlertDialog alert=builder.create();
        alert.show();
 
+    }
+
+    public void enterRoom()
+    {
+        DocumentReference docRef2 = db.collection(roomID).document("Members");
+        docRef2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if(documentSnapshot.exists())
+                {
+                    numOfMembers = documentSnapshot.getString("numberOfMembers");
+                    proceedFurther();
+
+                }
+            }
+        });
+
+    }
+
+    public void proceedFurther()
+    {
+        numofmem = Integer.parseInt(numOfMembers)+1;
+
+        members.put(numofmem+"",userEmail);
+        members.put("numberOfMembers",numofmem+"");
+
+        db.collection(roomID).document("Members")
+                .set(keyvalues)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+
+                        Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
+                        roomCreated.putExtra("emailId",userEmail);
+                        roomCreated.putExtra("roomId",roomID);
+                        roomCreated.putExtra("joiningKey",joinkey);
+                        startActivity(roomCreated);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
 }

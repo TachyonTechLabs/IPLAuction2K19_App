@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WaitingForPlayersActivity">
+
+    <include
+        android:id="@+id/app_toolbar_waiting_for_players"
+        layout="@layout/app_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </include>
+
+    <TextView
+        android:id="@+id/join_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_toolbar_waiting_for_players"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:text="@string/joining_code"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/join_code_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/join_code"
+        android:layout_marginTop="20dp"
+        android:textSize="32sp"
+        android:text="@string/joining_code"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/boss_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/join_code_display"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textSize="18sp"
+        android:text="@string/bosstext"
+        android:textAlignment="center"
+        android:textColor="@color/black"/>
+
+
+    <TextView
+        android:id="@+id/waiting_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/boss_text"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textSize="22sp"
+        android:text="@string/waiting_text"
+        android:textAlignment="center"
+        android:textColor="@color/black"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/waiting_nested_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@id/waiting_text"
+        android:layout_marginTop="20dp">
+
+        <ListView
+            android:id="@+id/waiting_player_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/waiting_text"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+
+
+        </ListView>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:text="@string/start_game"
+        android:textSize="22sp"
+        android:background="@color/lightgreenprimary"/>
+
+
+
+</RelativeLayout>
