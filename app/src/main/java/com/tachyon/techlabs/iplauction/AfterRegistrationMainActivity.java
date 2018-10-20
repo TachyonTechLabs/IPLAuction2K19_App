@@ -1,28 +1,23 @@
 package com.tachyon.techlabs.iplauction;
 
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,14 +27,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +47,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     TextView textViewAppName,textname,textedit;
     EditText user_entered_code;
     String appName;
-    Map<String, Object> user = new HashMap<>();
+    Map<String, Object> owner_details = new HashMap<>();
     Map<String, Object> members = new HashMap<>();
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
@@ -195,7 +187,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
-    public void pushData(View view) {
+  /*  public void pushData(View view) {
 
         user.put("first", textedit.getText().toString());
         user.put("last", "Two");
@@ -217,7 +209,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     }
                 });
 
-    }
+    } */
 
     public void readData()
     {
@@ -246,11 +238,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         final String id=random_id+"";
         textname.setText(id);
 
-        user.put("1",userEmail);
-        user.put("numberOfMembers",1+"");
+        owner_details.put("1",userEmail);
+        owner_details.put("numberOfCards",1+"");
+        owner_details.put("Owner",true);
 
-        db.collection(id).document("Members")
-                .set(user)
+        DocumentReference docRef = db.collection(id).document(userEmail);
+             docRef.set(owner_details)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void v) {
@@ -408,7 +401,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                                     if (document.exists()) {
                                         // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                         roomID = document.getString("roomId");
-                                        enterRoom();
+                                        enterRoom(roomID);
                                     } else {
                                         //Log.d(TAG, "No such document");
                                     }
@@ -433,9 +426,28 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
-    public void enterRoom()
+    public void enterRoom(String room_id)
     {
-        DocumentReference docRef2 = db.collection(roomID).document("Members");
+        DocumentReference docRef2 = db.collection(room_id).document(userEmail);
+        members.put("1",userEmail);
+        members.put("numberOfCards",1+"");
+        members.put("Owner",false);
+
+        docRef2
+                .set(members)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
       /*  docRef2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -473,7 +485,30 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     public void proceedFurther()
     {
-        numofmem = Integer.parseInt(numOfMembers)+1;
+        numofmem = (Integer.parseInt(numOfMembers));
+        numofmem=numofmem+1;
+
+      //  members.put(numofmem+"",userEmail);
+        //members.put("numberOfMembers",numofmem+"");
+
+       DocumentReference docRef = db.collection(roomID).document("Members");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                       members =document.getData();
+                      //  Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    } else {
+                       // Log.d(TAG, "No such document");
+                    }
+                } else {
+                  //  Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
 
         members.put(numofmem+"",userEmail);
         members.put("numberOfMembers",numofmem+"");

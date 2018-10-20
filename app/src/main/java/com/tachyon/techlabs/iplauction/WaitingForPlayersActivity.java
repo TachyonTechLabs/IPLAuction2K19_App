@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -31,7 +33,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         joinCodeDisplay = findViewById(R.id.join_code_display);
 
        // assert roomid != null;
-        DocumentReference docRef = db.collection(roomid).document("Members");
+        DocumentReference docRef = db.collection(roomid).document(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {

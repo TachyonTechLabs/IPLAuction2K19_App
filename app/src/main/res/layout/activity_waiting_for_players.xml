@@ -33,6 +33,7 @@
         android:layout_below="@id/join_code"
         android:layout_marginTop="20dp"
         android:textSize="32sp"
+        android:textIsSelectable="true"
         android:text="@string/joining_code"
         android:textAlignment="center"
         android:textColor="@color/black"
