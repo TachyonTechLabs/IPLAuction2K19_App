@@ -49,11 +49,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     String appName;
     Map<String, Object> owner_details = new HashMap<>();
     Map<String, Object> members = new HashMap<>();
+    Map<String, Object> nummembers = new HashMap<>();
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail,numUsed;
-    String user_joincode,used_joinKey,joinkey,roomID,numOfMembers;
+    String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
     int newjoinkey,numofmem;
 
     @Override
@@ -240,7 +241,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         owner_details.put("1",userEmail);
         owner_details.put("numberOfCards",1+"");
-        owner_details.put("Owner",true);
+        owner_details.put("Owner","true");
 
         DocumentReference docRef = db.collection(id).document(userEmail);
              docRef.set(owner_details)
@@ -262,6 +263,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         keyvalues.put("roomId",id);
         keyvalues.put("joinKey",joinkey);
         keyvalues.put("owner",userEmail);
+        keyvalues.put("numOfMembers",1+"");
 
         if(checkAvailability(joinkey))
         {
@@ -401,6 +403,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                                     if (document.exists()) {
                                         // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                         roomID = document.getString("roomId");
+                                        numOfMembers = document.getString("numOfMembers");
+                                        owner = document.getString("owner");
+                                        joinkey = document.getString("joinKey");
                                         enterRoom(roomID);
                                     } else {
                                         //Log.d(TAG, "No such document");
@@ -431,7 +436,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         DocumentReference docRef2 = db.collection(room_id).document(userEmail);
         members.put("1",userEmail);
         members.put("numberOfCards",1+"");
-        members.put("Owner",false);
+        members.put("Owner","false");
 
         docRef2
                 .set(members)
@@ -439,6 +444,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     @Override
                     public void onSuccess(Void v) {
                         // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        proceedFurther();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -460,7 +466,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             }
         });*/
 
-        docRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+      /*  docRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -477,7 +483,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     //Log.d(TAG, "get failed with ", task.getException());
                 }
             }
-        });
+        });*/
 
 
 
@@ -485,13 +491,20 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     public void proceedFurther()
     {
+        DocumentReference docRef = db.collection("keyValues").document(user_joincode);
+
         numofmem = (Integer.parseInt(numOfMembers));
         numofmem=numofmem+1;
+
+        docRef.update("numOfMembers",numofmem+"");
+        joinme();
+
+
 
       //  members.put(numofmem+"",userEmail);
         //members.put("numberOfMembers",numofmem+"");
 
-       DocumentReference docRef = db.collection(roomID).document("Members");
+      /* DocumentReference docRef = db.collection(roomID).document("Members");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -527,7 +540,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error adding document", e);
                     }
-                });
+                });*/
     }
 
     public void joinme()

@@ -7,6 +7,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +24,8 @@ import javax.annotation.Nullable;
 
 public class WaitingForPlayersActivity extends AppCompatActivity {
 
-    String boss,member,roomid,key;
+    String member,roomid,key;
+    String boss;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView bossTextView,joinCodeDisplay;
    ListView members_joined;
@@ -41,15 +43,12 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         joinCodeDisplay = findViewById(R.id.join_code_display);
 
        // assert roomid != null;
-        DocumentReference docRef = db.collection(roomid).document(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        DocumentReference docRef = db.collection(roomid).document(member);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if(documentSnapshot.exists())
-                {
-                    boss = documentSnapshot.getString("1");
-                    setTexts();
-                }
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                boss = documentSnapshot.getString("Owner");
+                setTexts();
             }
         });
         
@@ -59,14 +58,14 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     {
         joinCodeDisplay.setText(key);
 
-        if(member.equals(boss))
+        if(boss.equals("true"))
         {
             bossTextView.setText(R.string.bosstextview);
         }
         else
         {
-            String text = boss+" "+R.string.membertextview;
-            bossTextView.setText(text);
+          //  String text = R.string.membertextview+"";
+            bossTextView.setText(R.string.membertextview);
         }
     }
 }
