@@ -3,6 +3,7 @@ package com.tachyon.techlabs.iplauction;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,10 +25,10 @@ import javax.annotation.Nullable;
 
 public class WaitingForPlayersActivity extends AppCompatActivity {
 
-    String member,roomid,key;
+    String member,roomid,key,boss_namee;
     String boss;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    TextView bossTextView,joinCodeDisplay;
+    TextView bossTextView,joinCodeDisplay,boss_name;
    ListView members_joined;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         members_joined= (ListView) findViewById(R.id.waiting_player_listview);
 
         bossTextView = findViewById(R.id.boss_text);
+        boss_name = findViewById(R.id.boss_name);
+
         joinCodeDisplay = findViewById(R.id.join_code_display);
 
        // assert roomid != null;
@@ -51,7 +54,16 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 setTexts();
             }
         });
-        
+
+        DocumentReference doc = db.collection("keyValues").document(key);
+        doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                boss_namee = documentSnapshot.getString("owner");
+                setTexts();
+            }
+        });
+
     }
 
     public void setTexts()
@@ -61,10 +73,12 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         if(boss.equals("true"))
         {
             bossTextView.setText(R.string.bosstextview);
+            boss_name.setVisibility(View.GONE);
         }
         else
         {
           //  String text = R.string.membertextview+"";
+            boss_name.setText(boss_namee);
             bossTextView.setText(R.string.membertextview);
         }
     }
