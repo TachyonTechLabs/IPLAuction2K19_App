@@ -49,7 +49,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     String appName;
     Map<String, Object> owner_details = new HashMap<>();
     Map<String, Object> members = new HashMap<>();
-    Map<String, Object> nummembers = new HashMap<>();
+   // Map<String, Object> nummembers = new HashMap<>();
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
