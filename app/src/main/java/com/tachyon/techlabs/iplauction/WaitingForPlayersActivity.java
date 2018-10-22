@@ -3,9 +3,15 @@ package com.tachyon.techlabs.iplauction;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,18 +24,27 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
 public class WaitingForPlayersActivity extends AppCompatActivity {
 
+    Toolbar toolbarRoomWait;
+    TextView textViewRoomName;
     String member,roomid,key,boss_namee;
-    String boss;
+    String boss,roomtext;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView bossTextView,joinCodeDisplay,boss_name;
-   ListView members_joined;
+    ListView members_joined;
+    List<String> list;
+    ArrayAdapter<String> adapter;
+    String [] players;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +55,21 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         key = getIntent().getExtras().getString("joiningKey");
         members_joined= (ListView) findViewById(R.id.waiting_player_listview);
 
+        roomtext = getString(R.string.yourroom);
+        toolbarRoomWait = findViewById(R.id.app_toolbar);
+        textViewRoomName = findViewById(R.id.app_toolbar_nametxt);
+        textViewRoomName.setText(roomtext);
+        textViewRoomName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) textViewRoomName.getLayoutParams();
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        textViewRoomName.setLayoutParams(lp);
+
+
         bossTextView = findViewById(R.id.boss_text);
         boss_name = findViewById(R.id.boss_name);
 
         joinCodeDisplay = findViewById(R.id.join_code_display);
+
 
        // assert roomid != null;
         DocumentReference docRef = db.collection(roomid).document(member);
@@ -64,6 +90,29 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             }
         });
 
+        db.collection(roomid).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    list = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        list.add(document.getId());
+                    }
+                    // Log.d(TAG, list.toString());
+                   // Toast.makeText(WaitingForPlayersActivity.this, list.toString(), Toast.LENGTH_SHORT).show();
+                setPlayerNames();
+
+            }
+        });
+
+    }
+
+    public void setPlayerNames()
+    {
+        players = new String[list.size()];
+        players = list.toArray(players);
+       // Toast.makeText(this, players.toString(), Toast.LENGTH_SHORT).show();
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,players);
+        members_joined.setAdapter(adapter);
     }
 
     public void setTexts()

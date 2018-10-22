@@ -8,6 +8,7 @@
 
 
     <string name="createroom">Create Room</string>
+    <string name="yourroom">YOUR ROOM</string>
     <string name="joinroom">Join Room</string>
     <string name="join_room_hint">Please Enter Your Joining Code</string>
     <string name="joining_code">JOIN CODE</string>

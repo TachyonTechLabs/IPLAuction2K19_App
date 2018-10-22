@@ -81,17 +81,10 @@
         android:textAlignment="center"
         android:textColor="@color/black"/>
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/waiting_nested_scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_below="@id/waiting_text"
-        android:layout_marginTop="20dp">
-
         <ListView
             android:id="@+id/waiting_player_listview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_below="@id/waiting_text"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
@@ -100,7 +93,6 @@
 
         </ListView>
 
-    </android.support.v4.widget.NestedScrollView>
 
 
     <Button
