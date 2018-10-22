@@ -1,5 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -130,5 +131,13 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             boss_name.setText(boss_namee);
             bossTextView.setText(R.string.membertextview);
         }
+    }
+
+    public void pushData(View view) {
+        Intent qrcode=new Intent(this,qr_code_generator.class);
+        qrcode.putExtra("Join Code",key);
+        startActivity(qrcode);
+        finish();
+
     }
 }

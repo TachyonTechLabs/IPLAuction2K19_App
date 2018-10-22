@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WaitingForPlayersActivity"></activity>
+        <activity android:name=".WaitingForPlayersActivity" />
+        <activity android:name=".qr_code_generator"></activity>
     </application>
 
 </manifest>

@@ -188,9 +188,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
-  /*  public void pushData(View view) {
+   public void pushData(View view) {
 
-        user.put("first", textedit.getText().toString());
+       /* user.put("first", textedit.getText().toString());
         user.put("last", "Two");
         user.put("born", 3);
 
@@ -208,9 +208,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error adding document", e);
                     }
-                });
+                }); */
 
-    } */
+       startActivity(new Intent(this,qr_code_generator.class));
+       finish();
+    }
 
     public void readData()
     {
