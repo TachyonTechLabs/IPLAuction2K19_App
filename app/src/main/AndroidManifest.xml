@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tachyon.techlabs.iplauction">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera2"/>
+
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,6 +26,8 @@
         </activity>
         <activity android:name=".WaitingForPlayersActivity" />
         <activity android:name=".qr_code_generator"></activity>
+        <activity android:name=".qr_scanner" />
+        <activity android:name=".qrcode_scanner"></activity>
     </application>
 
 </manifest>

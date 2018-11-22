@@ -554,4 +554,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         startActivity(roomCreated);
         finish();
     }
+
+    public void qr_reader(View view) {
+        Intent qr_scanner = new Intent(AfterRegistrationMainActivity.this,qrcode_scanner.class);
+        startActivity(qr_scanner);
+        finish();
+
+
+    }
 }
