@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
     tools:context=".PowerCards">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -14,8 +12,9 @@
          TextureView, etc. -->
     <GridView
         android:id="@+id/gv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="1"
         android:verticalSpacing="15dp"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         />
