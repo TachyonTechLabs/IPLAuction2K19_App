@@ -16,4 +16,6 @@
     <color name="ipl_logo_top_dark">#000016</color>
     <color name="ipl_logo_bottom_left">#2B6733</color>
     <color name="background_grey">#E6E6E6</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

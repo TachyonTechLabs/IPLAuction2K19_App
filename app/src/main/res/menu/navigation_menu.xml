@@ -12,7 +12,7 @@
         android:title="Profile" />
     <item
         android:id="@+id/nav_marks"
-        android:title="Marks" />
+        android:title="Opponennts" />
     <item
         android:id="@+id/nav_quick_actions"
         android:title="Quick Actions" />
@@ -21,7 +21,7 @@
         <menu>
             <item
                 android:id="@+id/nav_college_fest"
-                android:title="College Festivals" />
+                android:title="Cards" />
             <item
                 android:id="@+id/nav_committee"
                 android:title="Committee" />

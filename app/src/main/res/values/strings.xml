@@ -23,4 +23,8 @@
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>
 
+    <string name="title_activity_power_cards">PowerCards</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

@@ -210,7 +210,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     }
                 }); */
 
-       startActivity(new Intent(this,qr_code_generator.class));
+       startActivity(new Intent(this,PowerCards.class));
        finish();
     }
 
