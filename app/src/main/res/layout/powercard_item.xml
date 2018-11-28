@@ -7,8 +7,9 @@
     card_view:cardCornerRadius="5dp"
     android:layout_marginBottom="10dp"
     card_view:cardElevation="5dp"
+    android:layout_margin="15dp"
     card_view:cardBackgroundColor="#acf2dd"
-    android:layout_height="370dp">
+    android:layout_height="300dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -64,11 +65,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:paddingTop="290dp"
+        android:paddingTop="260dp"
         android:layout_height="wrap_content">
     <ImageButton
-        android:layout_width="250dp"
-        android:layout_height="80dp"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
         android:background="@drawable/buy_now_button"
         android:layout_gravity="center_horizontal"
         />
