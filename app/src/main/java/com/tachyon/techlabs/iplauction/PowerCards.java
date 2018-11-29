@@ -1,13 +1,25 @@
 package com.tachyon.techlabs.iplauction;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.GridView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class PowerCards extends AppCompatActivity {
-
+    public static final String CHANNEL_ID="1001";
     cards_adapter adapter;
     GridView gv;
+   static Context c;
+    public NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +66,37 @@ public class PowerCards extends AppCompatActivity {
 
         return Power_Cardss;
     }
+    NotificationCompat.Builder  mBuilder = new NotificationCompat.Builder(c, CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("Card Purchase")
+            .setContentText("You purschased"+"card")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+    public void buy_card(View view) {
+       // notificationManager.notify(12345, mBuilder.build());
+        Log.d("LOGMessage","Buy card");
+        Toast.makeText(this, "buy_card_fn_call", Toast.LENGTH_SHORT).show();
+
+
+
+    }
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name =("Cards");
+            String description = "heyyy";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+           // NotificationManagerCompat notificationManager = NotificationManagerCompat.from(PowerCards.this);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
 
 }
