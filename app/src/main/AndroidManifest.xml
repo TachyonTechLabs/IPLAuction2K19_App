@@ -32,7 +32,8 @@
             android:name=".PowerCards"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_power_cards"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".About"></activity>
     </application>
 
 </manifest>
