@@ -1,4 +1,4 @@
-package com.tachyon.techlabs.iplauction2k19;
+package com.tachyon.techlabs.iplauction;
 
 public class AppConstants {
 
