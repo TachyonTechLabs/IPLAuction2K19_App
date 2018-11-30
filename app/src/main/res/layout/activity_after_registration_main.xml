@@ -117,7 +117,17 @@
             android:layout_below="@id/edittext"
             android:layout_marginTop="20dp"
             android:text="PUSH"
+            android:id="@+id/push"
             android:onClick="pushData"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/push"
+            android:layout_marginTop="20dp"
+            android:text="about"
+            android:onClick="about"/>
+
 
     </RelativeLayout>
 

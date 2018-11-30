@@ -1,10 +1,13 @@
 package com.tachyon.techlabs.iplauction;
 
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -214,6 +217,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
        finish();
     }
 
+    public void about(View view)
+    {
+        startActivity(new Intent(this,About.class));
+        finish();
+    }
+
     public void readData()
     {
         DocumentReference docRef = db.collection("users").document(userEmail);
@@ -382,41 +391,13 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     public void onClick(DialogInterface dialog, int id) {
                         user_entered_code = viewlayout.findViewById(R.id.code);
                         user_joincode = user_entered_code.getText().toString();
-
-                       DocumentReference docRef = db.collection("keyValues").document(user_joincode);
-                       /* docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                if(documentSnapshot.exists())
-                                {
-                                    roomID = documentSnapshot.getString("roomId");
-
-                                }
-                            }
-                        });*/
-
-
-
-                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()) {
-                                        // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                        roomID = document.getString("roomId");
-                                        numOfMembers = document.getString("numOfMembers");
-                                        owner = document.getString("owner");
-                                        joinkey = document.getString("joinKey");
-                                        enterRoom(roomID);
-                                    } else {
-                                        //Log.d(TAG, "No such document");
-                                    }
-                                } else {
-                                    //Log.d(TAG, "get failed with ", task.getException());
-                                }
-                            }
-                        });
+                        if(user_joincode.matches(""))
+                        {
+                            Toast.makeText(getApplicationContext(),"Enter A Valid Code",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            room_join_function(user_joincode);
+                        }
 
                         dialog.cancel();
                         // sign in the user ...
@@ -432,6 +413,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
        alert.show();
 
     }
+
 
     public void enterRoom(String room_id)
     {
@@ -490,7 +472,45 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
 
     }
+    public void room_join_function(String user_joincode)
+    {
+        DocumentReference docRef = db.collection("keyValues").document(user_joincode);
+                       /* docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                if(documentSnapshot.exists())
+                                {
+                                    roomID = documentSnapshot.getString("roomId");
 
+                                }
+                            }
+                        });*/
+
+
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        roomID = document.getString("roomId");
+                        numOfMembers = document.getString("numOfMembers");
+                        owner = document.getString("owner");
+                        joinkey = document.getString("joinKey");
+                        enterRoom(roomID);
+                    } else {
+                        //Log.d(TAG, "No such document");
+                    }
+                } else {
+                    //Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
+    }
     public void proceedFurther()
     {
         DocumentReference docRef = db.collection("keyValues").document(user_joincode);
@@ -556,10 +576,42 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     }
 
     public void qr_reader(View view) {
-        Intent qr_scanner = new Intent(AfterRegistrationMainActivity.this,qrcode_scanner.class);
-        startActivity(qr_scanner);
-        finish();
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 123);
+        }
+        else {
+            Intent qr_scanner = new Intent(AfterRegistrationMainActivity.this,qrcode_scanner.class);
+            startActivity(qr_scanner);
+            finish();
+
+
+        }
 
 
     }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 123) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Intent qr_scanner = new Intent(AfterRegistrationMainActivity.this,qrcode_scanner.class);
+                startActivity(qr_scanner);
+                finish();
+
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+
+            }
+
+        }}//end onRequestPermissionsResult
+
 }
