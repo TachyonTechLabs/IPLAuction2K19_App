@@ -139,4 +139,11 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         finish();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(WaitingForPlayersActivity.this,AfterRegistrationMainActivity.class));
+        finish();
+    }
 }

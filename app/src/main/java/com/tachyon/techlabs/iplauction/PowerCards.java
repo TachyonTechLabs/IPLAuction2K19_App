@@ -73,7 +73,7 @@ public class PowerCards extends AppCompatActivity {
         adapter = new cards_adapter(context,imgs,disc,names,price);
 
         recyclerView.setAdapter(adapter);
-        
+
         /*
         gv= (GridView) findViewById(R.id.gv);
 

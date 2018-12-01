@@ -92,43 +92,6 @@
         </LinearLayout>
 
 
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Main Page"
-            android:textSize="22sp"/>
-
-        <EditText
-            android:id="@+id/edittext"
-            android:layout_below="@id/text"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:hint="Hint"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/edittext"
-            android:layout_marginTop="20dp"
-            android:text="PUSH"
-            android:id="@+id/push"
-            android:onClick="pushData"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/push"
-            android:layout_marginTop="20dp"
-            android:text="about"
-            android:onClick="about"/>
-
-
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

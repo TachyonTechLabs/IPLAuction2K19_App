@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -47,7 +48,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     private ActionBarDrawerToggle mToggle;
     NavigationView navigationView;
     Toolbar toolbarAppName;
-    TextView textViewAppName,textname,textedit;
+    TextView textViewAppName;
     EditText user_entered_code;
     String appName;
     Map<String, Object> owner_details = new HashMap<>();
@@ -94,12 +95,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         //String name = getIntent().getExtras().getString("name");
         navigationView.setNavigationItemSelectedListener(this);
 
-        textname = findViewById(R.id.text);
-        textedit = findViewById(R.id.edittext);
-
-
-
-
 
         // Access a Cloud Firestore instance from your Activity
 
@@ -137,7 +132,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     if(documentSnapshot.exists())
                     {
-                        textname.setText(documentSnapshot.getString("first"));
+
                     }
                 }
             });
@@ -165,6 +160,48 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        int id = menuItem.getItemId();
+
+        switch (id)
+        {
+            case R.id.nav_home:
+                break;
+
+            case R.id.nav_profile:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class));
+                finish();
+                break;
+
+            case R.id.nav_opponents:
+                break;
+
+            case R.id.nav_cards:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
+                finish();
+                break;
+
+            case R.id.nav_share:
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                startActivity(Intent.createChooser(share,"Share Via"));
+
+            case R.id.nav_about_us:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,About.class));
+                finish();
+                break;
+
+            case R.id.nav_developer:
+                break;
+
+            case R.id.nav_about_app:
+                break;
+
+            case R.id.nav_logout:
+                break;
+
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -213,8 +250,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     }
                 }); */
 
-       startActivity(new Intent(this,PowerCards.class));
-       finish();
+
     }
 
     public void about(View view)
@@ -233,7 +269,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        textname.setText(document.getString("first"));
+                        //textname.setText(document.getString("first"));
                     } else {
                         //Log.d(TAG, "No such document");
                     }
@@ -248,7 +284,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         Random_id_generate obj=new Random_id_generate();
         long random_id=obj.id();
         final String id=random_id+"";
-        textname.setText(id);
+        //textname.setText(id);
 
         owner_details.put("1",userEmail);
         owner_details.put("numberOfCards",1+"");

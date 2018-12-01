@@ -11,23 +11,16 @@
         android:id="@+id/nav_profile"
         android:title="Profile" />
     <item
-        android:id="@+id/nav_marks"
+        android:id="@+id/nav_opponents"
         android:title="Opponennts" />
-    <item
-        android:id="@+id/nav_quick_actions"
-        android:title="Quick Actions" />
-    <item android:title="College">
+
+    <item android:title="Power Ups">
 
         <menu>
             <item
-                android:id="@+id/nav_college_fest"
+                android:id="@+id/nav_cards"
                 android:title="Cards" />
-            <item
-                android:id="@+id/nav_committee"
-                android:title="Committee" />
-            <item
-                android:id="@+id/nav_visit_college_website"
-                android:title="Visit College Website" />
+
         </menu>
 
     </item>
