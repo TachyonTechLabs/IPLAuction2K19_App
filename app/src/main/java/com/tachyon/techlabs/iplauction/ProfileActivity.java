@@ -1,6 +1,7 @@
 package com.tachyon.techlabs.iplauction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -11,14 +12,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
     private FirebaseAuth mAuth;
@@ -26,10 +35,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private TextView txtUsername;
     private ImageView imgUserphoto;
     private ListView listView;
+    private ListView teams;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView navigationView;
-
+    ArrayList<String> rooms=new ArrayList<String>();
+    SharedPreferences sp;
+    Spinner spin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         listView = findViewById(R.id.profile_listview);
+        teams=findViewById(R.id.team_listview);
 
         txtUsername = findViewById(R.id.profile_username);
         imgUserphoto = findViewById(R.id.profile_image);
@@ -55,8 +68,20 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         String [] text = {"Initial Balance","Current Balance","Power Cards"};
         int [] value = {10000000,10000000,0};
 
+
+
+
         ProfileListViewAdapter profileListViewAdapter = new ProfileListViewAdapter(getApplicationContext(),text,value);
         listView.setAdapter(profileListViewAdapter);
+
+
+        sp=getSharedPreferences("joined_rooms",MODE_PRIVATE);
+        String joined_room_ids= sp.getString("joined_room",null);
+        //String array=("{"+joined_room_ids+"}").toString();
+        String[] arr=joined_room_ids.split(",");
+        ArrayAdapter adapter=new ArrayAdapter<String>(this,R.layout.profile_myteams,arr);
+        teams.setAdapter(adapter);
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
@@ -72,7 +97,28 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         //String name = getIntent().getExtras().getString("name");
         navigationView.setNavigationItemSelectedListener(this);
 
+        teams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selecteditem=(String) adapterView.getItemAtPosition(i);
+                Toast.makeText(getApplicationContext(),selecteditem,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, selecteditem, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        spin=findViewById(R.id.spin);
+        ArrayAdapter spin_adapter=new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,arr);
+        spin_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spin.setAdapter(spin_adapter);
+
+
+
+
     }
+
+
 
     public void profileback(View view) {
         onBackPressed();
@@ -148,6 +194,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
+
     }
+
 
 }

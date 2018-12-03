@@ -34,7 +34,9 @@
             android:label="@string/title_activity_power_cards"
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".About" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".opponents_data" />
+        <activity android:name=".Room"></activity>
     </application>
 
 </manifest>

@@ -2,8 +2,10 @@ package com.tachyon.techlabs.iplauction;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -37,8 +39,11 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -60,11 +65,18 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     String userEmail,numUsed;
     String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
     int newjoinkey,numofmem;
+    SharedPreferences sp;
+    StringBuilder rooms;
+    Set<String> set=new HashSet<>();
+    ArrayList<String> joined_room_array=new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_registration_main);
+        sp=getSharedPreferences("joined_rooms",Context.MODE_PRIVATE);
+        rooms=new StringBuilder();
 
         if(Build.VERSION.SDK_INT>22)
         {
@@ -174,6 +186,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_opponents:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,opponents_data.class));
+                finish();
                 break;
 
             case R.id.nav_cards:
@@ -289,6 +303,14 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         owner_details.put("1",userEmail);
         owner_details.put("numberOfCards",1+"");
         owner_details.put("Owner","true");
+        owner_details.put("Initial_Amount",1000000);
+        owner_details.put("Current_Amount",1000000);
+        owner_details.put("yorker",0);
+        owner_details.put("no ball",0);
+        owner_details.put("right to match",0);
+        owner_details.put("legend cards",0);
+
+
 
         DocumentReference docRef = db.collection(id).document(userEmail);
              docRef.set(owner_details)
@@ -339,6 +361,21 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         }
 
+
+        SharedPreferences.Editor ed=sp.edit();
+        try {
+            String room = (sp.getString("joined_room",null));
+            rooms.append(room);
+            rooms.append(",");
+            rooms.append(joinkey);
+           String all_rooms= rooms.toString();
+            /*set.add(joinkey);*/
+            ed.putString("joined_room",all_rooms);
+            ed.apply();
+        }
+        catch (Exception e) {
+
+        }
 
     }
 
