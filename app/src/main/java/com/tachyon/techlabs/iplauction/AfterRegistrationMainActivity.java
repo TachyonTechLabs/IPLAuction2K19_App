@@ -136,7 +136,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-        checkIfInRoom();
+
 
     }
     // [END on_start_check_user]
@@ -151,7 +151,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     if(documentSnapshot.exists())
                     {
-
+                        checkIfInRoom();
                     }
                 }
             });
