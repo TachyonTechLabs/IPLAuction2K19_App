@@ -194,7 +194,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_opponents:
-                startActivity(new Intent(AfterRegistrationMainActivity.this,opponents_data.class));
+                startActivity(new Intent(AfterRegistrationMainActivity.this,activity_vertical_ntb.class));
                 finish();
                 break;
 

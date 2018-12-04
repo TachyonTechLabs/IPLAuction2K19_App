@@ -3,7 +3,7 @@
     package="com.tachyon.techlabs.iplauction">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera" />
@@ -37,7 +37,8 @@
         <activity android:name=".About" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".opponents_data" />
-        <activity android:name=".Room"></activity>
+        <activity android:name=".Room" />
+        <activity android:name=".activity_vertical_ntb"></activity>
     </application>
 
 </manifest>
