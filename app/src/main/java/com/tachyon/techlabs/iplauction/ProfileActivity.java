@@ -2,6 +2,7 @@ package com.tachyon.techlabs.iplauction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -39,6 +43,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView navigationView;
+    private ProgressBar progressBar_indeterminate_circle;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> rooms=new ArrayList<String>();
     SharedPreferences sp;
     Spinner spin;
@@ -53,8 +59,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
+        progressBar_indeterminate_circle = findViewById(R.id.profile_progress);
+
         listView = findViewById(R.id.profile_listview);
-        teams=findViewById(R.id.team_listview);
+        //teams=findViewById(R.id.team_listview);
 
         txtUsername = findViewById(R.id.profile_username);
         imgUserphoto = findViewById(R.id.profile_image);
@@ -63,25 +71,41 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         userphoto = currentUser.getPhotoUrl().toString();
 
         txtUsername.setText(username);
-        Glide.with(ProfileActivity.this).load(userphoto).apply(RequestOptions.circleCropTransform()).into(imgUserphoto);
+
 
         String [] text = {"Initial Balance","Current Balance","Power Cards"};
         int [] value = {10000000,10000000,0};
 
 
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(setPhoto())
+                {
+                    progressBar_indeterminate_circle.setVisibility(View.GONE);
+                }
+                else
+                {
+                    progressBar_indeterminate_circle.setIndeterminate(true);
+                    handler.postDelayed(this,1000);
+                }
+            }
+        };
+        handler.post(runnable);
 
 
         ProfileListViewAdapter profileListViewAdapter = new ProfileListViewAdapter(getApplicationContext(),text,value);
         listView.setAdapter(profileListViewAdapter);
 
-
+        /*
         sp=getSharedPreferences("joined_rooms",MODE_PRIVATE);
         String joined_room_ids= sp.getString("joined_room",null);
         //String array=("{"+joined_room_ids+"}").toString();
         String[] arr=joined_room_ids.split(",");
         ArrayAdapter adapter=new ArrayAdapter<String>(this,R.layout.profile_myteams,arr);
         teams.setAdapter(adapter);
-
+        */
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
@@ -97,6 +121,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         //String name = getIntent().getExtras().getString("name");
         navigationView.setNavigationItemSelectedListener(this);
 
+        /*
         teams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -113,9 +138,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         spin_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spin.setAdapter(spin_adapter);
 
+        */
 
 
+    }
 
+    public boolean setPhoto()
+    {
+        Glide.with(ProfileActivity.this).load(userphoto).apply(RequestOptions.circleCropTransform()).into(imgUserphoto);
+        return true;
     }
 
 

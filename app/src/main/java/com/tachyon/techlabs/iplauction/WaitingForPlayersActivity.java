@@ -1,5 +1,8 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +43,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     String member,roomid,key,boss_namee;
     String boss,roomtext;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth;
     TextView bossTextView,joinCodeDisplay,boss_name;
     ListView members_joined;
     List<String> list;
@@ -50,9 +55,18 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_for_players);
 
-        roomid = getIntent().getExtras().getString("roomId");
-        member = getIntent().getExtras().getString("emailId");
-        key = getIntent().getExtras().getString("joiningKey");
+        member = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        DocumentReference docname = db.collection("Players").document(member);
+        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                roomid = documentSnapshot.getString("roomid");
+                key = documentSnapshot.getString("joinkey");
+                getBossName();
+                getPlayersName();
+            }
+        });
         members_joined= (ListView) findViewById(R.id.waiting_player_listview);
 
         roomtext = getString(R.string.yourroom);
@@ -72,6 +86,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
 
        // assert roomid != null;
+        /*
         DocumentReference docRef = db.collection(roomid).document(member);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -79,30 +94,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 boss = documentSnapshot.getString("Owner");
                 setTexts();
             }
-        });
+        });*/
 
-        DocumentReference doc = db.collection("keyValues").document(key);
-        doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                boss_namee = documentSnapshot.getString("owner");
-                setTexts();
-            }
-        });
-
-        db.collection(roomid).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                    list = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        list.add(document.getId());
-                    }
-                    // Log.d(TAG, list.toString());
-                   // Toast.makeText(WaitingForPlayersActivity.this, list.toString(), Toast.LENGTH_SHORT).show();
-                setPlayerNames();
-
-            }
-        });
 
     }
 
@@ -119,7 +112,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     {
         joinCodeDisplay.setText(key);
 
-        if(boss.equals("true"))
+        if(boss_namee.equals(member))
         {
             bossTextView.setText(R.string.bosstextview);
             boss_name.setVisibility(View.GONE);
@@ -132,6 +125,35 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         }
     }
 
+    public void getBossName()
+    {
+        DocumentReference doc = db.collection("keyValues").document(key);
+        doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                boss_namee = documentSnapshot.getString("owner");
+                setTexts();
+            }
+        });
+    }
+
+    public void getPlayersName()
+    {
+        db.collection(roomid).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                list = new ArrayList<>();
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    list.add(document.getId());
+                }
+                // Log.d(TAG, list.toString());
+                // Toast.makeText(WaitingForPlayersActivity.this, list.toString(), Toast.LENGTH_SHORT).show();
+                setPlayerNames();
+
+            }
+        });
+    }
+
     public void pushData(View view) {
         Intent qrcode=new Intent(this,qr_code_generator.class);
         qrcode.putExtra("Join Code",key);
@@ -142,8 +164,31 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(WaitingForPlayersActivity.this,AfterRegistrationMainActivity.class));
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit Room?");
+        builder.setMessage("Do you really wish to leave the room?");
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                db.collection(roomid).document(member).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        startActivity(new Intent(WaitingForPlayersActivity.this,AfterRegistrationMainActivity.class));
+                        finish();
+                        Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                DocumentReference updateRef = db.collection("Players").document(member);
+                updateRef.update("inRoom",0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton(R.string.no,null);
+        builder.show();
     }
 }

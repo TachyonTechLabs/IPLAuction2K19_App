@@ -19,6 +19,8 @@
     <string name="start_game">START GAME</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>

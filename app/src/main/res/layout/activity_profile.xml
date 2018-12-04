@@ -44,12 +44,13 @@
                         android:textAlignment="center"
                         android:textSize="22sp"
                         android:textStyle="bold" />
+                    <!--
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/spin">
 
-                    </Spinner>
+                    </Spinner>-->
 
                 </RelativeLayout>
 
@@ -68,6 +69,7 @@
 
 
             <RelativeLayout
+                android:layout_below="@id/profile_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -77,6 +79,13 @@
                     android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"/>
+
+                <ProgressBar
+                    android:id="@+id/profile_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="75dp"/>
 
                 <TextView
                     android:layout_below="@id/profile_image"
@@ -112,6 +121,7 @@
                     android:layout_marginStart="15dp"
                     android:textColor="@color/primaryPurple"/>
 
+                <!--
                 <ListView
                     android:id="@+id/team_listview"
                     android:layout_width="match_parent"
@@ -121,7 +131,7 @@
                     android:layout_marginTop="49dp"
                     android:divider="@null"
                     android:dividerHeight="0dp"/>
-
+                -->
 
 
             </RelativeLayout>

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -65,6 +66,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     String userEmail,numUsed;
     String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
     int newjoinkey,numofmem;
+    DataBaseHelper myDB;
     SharedPreferences sp;
     StringBuilder rooms;
     Set<String> set=new HashSet<>();
@@ -75,8 +77,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_registration_main);
+        /*
         sp=getSharedPreferences("joined_rooms",Context.MODE_PRIVATE);
         rooms=new StringBuilder();
+        */
 
         if(Build.VERSION.SDK_INT>22)
         {
@@ -92,6 +96,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         setSupportActionBar(toolbarAppName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
+
+        myDB = new DataBaseHelper(this);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
@@ -130,6 +136,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        checkIfInRoom();
 
     }
     // [END on_start_check_user]
@@ -181,6 +188,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_profile:
+                //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
                 startActivity(new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class));
                 finish();
                 break;
@@ -199,6 +207,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
                 startActivity(Intent.createChooser(share,"Share Via"));
+                break;
 
             case R.id.nav_about_us:
                 startActivity(new Intent(AfterRegistrationMainActivity.this,About.class));
@@ -267,6 +276,22 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
+    public void checkIfInRoom()
+    {
+        final DocumentReference documentReference = db.collection("Players").document(userEmail);
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                int  in = documentSnapshot.getLong("inRoom").intValue();
+                if(in==1)
+                {
+                    startActivity(new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class));
+                    finish();
+                }
+            }
+        });
+    }
+
     public void about(View view)
     {
         startActivity(new Intent(this,About.class));
@@ -300,8 +325,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         final String id=random_id+"";
         //textname.setText(id);
 
+        joinkey = id.substring(5);
+
         owner_details.put("1",userEmail);
-        owner_details.put("numberOfCards",1+"");
+        owner_details.put("numberOfCards",0);
         owner_details.put("Owner","true");
         owner_details.put("Initial_Amount",1000000);
         owner_details.put("Current_Amount",1000000);
@@ -309,6 +336,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         owner_details.put("no ball",0);
         owner_details.put("right to match",0);
         owner_details.put("legend cards",0);
+        owner_details.put("inRoom",1);
+        owner_details.put("roomid",id);
+        owner_details.put("joinkey",joinkey);
 
 
 
@@ -327,7 +357,22 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                     }
                 });
 
-        joinkey = id.substring(5);
+        DocumentReference docRef2 = db.collection("Players").document(userEmail);
+        docRef2.set(owner_details)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+
 
         keyvalues.put("roomId",id);
         keyvalues.put("joinKey",joinkey);
@@ -344,11 +389,19 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                             // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                             saveUsedKey();
 
-                            Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
-                            roomCreated.putExtra("emailId",userEmail);
-                            roomCreated.putExtra("roomId",id);
-                            roomCreated.putExtra("joiningKey",joinkey);
-                            startActivity(roomCreated);
+                            Boolean result = myDB.insertData(userEmail,"10000000","10000000","true","0","0","0","0","0","1",joinkey);
+
+                            if(result)
+                            {
+                                Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
+                                startActivity(roomCreated);
+                            }
+                            else
+                            {
+                                Toast.makeText(AfterRegistrationMainActivity.this, "Data Insertion Failed", Toast.LENGTH_SHORT).show();
+                            }
+
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -361,7 +414,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         }
 
-
+        /*
         SharedPreferences.Editor ed=sp.edit();
         try {
             String room = (sp.getString("joined_room",null));
@@ -369,13 +422,13 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             rooms.append(",");
             rooms.append(joinkey);
            String all_rooms= rooms.toString();
-            /*set.add(joinkey);*/
+            //set.add(joinkey);
             ed.putString("joined_room",all_rooms);
             ed.apply();
         }
         catch (Exception e) {
 
-        }
+        }*/
 
     }
 
@@ -488,12 +541,23 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     }
 
 
-    public void enterRoom(String room_id)
+    public void enterRoom(String room_id,String joinkey)
     {
         DocumentReference docRef2 = db.collection(room_id).document(userEmail);
+        DocumentReference docRef = db.collection("Players").document(userEmail);
+
         members.put("1",userEmail);
-        members.put("numberOfCards",1+"");
+        members.put("numberOfCards",0);
         members.put("Owner","false");
+        members.put("Initial_Amount",1000000);
+        members.put("Current_Amount",1000000);
+        members.put("yorker",0);
+        members.put("no ball",0);
+        members.put("right to match",0);
+        members.put("legend cards",0);
+        members.put("inRoom",1);
+        members.put("roomid",room_id);
+        members.put("joinkey",joinkey);
 
         docRef2
                 .set(members)
@@ -510,6 +574,23 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                         // Log.w(TAG, "Error adding document", e);
                     }
                 });
+
+        docRef
+                .set(members)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        proceedFurther();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
 
       /*  docRef2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -572,7 +653,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                         numOfMembers = document.getString("numOfMembers");
                         owner = document.getString("owner");
                         joinkey = document.getString("joinKey");
-                        enterRoom(roomID);
+                        enterRoom(roomID,joinkey);
                     } else {
                         //Log.d(TAG, "No such document");
                     }
@@ -640,12 +721,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     public void joinme()
     {
-        Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
-        roomCreated.putExtra("emailId",userEmail);
-        roomCreated.putExtra("roomId",roomID);
-        roomCreated.putExtra("joiningKey",joinkey);
-        startActivity(roomCreated);
-        finish();
+
+        Boolean result = myDB.insertData(userEmail,"10000000","10000000","true","0","0","0","0","0","1",joinkey);
+        if(result)
+        {
+            Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
+            startActivity(roomCreated);
+            finish();
+        }
+
     }
 
     public void qr_reader(View view) {
