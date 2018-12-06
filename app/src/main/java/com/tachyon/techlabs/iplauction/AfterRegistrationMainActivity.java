@@ -189,8 +189,16 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
             case R.id.nav_profile:
                 //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
-                startActivity(new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class));
-                finish();
+                Handler handler = new Handler();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(runnable,250);
+
                 break;
 
             case R.id.nav_opponents:

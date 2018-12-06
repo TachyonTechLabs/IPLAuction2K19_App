@@ -13,25 +13,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
     private FirebaseAuth mAuth;
@@ -44,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private ActionBarDrawerToggle mToggle;
     private NavigationView navigationView;
     private ProgressBar progressBar_indeterminate_circle;
+    private int animation_type = ItemAnimation.FADE_IN;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> rooms=new ArrayList<String>();
     SharedPreferences sp;
@@ -70,8 +67,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         username = currentUser.getDisplayName();
         userphoto = currentUser.getPhotoUrl().toString();
 
-        txtUsername.setText(username);
-
 
         String [] text = {"Initial Balance","Current Balance","Power Cards"};
         int [] value = {10000000,10000000,0};
@@ -83,7 +78,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             public void run() {
                 if(setPhoto())
                 {
+                    txtUsername.setText(username);
                     progressBar_indeterminate_circle.setVisibility(View.GONE);
+                    Animation anim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadein);
+                    txtUsername.setAnimation(anim);
+                    imgUserphoto.setAnimation(anim);
                 }
                 else
                 {
@@ -97,6 +96,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         ProfileListViewAdapter profileListViewAdapter = new ProfileListViewAdapter(getApplicationContext(),text,value);
         listView.setAdapter(profileListViewAdapter);
+
+        Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein_slidedown);
+        listView.startAnimation(animation);
 
         /*
         sp=getSharedPreferences("joined_rooms",MODE_PRIVATE);
@@ -142,6 +144,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
 
     }
+
 
     public boolean setPhoto()
     {
