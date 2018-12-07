@@ -1,5 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,7 +18,9 @@ import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class activity_vertical_ntb extends AppCompatActivity {
-
+    private ListView listView;
+    String [] text = {"Virat Kohli","MS Dhoni","Ravindra Jadeja"};
+    int [] value = {10000000,10000000,2344553};
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +28,10 @@ public class activity_vertical_ntb extends AppCompatActivity {
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         initUI();
+        listView = findViewById(R.id.opponents_listview);
+        opponents_team_playerslist_adapter ViewAdapter = new opponents_team_playerslist_adapter(getApplicationContext(),text,value);
+        listView.setAdapter(ViewAdapter);
+
     }
 
     private void initUI() {

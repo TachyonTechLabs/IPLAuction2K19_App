@@ -1,5 +1,4 @@
 package com.tachyon.techlabs.iplauction;
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ProfileListViewAdapter extends ArrayAdapter {
+public class opponents_team_playerslist_adapter extends ArrayAdapter {
 
-    private String [] listtext;
+    private String [] playername;
     private int [] listvalue;
-    private TextView txtText,txtValue;
+    private TextView txtplayer,txtValue;
     private String valueText="";
 
-    public ProfileListViewAdapter(@NonNull Context context, String [] text ,int [] value) {
+    public opponents_team_playerslist_adapter(@NonNull Context context, String [] text ,int [] value) {
         super(context, R.layout.custom_listview_profile,R.id.listtext,text);
-        this.listtext = text;
+        this.playername = text;
         this.listvalue = value;
     }
 
@@ -27,10 +26,10 @@ public class ProfileListViewAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(R.layout.custom_listview_profile,parent,false);
-        txtText = row.findViewById(R.id.listtext);
+        txtplayer = row.findViewById(R.id.listtext);
         txtValue = row.findViewById(R.id.listvalue);
-        txtText.setText(listtext[position]);
-        if(position<2)
+        txtplayer.setText(playername[position]);
+       /* if(position<2)
         {
             valueText = "₹ "+listvalue[position];
         }
@@ -39,7 +38,7 @@ public class ProfileListViewAdapter extends ArrayAdapter {
             valueText = listvalue[position]+"";
         }
 
-        txtValue.setText(valueText);
+        txtValue.setText(valueText);*/
 
         return row;
     }
