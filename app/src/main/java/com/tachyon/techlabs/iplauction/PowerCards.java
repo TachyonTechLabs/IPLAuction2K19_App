@@ -37,12 +37,6 @@ public class PowerCards extends AppCompatActivity {
     public BottomSheetBehavior bottomSheetBehavior;
     View bgView;
 
-    /*
-    GridView gv;
-   static Context c;
-    public NotificationManagerCompat notificationManager;
-    */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
