@@ -4,6 +4,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,6 +33,9 @@ public class PowerCards extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
+    public RelativeLayout bottonSheetLayout;
+    public BottomSheetBehavior bottomSheetBehavior;
+    View bgView;
 
     /*
     GridView gv;
@@ -70,9 +78,37 @@ public class PowerCards extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new cards_adapter(context,imgs,disc,names,price);
+        bottonSheetLayout = findViewById(R.id.botton_sheet_layout_id);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottonSheetLayout);
+
+        adapter = new cards_adapter(context,imgs,disc,names,price,bottonSheetLayout,bottomSheetBehavior);
 
         recyclerView.setAdapter(adapter);
+
+
+
+        bgView = findViewById(R.id.bgVisible);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if(newState == BottomSheetBehavior.STATE_COLLAPSED)
+                    bgView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                bgView.setVisibility(View.VISIBLE);
+                bgView.setAlpha(slideOffset);
+            }
+        });
+
+        bgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
 
         /*
         gv= (GridView) findViewById(R.id.gv);

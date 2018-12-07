@@ -145,7 +145,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         if (user != null) {
 
             userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            DocumentReference docRef = db.collection("users").document(userEmail);
+            DocumentReference docRef = db.collection("Players").document(userEmail);
             docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -286,6 +286,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     public void checkIfInRoom()
     {
+        //Toast.makeText(this, "checkinroom", Toast.LENGTH_SHORT).show();
         final DocumentReference documentReference = db.collection("Players").document(userEmail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

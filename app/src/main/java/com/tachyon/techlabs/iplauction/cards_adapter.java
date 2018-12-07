@@ -3,6 +3,8 @@ package com.tachyon.techlabs.iplauction;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.CardView;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -24,8 +27,12 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
     private String[] names;
     private String[] disc;
     private String[] price;
-    View view;
+    View view,view2;
     ViewHolder viewHolder;
+    private RelativeLayout bottonSheetLayout;
+    private BottomSheetBehavior bottomSheetBehavior;
+    View bgView;
+    PowerCards powerCards = new PowerCards();
 
     /*
     ArrayList<Power_Cards> cards;
@@ -44,6 +51,8 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
         public TextView textpriceCard;
         public CardView cardView;
 
+
+
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -53,16 +62,46 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
             textdiscCard = (TextView) itemView.findViewById(R.id.carddescript);
             textpriceCard = (TextView) itemView.findViewById(R.id.cardprice);
 
+            //powerCards.bottonSheetLayout = (RelativeLayout) view2.findViewById(R.id.botton_sheet_layout_id);
+            //Toast.makeText(view.getContext(), powerCards.bottonSheetLayout.toString(), Toast.LENGTH_SHORT).show();
+           // powerCards.bottomSheetBehavior = BottomSheetBehavior.from(powerCards.bottonSheetLayout);
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    switch (position)
+                    {
+                        case 0 :
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            Toast.makeText(v.getContext(), "1000", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1 :
+                            Toast.makeText(v.getContext(), "2000", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2 :
+                            Toast.makeText(v.getContext(), "3000", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3 :
+                            Toast.makeText(v.getContext(), "4000", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            });
+
         }
     }
 
-    public cards_adapter(Context context,int[]img, String[] disc, String[] name,String [] price)
+    public cards_adapter(Context context,int[]img, String[] disc, String[] name,String [] price,RelativeLayout bottomSheetLayout,BottomSheetBehavior bottomSheetBehavior)
     {
         this.c = context;
         this.carsimgs = img;
         this.disc = disc;
         this.names = name;
         this.price = price;
+        this.bottonSheetLayout = bottomSheetLayout;
+        this.bottomSheetBehavior = bottomSheetBehavior;
     }
 
     /*
@@ -101,6 +140,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
     public cards_adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.powercard_item,parent,false);
+        view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_bottom_sheet_buy,parent,false);
         viewHolder = new ViewHolder(view);
         return viewHolder;
     }
