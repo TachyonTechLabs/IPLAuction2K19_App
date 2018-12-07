@@ -24,6 +24,7 @@
         android:text="@string/joining_code"
         android:textAlignment="center"
         android:textColor="@color/black"
+        android:onClick="qr_code"
         android:textStyle="bold"/>
 
     <TextView

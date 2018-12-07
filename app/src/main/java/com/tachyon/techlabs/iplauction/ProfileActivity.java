@@ -1,5 +1,4 @@
 package com.tachyon.techlabs.iplauction;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
