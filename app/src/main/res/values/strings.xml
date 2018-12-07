@@ -29,6 +29,16 @@
     <string name="price">PRICE</string>
     <string name="buy">BUY</string>
 
+    <string name="yorker">YORKER</string>
+    <string name="noBall">NO BALL</string>
+    <string name="rightToMatch">RIGHT TO MATCH</string>
+    <string name="legendCsrds">LEGEND CARDS</string>
+
+    <string name="yorker_price">₹ 10000</string>
+    <string name="no_ball_price">₹ 20000</string>
+    <string name="right_to_match_price">₹ 30000</string>
+    <string name="legend_cards_price">₹ 40000</string>
+
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>
 
