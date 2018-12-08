@@ -22,11 +22,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
     private FirebaseAuth mAuth;
@@ -40,6 +48,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private NavigationView navigationView;
     private ProgressBar progressBar_indeterminate_circle;
     private int animation_type = ItemAnimation.FADE_IN;
+    int [] val = new int[3];
+    String [] text = {"Initial Balance","Current Balance","Power Cards"};
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> rooms=new ArrayList<String>();
     SharedPreferences sp;
@@ -66,9 +76,29 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         username = currentUser.getDisplayName();
         userphoto = currentUser.getPhotoUrl().toString();
 
+        DocumentReference documentReference = db.collection("Players").document(Objects.requireNonNull(currentUser.getEmail()));
+        /*documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                val[0] = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                val[1] = Objects.requireNonNull(documentSnapshot.getLong("Initial_Amount")).intValue();
+                val[2] = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
+                setData();
+            }
+        });*/
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                val[0] = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                val[1] = Objects.requireNonNull(documentSnapshot.getLong("Initial_Amount")).intValue();
+                val[2] = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
+                setData();
+            }
+        });
 
-        String [] text = {"Initial Balance","Current Balance","Power Cards"};
-        int [] value = {10000000,10000000,0};
+
+
+        //int [] value = {10000000,10000000,0};
 
 
         final Handler handler = new Handler();
@@ -92,12 +122,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         };
         handler.post(runnable);
 
-
-        ProfileListViewAdapter profileListViewAdapter = new ProfileListViewAdapter(getApplicationContext(),text,value);
-        listView.setAdapter(profileListViewAdapter);
-
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein_slidedown);
-        listView.startAnimation(animation);
 
         /*
         sp=getSharedPreferences("joined_rooms",MODE_PRIVATE);
@@ -142,6 +166,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         */
 
 
+    }
+
+    public void setData()
+    {
+        ProfileListViewAdapter profileListViewAdapter = new ProfileListViewAdapter(getApplicationContext(),text,val);
+        listView.setAdapter(profileListViewAdapter);
+
+        Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein_slidedown);
+        listView.startAnimation(animation);
     }
 
 

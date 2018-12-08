@@ -21,10 +21,19 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PowerCards extends AppCompatActivity {
     public static final String CHANNEL_ID="1001";
@@ -36,6 +45,15 @@ public class PowerCards extends AppCompatActivity {
     public RelativeLayout bottonSheetLayout;
     public BottomSheetBehavior bottomSheetBehavior;
     View bgView;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    TextView txt_bs_name,txt_bs_desc,txt_bs_value;
+    DocumentReference mainDoc;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    String userEmail;
+    int currentAmount,currentNumOfCards;
+    AppConstants appConstants = new AppConstants();
+    int card_amount=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +83,10 @@ public class PowerCards extends AppCompatActivity {
                 "PRICE",
                 "PRICE"};
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        userEmail = Objects.requireNonNull(currentUser).getEmail();
+
         context = getApplicationContext();
 
         recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
@@ -75,9 +97,22 @@ public class PowerCards extends AppCompatActivity {
         bottonSheetLayout = findViewById(R.id.botton_sheet_layout_id);
         bottomSheetBehavior = BottomSheetBehavior.from(bottonSheetLayout);
 
-        adapter = new cards_adapter(context,imgs,disc,names,price,bottonSheetLayout,bottomSheetBehavior);
+        txt_bs_name = findViewById(R.id.card_name_bs);
+        txt_bs_desc = findViewById(R.id.card_desc_bs);
+        txt_bs_value = findViewById(R.id.card_pricevalue_bs);
+
+        adapter = new cards_adapter(context,imgs,disc,names,price,bottonSheetLayout,bottomSheetBehavior,txt_bs_name,txt_bs_desc,txt_bs_value);
 
         recyclerView.setAdapter(adapter);
+
+        mainDoc = db.collection("Players").document(userEmail);
+        mainDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                currentNumOfCards = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
+            }
+        });
 
 
 
@@ -86,7 +121,12 @@ public class PowerCards extends AppCompatActivity {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if(newState == BottomSheetBehavior.STATE_COLLAPSED)
+                {
                     bgView.setVisibility(View.GONE);
+                    getWindow().setStatusBarColor(ContextCompat.getColor(bottomSheet.getContext(), R.color.white));
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+
             }
 
             @Override
@@ -100,7 +140,12 @@ public class PowerCards extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+                {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    getWindow().setStatusBarColor(ContextCompat.getColor(v.getContext(), R.color.white));
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+
             }
         });
 
@@ -114,16 +159,52 @@ public class PowerCards extends AppCompatActivity {
 
     }
 
+    public void buyCard(View view)
+    {
+        String cardName = txt_bs_name.getText().toString();
+        switch (cardName)
+        {
+            case "YORKER": card_amount = appConstants.Yorker_price ;
+                break;
+            case "NO BALL" : card_amount = appConstants.noBall_price;
+                break;
+            case "RIGHT TO MATCH": card_amount = appConstants.rightToMatch_price;
+                break;
+            case "LEGEND CARDS": card_amount = appConstants.legendCards;
+                break;
+        }
+        int current_amount = currentAmount - card_amount;
+        DocumentReference documentReference = db.collection("Players").document(userEmail);
+        documentReference.update("Current_Amount",current_amount);
+        documentReference.update("numberOfCards",currentNumOfCards+1)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
     public void cardback(View view) {
         onBackPressed();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        final Intent cardtomain = new Intent(PowerCards.this,AfterRegistrationMainActivity.class);
-        startActivity(cardtomain);
-        finish();
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+        {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+        else
+        {
+            super.onBackPressed();
+            final Intent cardtomain = new Intent(PowerCards.this,AfterRegistrationMainActivity.class);
+            startActivity(cardtomain);
+            finish();
+        }
+
     }
 
     /*
