@@ -63,16 +63,6 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
             textdiscCard = (TextView) itemView.findViewById(R.id.carddescript);
             textpriceCard = (TextView) itemView.findViewById(R.id.cardprice);
 
-            //txtbsname = (TextView) bsView.findViewById(R.id.card_name_bs);
-            //txtbsdesc = (TextView) bsView.findViewById(R.id.card_desc_bs);
-            //txtbsvalue = (TextView) bsView.findViewById(R.id.card_pricevalue_bs);
-
-
-
-            //powerCards.bottonSheetLayout = (RelativeLayout) view2.findViewById(R.id.botton_sheet_layout_id);
-            //Toast.makeText(view.getContext(), powerCards.bottonSheetLayout.toString(), Toast.LENGTH_SHORT).show();
-           // powerCards.bottomSheetBehavior = BottomSheetBehavior.from(powerCards.bottonSheetLayout);
-
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
