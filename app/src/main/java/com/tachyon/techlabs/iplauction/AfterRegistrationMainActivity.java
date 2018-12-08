@@ -207,8 +207,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_cards:
+                Handler handlerCards = new Handler();
+                Runnable runnableCards = new Runnable() {
+                    @Override
+                    public void run() {
                 startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
                 finish();
+                    }
+                };
+                handlerCards.postDelayed(runnableCards,250);
                 break;
 
             case R.id.nav_share:

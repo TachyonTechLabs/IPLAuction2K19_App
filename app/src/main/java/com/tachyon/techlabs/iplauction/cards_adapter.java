@@ -32,7 +32,8 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
     private RelativeLayout bottonSheetLayout;
     private BottomSheetBehavior bottomSheetBehavior;
     View bgView;
-    PowerCards powerCards = new PowerCards();
+    TextView bs_name,bs_desc,bs_value;
+
 
     /*
     ArrayList<Power_Cards> cards;
@@ -45,7 +46,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView imageViewCard;
+        public ImageView imageViewCard,imgbs;
         public TextView textnamesCard;
         public TextView textdiscCard;
         public TextView textpriceCard;
@@ -53,7 +54,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
 
 
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView,View bsView) {
             super(itemView);
 
             cardView = (CardView) itemView.findViewById(R.id.cardviewid);
@@ -61,6 +62,12 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
             textnamesCard = (TextView) itemView.findViewById(R.id.cardname);
             textdiscCard = (TextView) itemView.findViewById(R.id.carddescript);
             textpriceCard = (TextView) itemView.findViewById(R.id.cardprice);
+
+            //txtbsname = (TextView) bsView.findViewById(R.id.card_name_bs);
+            //txtbsdesc = (TextView) bsView.findViewById(R.id.card_desc_bs);
+            //txtbsvalue = (TextView) bsView.findViewById(R.id.card_pricevalue_bs);
+
+
 
             //powerCards.bottonSheetLayout = (RelativeLayout) view2.findViewById(R.id.botton_sheet_layout_id);
             //Toast.makeText(view.getContext(), powerCards.bottonSheetLayout.toString(), Toast.LENGTH_SHORT).show();
@@ -74,17 +81,28 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
                     switch (position)
                     {
                         case 0 :
+                            bs_name.setText(names[position]);
+                            bs_desc.setText(disc[position]);
+                            bs_value.setText(R.string.yorker_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                            Toast.makeText(v.getContext(), "1000", Toast.LENGTH_SHORT).show();
                             break;
                         case 1 :
-                            Toast.makeText(v.getContext(), "2000", Toast.LENGTH_SHORT).show();
+                            bs_name.setText(names[position]);
+                            bs_desc.setText(disc[position]);
+                            bs_value.setText(R.string.no_ball_price);
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                         case 2 :
-                            Toast.makeText(v.getContext(), "3000", Toast.LENGTH_SHORT).show();
+                            bs_name.setText(names[position]);
+                            bs_desc.setText(disc[position]);
+                            bs_value.setText(R.string.right_to_match_price);
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                         case 3 :
-                            Toast.makeText(v.getContext(), "4000", Toast.LENGTH_SHORT).show();
+                            bs_name.setText(names[position]);
+                            bs_desc.setText(disc[position]);
+                            bs_value.setText(R.string.legend_cards_price);
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                     }
                 }
@@ -93,7 +111,9 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
         }
     }
 
-    public cards_adapter(Context context,int[]img, String[] disc, String[] name,String [] price,RelativeLayout bottomSheetLayout,BottomSheetBehavior bottomSheetBehavior)
+    public cards_adapter(Context context,int[]img, String[] disc, String[] name,String [] price,
+                         RelativeLayout bottomSheetLayout,BottomSheetBehavior bottomSheetBehavior,
+                         TextView bs_name,TextView bs_desc,TextView bs_value)
     {
         this.c = context;
         this.carsimgs = img;
@@ -102,6 +122,10 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
         this.price = price;
         this.bottonSheetLayout = bottomSheetLayout;
         this.bottomSheetBehavior = bottomSheetBehavior;
+        this.bs_name = bs_name;
+        this.bs_desc = bs_desc;
+        this.bs_value = bs_value;
+
     }
 
     /*
@@ -141,7 +165,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.powercard_item,parent,false);
         view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_bottom_sheet_buy,parent,false);
-        viewHolder = new ViewHolder(view);
+        viewHolder = new ViewHolder(view,view2);
         return viewHolder;
     }
 
