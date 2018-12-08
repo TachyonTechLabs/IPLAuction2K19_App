@@ -154,7 +154,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         });
     }
 
-    public void pushData(View view) {
+    public void qr_code(View view) {
         Intent qrcode=new Intent(this,qr_code_generator.class);
         qrcode.putExtra("Join Code",key);
         startActivity(qrcode);
