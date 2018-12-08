@@ -1,5 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,12 @@ import com.google.zxing.qrcode.encoder.QRCode;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class qr_code_generator extends AppCompatActivity {
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,WaitingForPlayersActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,5 +40,7 @@ public class qr_code_generator extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+
+
     }
 }
