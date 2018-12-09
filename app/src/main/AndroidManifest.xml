@@ -38,7 +38,8 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".opponents_data" />
         <activity android:name=".Room" />
-        <activity android:name=".activity_vertical_ntb"></activity>
+        <activity android:name=".activity_vertical_ntb" />
+        <activity android:name=".PLAYERS"></activity>
     </application>
 
 </manifest>

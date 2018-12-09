@@ -13,6 +13,9 @@
     <item
         android:id="@+id/nav_opponents"
         android:title="Opponennts" />
+    <item
+        android:id="@+id/nav_players"
+        android:title="Players" />
 
     <item android:title="Power Ups">
 

@@ -185,6 +185,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         switch (id)
         {
             case R.id.nav_home:
+            break;
+
+            case R.id.nav_players:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,PLAYERS.class));
+                finish();
                 break;
 
             case R.id.nav_profile:
