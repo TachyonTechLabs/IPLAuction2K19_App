@@ -18,7 +18,7 @@
         android:layout_marginBottom="7dp"
         card_view:cardElevation="5dp"
         card_view:cardBackgroundColor="@color/white"
-        android:layout_height="250dp"
+        android:layout_height="280dp"
         android:layout_width="match_parent">
 
         <RelativeLayout
@@ -72,12 +72,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Price:"
+                    android:text="Base Price:"
                     android:lines="1"
                     android:id="@+id/cardprice"
                     android:padding="10dp"
                     android:layout_alignParentLeft="true"
                     />
+
+                <Button
+                    android:id="@+id/card_pay_bs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cardprice"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/round_blue_btn"
+                    android:letterSpacing="0.5"
+                    android:text="BID"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
             </LinearLayout>
 
         </RelativeLayout>

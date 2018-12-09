@@ -28,6 +28,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,6 +58,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     NavigationView navigationView;
     Toolbar toolbarAppName;
     TextView textViewAppName;
+    private GoogleSignInClient mGoogleSignInClient;
     EditText user_entered_code;
     String appName;
     Map<String, Object> owner_details = new HashMap<>();
@@ -81,6 +85,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         sp=getSharedPreferences("joined_rooms",Context.MODE_PRIVATE);
         rooms=new StringBuilder();
         */
+
 
         if(Build.VERSION.SDK_INT>22)
         {
@@ -116,6 +121,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         // Access a Cloud Firestore instance from your Activity
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
         // Create a new user with a first and last name
@@ -241,6 +252,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_logout:
+                signOut();
+
                 break;
 
         }
@@ -248,6 +261,17 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(AfterRegistrationMainActivity.this, "signed out", Toast.LENGTH_SHORT).show();
+                       startActivity(new Intent(getApplicationContext(),MainActivity.class));                        // ...
+                    }
+                });
     }
 
     @Override

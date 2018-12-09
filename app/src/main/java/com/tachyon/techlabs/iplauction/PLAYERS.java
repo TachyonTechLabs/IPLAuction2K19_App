@@ -8,6 +8,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 
+import com.google.firebase.firestore.DocumentReference;
+
 public class PLAYERS extends AppCompatActivity {
     String [] players_name = {"Virat Kohli","MS Dhoni","Ravindra Jadeja"};
     int [] value = {10000000,10000000,2344553};
@@ -30,6 +32,10 @@ public class PLAYERS extends AppCompatActivity {
 
         Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein_slidedown);
         listView.startAnimation(animation);
+
+       /* DocumentReference messageRef = db
+                .collection("rooms").document("roomA")
+                .collection("messages").document("message1");*/
 
 
     }
