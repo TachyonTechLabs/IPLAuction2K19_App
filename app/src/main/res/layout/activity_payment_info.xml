@@ -103,7 +103,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:letterSpacing="0.1"
-        android:text="@string/dev1_name"
+        android:text="@string/dev2_name"
         android:textColor="@color/white"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/payment_card_id"
