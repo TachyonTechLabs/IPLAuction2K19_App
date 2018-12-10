@@ -38,9 +38,13 @@
     <string name="no_ball_price">₹ 20000</string>
     <string name="right_to_match_price">₹ 30000</string>
     <string name="legend_cards_price">₹ 40000</string>
+    <string name="my_orders">My Orders</string>
+    <string name="enterpin">Enter your pin number</string>
 
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>
+    <string name="dev1_name">PRANJAL CHAUDHARI</string>
+    <string name="dev2_name">ABHISHEK GUPTA</string>
 
     <string name="title_activity_power_cards">PowerCards</string>
     <string name="dummy_button">Dummy Button</string>

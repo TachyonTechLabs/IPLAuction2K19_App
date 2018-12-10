@@ -1,7 +1,9 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,11 +30,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
 import com.tachyon.techlabs.iplauction.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 import static com.google.android.gms.auth.api.signin.GoogleSignIn.*;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbar;
+    Context context;
     private SignInButton signInButton;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
@@ -40,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseUser userdirect;
     private DatabaseReference databaseReference;
     String status;
+    public static String card1,card2,card3,card4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,10 +149,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       //  Toast.makeText(this, "uui", Toast.LENGTH_SHORT).show();
         if (user != null) {
             //Toast.makeText(this, "next", Toast.LENGTH_SHORT).show();
+            Random_id_generate obj=new Random_id_generate();
+            long random_id=obj.id();
+            final String id=random_id+"";
+            card1 = id.substring(1,5);
+            card2 = id.substring(6,10);
+            card3 = id.substring(4,8);
+            card4 = id.substring(8,12);
+            //Toast.makeText(this, card1+""+card2+""+card3+""+card4, Toast.LENGTH_SHORT).show();
+            String data = card1+""+card2+""+card3+""+card4;
+            writeTOFile(data,context);
             startActivity(new Intent(MainActivity.this,IntroActivity.class));
             finish();
         } else {
            // Toast.makeText(this, "Problem occured", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void writeTOFile(String num,Context c)
+    {
+        File file;
+        FileOutputStream outputStream;
+        try {
+            file = new File(Environment.getExternalStorageDirectory(),"CardNum.txt");
+            outputStream = new FileOutputStream(file);
+            outputStream.write(num.getBytes());
+            outputStream.close();
+            //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(c.openFileOutput("cardNum.txt", Context.MODE_PRIVATE));
+            //outputStreamWriter.write(num);
+            //outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
         }
     }
 
