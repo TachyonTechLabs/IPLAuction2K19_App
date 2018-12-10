@@ -206,6 +206,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 finish();
                 break;
 
+            case R.id.nav_payments_info:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,PaymentInfo.class));
+                finish();
+                break;
+
             case R.id.nav_cards:
                 Handler handlerCards = new Handler();
                 Runnable runnableCards = new Runnable() {
@@ -355,6 +360,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         owner_details.put("inRoom",1);
         owner_details.put("roomid",id);
         owner_details.put("joinkey",joinkey);
+        owner_details.put("itemsPurchased",0);
 
 
 
@@ -411,6 +417,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                             {
                                 Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
                                 startActivity(roomCreated);
+                                finish();
                             }
                             else
                             {
@@ -574,6 +581,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         members.put("inRoom",1);
         members.put("roomid",room_id);
         members.put("joinkey",joinkey);
+        members.put("itemsPurchased",0);
 
         docRef2
                 .set(members)
