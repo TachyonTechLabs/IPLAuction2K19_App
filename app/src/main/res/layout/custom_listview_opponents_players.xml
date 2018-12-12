@@ -17,24 +17,24 @@
 
 
     <TextView
-        android:id="@+id/listtext"
+        android:id="@+id/playertext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Initial Balance"
         android:paddingLeft="20dp"
         android:textColor="@color/black"
         android:layout_toEndOf="@id/circulartext"
-        android:textSize="18sp"/>
+        android:textSize="16sp"/>
 
     <TextView
-        android:layout_toEndOf="@id/listtext"
+        android:layout_toEndOf="@id/playertext"
         android:id="@+id/listvalue"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="₹10000000"
-        android:gravity="center"
-        android:textColor="@color/primaryPurple"
+        android:textAlignment="textEnd"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
 

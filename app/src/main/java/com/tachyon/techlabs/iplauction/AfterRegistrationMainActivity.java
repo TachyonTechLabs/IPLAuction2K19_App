@@ -228,15 +228,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_cards:
-                Handler handlerCards = new Handler();
-                Runnable runnableCards = new Runnable() {
-                    @Override
-                    public void run() {
-                startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
-                finish();
-                    }
-                };
-                handlerCards.postDelayed(runnableCards,250);
+                storagepermission();
+
                 break;
 
             case R.id.nav_share:
@@ -802,7 +795,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+ /*   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -822,6 +815,43 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
             }
 
-        }}//end onRequestPermissionsResult
+        }}//end onRequestPermissionsResult*/
+
+    public void storagepermission()
+    {
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+        }
+         else if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+        }
+        else {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+
+        }
+    }
 
 }
