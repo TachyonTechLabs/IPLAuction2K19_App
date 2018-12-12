@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -133,6 +134,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
 
 
+
+
 // Add a new document with a generated ID
 
 
@@ -147,6 +150,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        if(isAppInstalled(this,"com.njlabs.showjava"))
+        Toast.makeText(this, "Unistall the Decompiler ", Toast.LENGTH_SHORT).show();
+         MediaPlayer mp = MediaPlayer.create(this,R.raw.zxing_beep);
+         mp.start();
+         mp.setLooping(true);
 
 
     }
@@ -851,6 +859,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             handlerCards.postDelayed(runnableCards,250);
 
 
+        }
+    }
+    public static boolean isAppInstalled(Context context, String packageName) {
+        try {
+            context.getPackageManager().getApplicationInfo(packageName, 0);
+            return true;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            return false;
         }
     }
 
