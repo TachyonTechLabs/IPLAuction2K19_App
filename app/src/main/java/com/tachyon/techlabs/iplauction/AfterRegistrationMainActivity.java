@@ -152,9 +152,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         updateUI(currentUser);
         if(isAppInstalled(this,"com.njlabs.showjava"))
         Toast.makeText(this, "Unistall the Decompiler ", Toast.LENGTH_SHORT).show();
-         MediaPlayer mp = MediaPlayer.create(this,R.raw.zxing_beep);
-         mp.start();
-         mp.setLooping(true);
+       //  MediaPlayer mp = MediaPlayer.create(this,R.raw.zxing_beep);
+         //mp.start();
+         //mp.setLooping(true);
 
 
     }
