@@ -269,7 +269,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         return true;
     }
 
-    private void signOut() {
+    public void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
