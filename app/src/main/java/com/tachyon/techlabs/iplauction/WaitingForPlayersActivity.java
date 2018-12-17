@@ -191,4 +191,10 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.no,null);
         builder.show();
     }
+
+    public void start_game(View view) {
+        startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
+        finish();
+
+    }
 }

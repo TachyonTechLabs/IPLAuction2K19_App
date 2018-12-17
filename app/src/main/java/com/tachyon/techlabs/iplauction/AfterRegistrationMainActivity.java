@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -133,6 +134,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
 
 
+
+
 // Add a new document with a generated ID
 
 
@@ -147,6 +150,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        if(isAppInstalled(this,"com.njlabs.showjava"))
+        Toast.makeText(this, "Unistall the Decompiler ", Toast.LENGTH_SHORT).show();
+       //  MediaPlayer mp = MediaPlayer.create(this,R.raw.zxing_beep);
+         //mp.start();
+         //mp.setLooping(true);
 
 
     }
@@ -228,15 +236,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_cards:
-                Handler handlerCards = new Handler();
-                Runnable runnableCards = new Runnable() {
-                    @Override
-                    public void run() {
-                startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
-                finish();
-                    }
-                };
-                handlerCards.postDelayed(runnableCards,250);
+                storagepermission();
+
                 break;
 
             case R.id.nav_share:
@@ -268,7 +269,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         return true;
     }
 
-    private void signOut() {
+    public void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -802,7 +803,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+ /*   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -822,6 +823,52 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
             }
 
-        }}//end onRequestPermissionsResult
+        }}//end onRequestPermissionsResult*/
+
+    public void storagepermission()
+    {
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+        }
+         else if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+        }
+        else {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(AfterRegistrationMainActivity.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+
+        }
+    }
+    public static boolean isAppInstalled(Context context, String packageName) {
+        try {
+            context.getPackageManager().getApplicationInfo(packageName, 0);
+            return true;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 
 }

@@ -39,13 +39,15 @@
         <activity android:name=".opponents_data" />
         <activity android:name=".Room" />
         <activity android:name=".activity_vertical_ntb" />
-        <activity android:name=".PLAYERS"></activity>
+        <activity android:name=".PLAYERS" />
         <activity android:name=".activity_vertical_ntb" />
-        <activity android:name=".PaymentInfo"></activity>
+        <activity android:name=".PaymentInfo" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".Start_Game"></activity>
     </application>
 
 </manifest>
