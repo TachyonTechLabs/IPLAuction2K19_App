@@ -50,6 +50,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
     String[] arr = {"Mumbai Indians", "CSK", "RCB"};
     List<String> array = new ArrayList<>();
     AfterRegistrationMainActivity obj;
+
     // List<String> teamlist_db = new ArrayList<>();
 
 
