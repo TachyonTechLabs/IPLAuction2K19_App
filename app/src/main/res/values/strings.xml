@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">IPL Auction 2K19</string>
+    <string name="app_name_1">IPL Auction</string>
+    <string name="app_name_2">2K19</string>
     <string name="app_intro_text">BID IT TO WIN IT</string>
     <string name="page1title">Make your own team</string>
     <string name="page1sub">Pick your own dream team by bidding for different players.</string>

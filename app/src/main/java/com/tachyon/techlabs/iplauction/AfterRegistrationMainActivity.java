@@ -76,6 +76,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     StringBuilder rooms;
     Set<String> set=new HashSet<>();
     ArrayList<String> joined_room_array=new ArrayList<>();
+    String id;
 
 
     @Override
@@ -90,17 +91,18 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         if(Build.VERSION.SDK_INT>22)
         {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.background_grey));
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            //getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.background_grey));
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-        appName = getString(R.string.app_name);
-        toolbarAppName = findViewById(R.id.app_toolbar);
-        textViewAppName = findViewById(R.id.app_toolbar_nametxt);
-        textViewAppName.setText(appName);
 
-        setSupportActionBar(toolbarAppName);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        appName = getString(R.string.app_name);
+        /*toolbarAppName = findViewById(R.id.app_toolbar);
+        textViewAppName = findViewById(R.id.app_toolbar_nametxt);
+        textViewAppName.setText(appName);*/
+
+        //setSupportActionBar(toolbarAppName);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
 
         myDB = new DataBaseHelper(this);
@@ -150,8 +152,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-        if(isAppInstalled(this,"com.njlabs.showjava"))
-        Toast.makeText(this, "Unistall the Decompiler ", Toast.LENGTH_SHORT).show();
+        //if(isAppInstalled(this,"com.njlabs.showjava"))
+        //Toast.makeText(this, "Unistall the Decompiler ", Toast.LENGTH_SHORT).show();
        //  MediaPlayer mp = MediaPlayer.create(this,R.raw.zxing_beep);
          //mp.start();
          //mp.setLooping(true);
@@ -343,6 +345,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         });
     }
 
+    /*
     public void about(View view)
     {
         startActivity(new Intent(this,About.class));
@@ -370,13 +373,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         });
     }
 
+    */
+
     public void create_room(View view) {
         Random_id_generate obj=new Random_id_generate();
         long random_id=obj.id();
-        final String id=random_id+"";
+        id=random_id+"";
         //textname.setText(id);
 
-        joinkey = id.substring(5);
+        joinkey = id.substring(4,12);
 
         owner_details.put("1",userEmail);
         owner_details.put("numberOfCards",0);
@@ -399,21 +404,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void v) {
-                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Log.w(TAG, "Error adding document", e);
-                    }
-                });
 
-        DocumentReference docRef2 = db.collection("Players").document(userEmail);
-        docRef2.set(owner_details)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void v) {
+                        setOwner();
                         // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })
@@ -425,47 +417,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 });
 
 
+        //if(checkAvailability(joinkey))
+       // {
 
-        keyvalues.put("roomId",id);
-        keyvalues.put("joinKey",joinkey);
-        keyvalues.put("owner",userEmail);
-        keyvalues.put("numOfMembers",1+"");
-
-        if(checkAvailability(joinkey))
-        {
-            db.collection("keyValues").document(joinkey)
-                    .set(keyvalues)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void v) {
-                            // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                            saveUsedKey();
-
-                            Boolean result = myDB.insertData(userEmail,"10000000","10000000","true","0","0","0","0","0","1",joinkey);
-
-                            if(result)
-                            {
-                                Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
-                                startActivity(roomCreated);
-                                finish();
-                            }
-                            else
-                            {
-                                Toast.makeText(AfterRegistrationMainActivity.this, "Data Insertion Failed", Toast.LENGTH_SHORT).show();
-                            }
-
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Log.w(TAG, "Error adding document", e);
-                        }
-                    });
-
-
-        }
+       // }
 
         /*
         SharedPreferences.Editor ed=sp.edit();
@@ -485,6 +440,68 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
+    public void setOwner()
+    {
+        DocumentReference docRef2 = db.collection("Players").document(userEmail);
+        docRef2.set(owner_details)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+
+                        setKey();
+                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
+
+    public void  setKey()
+    {
+        keyvalues.put("roomId",id);
+        keyvalues.put("joinKey",joinkey);
+        keyvalues.put("owner",userEmail);
+        keyvalues.put("numOfMembers",1+"");
+
+        db.collection("keyValues").document(joinkey)
+                .set(keyvalues)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        //saveUsedKey();
+
+                        //Boolean result = myDB.insertData(userEmail,"10000000","10000000","true","0","0","0","0","0","1",joinkey);
+
+                        //if(result)
+                        //{
+                        //Toast.makeText(AfterRegistrationMainActivity.this, "in", Toast.LENGTH_SHORT).show();
+                        //Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
+                        //startActivity(roomCreated);
+                        //finish();
+                        //}
+                        //else
+                        //{
+                        //    Toast.makeText(AfterRegistrationMainActivity.this, "Data Insertion Failed", Toast.LENGTH_SHORT).show();
+                        //}
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+
+    }
+
     public void saveUsedKey()
     {
         int number = Integer.parseInt(numUsed) + 1;
@@ -500,6 +517,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 });
     }
 
+    /*
     public boolean checkAvailability(String joinkey)
     {
         DocumentReference docRef = db.collection("keyValues").document("usedKey");
@@ -517,7 +535,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         return true;
     }
+    */
 
+    /*
     public void checkFurther(final String num)
     {
         DocumentReference docRef = db.collection("keyValues").document("usedKey");
@@ -549,6 +569,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             checkFurther(num+"");
         }
     }
+
+    */
 
     public void Join_Room(View view)  {
         //Dialog_fragment dialog=new Dialog_fragment();
@@ -727,7 +749,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         numofmem=numofmem+1;
 
         docRef.update("numOfMembers",numofmem+"");
-        joinme();
+        //joinme();
 
 
 
@@ -777,10 +799,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     {
 
         Boolean result = myDB.insertData(userEmail,"10000000","10000000","true","0","0","0","0","0","1",joinkey);
+
         if(result)
         {
             Intent roomCreated = new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class);
-            startActivity(roomCreated);
+            //startActivity(roomCreated);
             finish();
         }
 
