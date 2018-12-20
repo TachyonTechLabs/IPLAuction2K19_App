@@ -1,5 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,13 +30,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class PLAYERS extends AppCompatActivity {
+public class PLAYERS extends AppCompatActivity implements Animation.AnimationListener {
     ListView listView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     final List<String> list = new ArrayList<>();
     final List<Object> price = new ArrayList<>();
+    Animation animBlink;
     String  player;
 
 
@@ -49,6 +52,13 @@ public class PLAYERS extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         final int[] pric={500000,4000000,244423,23,233};
        // final int[] points={30,23,34,45,344};
+        animBlink = AnimationUtils.loadAnimation(this,R.anim.textblink);
+        animBlink.setAnimationListener(this);
+        TextView playerauction=findViewById(R.id.player_auction);
+        playerauction.setAnimation(animBlink);
+
+
+
 
 
 
@@ -64,9 +74,9 @@ public class PLAYERS extends AppCompatActivity {
                                                            if (d!=null)
                                                            {
                                                                List<String> list = (List<String>) d.get("PlayersName");
-                                                               for (String item : list) {
-                                                                   Log.d("playername", item);
-                                                               }
+                                              //                 for (String item : list) {
+                                                //                   Log.d("playername", item);
+                                                            //   }
                                                                List<Long> valuee = (List<Long>) d.get("PlayersPrice");
                                                                for (Long item : valuee) {
                                                                    Log.d("playerprice", item+"");
@@ -112,7 +122,7 @@ public class PLAYERS extends AppCompatActivity {
 
 
     listView=findViewById(R.id.listofallplayers);
-        listView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+       // listView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
 
 
@@ -142,5 +152,28 @@ public class PLAYERS extends AppCompatActivity {
             // Toast.makeText(PLAYERS.this, entry.getValue().toString(), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        if (animation == animBlink) {
+        }
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,WaitingForPlayersActivity.class));
     }
 }

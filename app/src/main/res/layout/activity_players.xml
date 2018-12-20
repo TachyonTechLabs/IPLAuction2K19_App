@@ -6,13 +6,14 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/mainbg"
     android:orientation="vertical"
     tools:context=".PLAYERS">
 
     <android.support.v7.widget.CardView
         android:id="@+id/ongoingplayer"
-        card_view:cardCornerRadius="5dp"
-        android:layout_marginTop="20dp"
+        card_view:cardCornerRadius="15dp"
+        android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="7dp"
@@ -49,6 +50,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Virat Kohli"
+                    android:typeface="serif"
+                    android:letterSpacing="0.3"
                     android:id="@+id/player_auction"
                     android:layout_marginTop="10dp"
                     android:padding="10dp"
@@ -100,24 +103,45 @@
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+
     <android.support.v7.widget.CardView
         android:id="@+id/listofplayers"
-        card_view:cardCornerRadius="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="7dp"
         card_view:cardElevation="5dp"
+        app:cardCornerRadius="15dp"
         card_view:cardBackgroundColor="@color/white"
         android:layout_below="@+id/ongoingplayer"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="My Players"
+            android:fontFamily="serif"
+            android:textStyle="bold"
+            android:lines="1"
+            android:id="@+id/myplayers_heading"
+            android:padding="10dp"
+            android:layout_alignParentLeft="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="45dp"
+
+            android:background="@color/dark_blue"
+            />
+
        <ListView
            android:id="@+id/listofallplayers"
            android:layout_width="match_parent"
            android:layout_alignParentStart="true"
-           android:layout_marginTop="5dp"
+           android:layout_marginTop="45dp"
            android:divider="@null"
            android:dividerHeight="0dp"
            android:layout_height="match_parent">

@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:text="₹10000000"
         android:textAlignment="textEnd"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
 
