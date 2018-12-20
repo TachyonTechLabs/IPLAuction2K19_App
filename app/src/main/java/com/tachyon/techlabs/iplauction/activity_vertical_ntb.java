@@ -76,31 +76,31 @@ public class activity_vertical_ntb extends AppCompatActivity {
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
-                        Color.parseColor(colors[0]))
+                        getResources().getDrawable(R.drawable.mumbai_indians),
+                        Color.parseColor(colors[8]))
                         .title("ic_first")
-                        .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
+                        .selectedIcon(getResources().getDrawable(R.drawable.mumbai_indians))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
-                        Color.parseColor(colors[1]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
+                        getResources().getDrawable(R.drawable.rcb),
+                        Color.parseColor(colors[8]))
+                        .selectedIcon(getResources().getDrawable(R.drawable.rcb))
                         .title("ic_second")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
-                        Color.parseColor(colors[2]))
+                        getResources().getDrawable(R.drawable.kkr),
+                        Color.parseColor(colors[8]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_third")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
+                        getResources().getDrawable(R.drawable.deccan_charges),
                         Color.parseColor(colors[3]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_fourth")
@@ -108,36 +108,29 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
-                        Color.parseColor(colors[4]))
+                        getResources().getDrawable(R.drawable.delhi_daredevils),
+                        Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_fifth")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
-                        Color.parseColor(colors[5]))
+                        getResources().getDrawable(R.drawable.kings11),
+                        Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_sixth")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
+                        getResources().getDrawable(R.drawable.kkr),
                         Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_seventh")
                         .build()
         );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ipl_logo),
-                        Color.parseColor(colors[7]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
-                        .title("ic_eighth")
-                        .build()
-        );
+
 
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 4);

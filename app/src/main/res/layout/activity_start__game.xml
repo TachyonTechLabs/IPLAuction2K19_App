@@ -5,9 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
-    android:background="@color/background_grey"
+    android:background="@color/ipl_logo_top"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
+
+    <ImageView
+        android:id="@+id/ipl_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="false"
+        android:src="@drawable/ipl_cropped" />
 
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,10 +26,16 @@
     tools:context=".Start_Game">
 
 
+
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:fontFamily="serif"
+        android:textSize="20sp"
         android:text="Select Your Team"/>
 
 
@@ -31,7 +45,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:divider="@drawable/googleg_disabled_color_18"
-        android:dividerHeight="3dp"/>
+        android:dividerHeight="3dp"
+        android:prompt="@string/app_name"
+        android:popupBackground="#8e8c8c"
+        android:background="@drawable/bg_round_rect"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
     <android.support.design.widget.NavigationView
