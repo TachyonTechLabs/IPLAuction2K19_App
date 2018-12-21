@@ -152,6 +152,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 list = new ArrayList<>();
                 for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    if(!document.getId().equals("CurrentPlayer"))
                     list.add(document.getId());
                 }
                 // Log.d(TAG, list.toString());
@@ -181,6 +182,10 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 db.collection(roomid).document(member).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        if(member.equals(boss_namee))
+                        {
+                            db.collection(roomid).document("CurrentPlayer").delete();
+                        }
 
                         DocumentReference updateRef = db.collection("Players").document(member);
                         updateRef.update("inRoom",0).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -188,8 +193,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 startActivity(new Intent(WaitingForPlayersActivity.this,AfterRegistrationMainActivity.class));
                                 finish();
-                                Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

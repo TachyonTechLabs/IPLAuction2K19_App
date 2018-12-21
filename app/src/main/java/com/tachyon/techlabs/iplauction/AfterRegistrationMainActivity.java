@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -67,6 +65,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
    // Map<String, Object> nummembers = new HashMap<>();
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
+    Map<String, Object> curr = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail,numUsed;
     String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
@@ -212,7 +211,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 startActivity(new Intent(AfterRegistrationMainActivity.this,PLAYERS.class));
                 finish();
                 break;
-
+            /*
+            case R.id.nav_ongoing:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,OngoingPlayer.class));
+                finish();
+                break;
+            */
             case R.id.nav_profile:
                 //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
                 Handler handler = new Handler();
@@ -472,6 +476,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void v) {
+
+
+                        setCurrentPlayer();
                         // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         //saveUsedKey();
 
@@ -500,6 +507,18 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 });
 
 
+    }
+
+    public void setCurrentPlayer()
+    {
+        curr.put("curr",1);
+        DocumentReference docRef = db.collection(id).document("CurrentPlayer");
+        docRef.set(curr).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
     }
 
     public void saveUsedKey()
