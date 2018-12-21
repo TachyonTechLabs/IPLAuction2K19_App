@@ -893,5 +893,4 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             return false;
         }
     }
-
 }
