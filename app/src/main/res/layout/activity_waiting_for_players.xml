@@ -12,7 +12,6 @@
         layout="@layout/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </include>
 
     <TextView
@@ -25,8 +24,16 @@
         android:text="@string/joining_code"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:onClick="qr_code"
         android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/barcode"
+        android:src="@drawable/barcode_scan"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="30dp"
+        android:onClick="qr_code"
+        android:layout_alignEnd="@+id/join_code"/>
 
     <TextView
         android:id="@+id/join_code_display"
