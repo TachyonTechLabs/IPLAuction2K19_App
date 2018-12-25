@@ -9,10 +9,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera2" />
 
-
-
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -45,15 +42,15 @@
         <activity android:name=".PLAYERS" />
         <activity android:name=".PaymentInfo" />
 
-
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Start_Game"></activity>
+        <activity android:name=".Start_Game" />
+        <activity android:name=".OngoingPlayer" />
+        <activity android:name=".AdminOngoingPlayer">
 
-
+        </activity>
     </application>
 
 </manifest>

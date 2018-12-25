@@ -43,6 +43,13 @@
     <string name="my_orders">My Orders</string>
     <string name="enterpin">Enter your pin number</string>
 
+    <string name="matches">Matches</string>
+    <string name="runs">Runs</string>
+    <string name="wickets">Wickets</string>
+    <string name="baseprice">Base Price</string>
+    <string name="currentbid">Current Bid</string>
+    <string name="availablebids">Available Bids</string>
+
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>
     <string name="dev1_name">PRANJAL CHAUDHARI</string>

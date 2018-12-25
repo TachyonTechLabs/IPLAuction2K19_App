@@ -20,7 +20,8 @@
                 android:id="@+id/app_toolbar_nametxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Text"
+                android:text="@string/placeholder"
+                android:layout_centerInParent="true"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/black" />

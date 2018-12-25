@@ -1,6 +1,5 @@
 package com.tachyon.techlabs.iplauction;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -13,7 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,8 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,7 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,6 +46,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
     String[] arr = {"Mumbai Indians", "CSK", "RCB"};
     List<String> array = new ArrayList<>();
     AfterRegistrationMainActivity obj;
+    String boss_name,roomid,key;
 
     // List<String> teamlist_db = new ArrayList<>();
 
@@ -84,6 +81,16 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
         array.add("Mumbai");
         array.add("CSK");
         spin = findViewById(R.id.team_listview);
+
+        DocumentReference docname = db.collection("Players").document(userEmail);
+        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                roomid = documentSnapshot.getString("roomid");
+                key = documentSnapshot.getString("joinkey");
+                getBossName();
+            }
+        });
 
 
 
@@ -270,5 +277,30 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
             finish();
             //System.exit(0);
         }
+    }
+
+    public void ongoing(View view) {
+        if(boss_name.equals(userEmail))
+        {
+            startActivity(new Intent(Start_Game.this,AdminOngoingPlayer.class));
+            finish();
+        }
+        else
+        {
+            startActivity(new Intent(Start_Game.this,OngoingPlayer.class));
+            finish();
+        }
+
+    }
+
+    public void getBossName()
+    {
+        DocumentReference doc = db.collection("keyValues").document(key);
+        doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                boss_name = documentSnapshot.getString("owner");
+            }
+        });
     }
 }

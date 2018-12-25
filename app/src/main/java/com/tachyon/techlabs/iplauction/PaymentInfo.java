@@ -95,7 +95,7 @@ public class PaymentInfo extends AppCompatActivity {
 
     public void readCardNum()
     {
-        File sdCard = Environment.getExternalStorageDirectory();
+        File sdCard = getCacheDir();
         File file = new File(sdCard,"CardNum.txt");
         stringBuilder = new StringBuilder();
 
@@ -115,6 +115,7 @@ public class PaymentInfo extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //cardnum1.setTextSize(getResources().getDimension(R.dimen.textsize));
         cardnum1.setText(stringBuilder.substring(0,4));
         cardnum2.setText(stringBuilder.substring(4,8));
         cardnum3.setText(stringBuilder.substring(8,12));

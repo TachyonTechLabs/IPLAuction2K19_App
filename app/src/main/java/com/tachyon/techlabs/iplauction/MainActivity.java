@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         File file;
         FileOutputStream outputStream;
         try {
-            file = new File(Environment.getExternalStorageDirectory(),"CardNum.txt");
+            file = new File(getCacheDir(),"CardNum.txt");
             outputStream = new FileOutputStream(file);
             outputStream.write(num.getBytes());
             outputStream.close();
