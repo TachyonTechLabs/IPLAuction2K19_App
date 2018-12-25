@@ -838,7 +838,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             Intent qr_scanner = new Intent(AfterRegistrationMainActivity.this,qrcode_scanner.class);
             startActivity(qr_scanner);
             finish();
-            
+
         }
 
 
