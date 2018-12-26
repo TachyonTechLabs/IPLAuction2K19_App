@@ -43,7 +43,7 @@ public class PaymentInfo extends AppCompatActivity {
     ArrayList<Integer> val = new ArrayList<>();
     int index,currentIndex;
     MainActivity mainActivity = new MainActivity();
-    public TextView cardnum1,cardnum2,cardnum3,cardnum4;
+    public TextView cardnum1,cardnum2,cardnum3,cardnum4,cardholder;
     public StringBuilder stringBuilder;
 
     @Override
@@ -60,6 +60,9 @@ public class PaymentInfo extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         listViewHistory = findViewById(R.id.orders_history_listview);
+        cardholder = findViewById(R.id.card_holder_name);
+
+        cardholder.setText(Objects.requireNonNull(currentUser.getDisplayName()).toUpperCase());
 
 
         cardnum1 = findViewById(R.id.card_num_1);

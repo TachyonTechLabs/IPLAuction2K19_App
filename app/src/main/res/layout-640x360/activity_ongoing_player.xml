@@ -47,7 +47,7 @@
         android:fontFamily="@font/roboto"
         android:text="TextView"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/include2" />
 
@@ -60,7 +60,7 @@
         android:fontFamily="@font/roboto"
         android:text="TextView"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/name1" />
 
@@ -83,11 +83,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto"
         android:text="@string/matches"
         android:textColor="@color/textgrey"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
@@ -100,7 +100,7 @@
         android:fontFamily="@font/roboto"
         android:text="@string/runs"
         android:textColor="@color/textgrey"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
         app:layout_constraintEnd_toStartOf="@+id/textView7"
         app:layout_constraintStart_toEndOf="@+id/textView4" />
@@ -113,7 +113,7 @@
         android:fontFamily="@font/roboto"
         android:text="@string/wickets"
         android:textColor="@color/textgrey"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -123,10 +123,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto"
         android:text="1"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -137,10 +138,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto"
         android:text="1"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintEnd_toStartOf="@+id/wicketstext"
         app:layout_constraintStart_toEndOf="@+id/matchtext"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -151,10 +153,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:fontFamily="@font/roboto"
         android:text="1"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -163,12 +166,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="9dp"
         android:fontFamily="@font/roboto"
         android:text="@string/baseprice"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/runstext" />
@@ -183,7 +186,7 @@
         android:fontFamily="@font/roboto"
         android:text="₹ 20000000"
         android:textColor="@color/purpleprice"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -198,7 +201,7 @@
         android:fontFamily="@font/roboto"
         android:text="₹ 20000000"
         android:textColor="@color/purpleprice"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
@@ -213,7 +216,7 @@
         android:fontFamily="@font/roboto"
         android:text="@string/currentbid"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/basepricetext" />
@@ -224,7 +227,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/roboto"
         android:text="@string/availablebids"
         android:textColor="@color/black"
@@ -279,7 +282,7 @@
         android:fontFamily="@font/roboto"
         android:text="+ 2 Cr"
         android:textColor="@color/darkblueinside"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
@@ -292,7 +295,7 @@
         android:fontFamily="@font/roboto"
         android:text="+ 5 Cr"
         android:textColor="@color/darkyellowinside"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
@@ -305,7 +308,7 @@
         android:fontFamily="@font/roboto"
         android:text="+ 7 Cr"
         android:textColor="@color/darkgreeninside"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="@+id/imageView6"
         app:layout_constraintStart_toStartOf="@+id/imageView6"
@@ -320,7 +323,7 @@
         android:fontFamily="@font/roboto"
         android:text="@string/my_team"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="@dimen/dimen360x640"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -839,7 +839,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             startActivity(qr_scanner);
             finish();
 
-
         }
 
 
