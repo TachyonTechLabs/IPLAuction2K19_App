@@ -13,17 +13,20 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.Result;
 
 public class qrcode_scanner extends AppCompatActivity {
     private CodeScanner mCodeScanner;
     AfterRegistrationMainActivity obj=new AfterRegistrationMainActivity();
+    String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_scanner);
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
+        userEmail= FirebaseAuth.getInstance().getCurrentUser().getEmail();
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
@@ -34,7 +37,12 @@ public class qrcode_scanner extends AppCompatActivity {
                     public void run() {
 
                         String code_qrscan=result.getText().toString();
-                        obj.room_join_function(code_qrscan);
+                        if(code_qrscan.matches(""))
+                        {
+                            Toast.makeText(obj, "Qr Code Undetected", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {obj.room_join_function(code_qrscan,userEmail);}
                         Toast.makeText(qrcode_scanner.this, result.getText(), Toast.LENGTH_SHORT).show();
 
                     }

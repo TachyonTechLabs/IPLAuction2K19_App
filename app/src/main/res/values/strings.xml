@@ -63,4 +63,8 @@
     <string name="app_description">IPL Auction App Description</string>
     <string name="app_copyright"> © 2018 Sardar Patel Institute Of Technology</string>
     <string name="app_license">Licensed under MIT License</string>
+
+
+
+    <string name="scan_qr_code">Ask the other teams to scan \n QR code to join your room</string>
 </resources>
