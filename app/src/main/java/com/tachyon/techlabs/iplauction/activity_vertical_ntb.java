@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ public class activity_vertical_ntb extends AppCompatActivity {
     private List<String> playername=new  ArrayList<>();
     private List<Long> playervalue=new ArrayList<>();
     private List<Integer> points=new ArrayList<>();
-    ProgressBar pg;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,35 +57,6 @@ public class activity_vertical_ntb extends AppCompatActivity {
                 final View view = LayoutInflater.from(
                         getBaseContext()).inflate(R.layout.activity_opponent, null, false);
 
-                ImageView team_logo=view.findViewById(R.id.team_logo);
-                pg=view.findViewById(R.id.pg);
-                pg.setVisibility(View.VISIBLE);
-                switch (position)
-                {
-                    case 0: team_logo.setImageDrawable(getResources().getDrawable(R.drawable.mumbai_indians_min));
-                        pg.setVisibility(View.GONE);
-                            break;
-                    case 1:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.rcb_min));
-                        pg.setVisibility(View.GONE);
-                        break;
-                    case 2:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.mumbai_indians_min));
-                        pg.setVisibility(View.GONE);
-                        break;
-                    case 3:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.deccan_charges_min));
-                        pg.setVisibility(View.GONE);
-                        break;
-                    case 4:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.delhi_daredevils_min));
-                        pg.setVisibility(View.GONE);
-                        break;
-                    case 5:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.kkr_min));
-                        pg.setVisibility(View.GONE);
-                        break;
-
-                        default:pg.setVisibility(View.GONE);
-                            break;
-                }
-
-
                 ListView listView = view.findViewById(R.id.opponents_listview);
                 opponents_team_playerslist_adapter opponents_team_playerslist_adapter = new opponents_team_playerslist_adapter(getApplicationContext(),playername,playervalue,points);
                 listView.setAdapter(opponents_team_playerslist_adapter);
@@ -108,23 +76,23 @@ public class activity_vertical_ntb extends AppCompatActivity {
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.mumbai_indians_min),
+                        getResources().getDrawable(R.drawable.mumbai_indians),
                         Color.parseColor(colors[8]))
                         .title("ic_first")
-                        .selectedIcon(getResources().getDrawable(R.drawable.mumbai_indians_min))
+                        .selectedIcon(getResources().getDrawable(R.drawable.mumbai_indians))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.rcb),
                         Color.parseColor(colors[8]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.rcb_min))
+                        .selectedIcon(getResources().getDrawable(R.drawable.rcb))
                         .title("ic_second")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.kkr_min),
+                        getResources().getDrawable(R.drawable.kkr),
                         Color.parseColor(colors[8]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_third")
@@ -132,7 +100,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.deccan_charges_min),
+                        getResources().getDrawable(R.drawable.deccan_charges),
                         Color.parseColor(colors[3]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_fourth")
@@ -140,7 +108,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.delhi_daredevils_min),
+                        getResources().getDrawable(R.drawable.delhi_daredevils),
                         Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_fifth")
@@ -148,7 +116,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.kings11_min),
+                        getResources().getDrawable(R.drawable.kings11),
                         Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_sixth")
@@ -156,7 +124,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.kkr_min),
+                        getResources().getDrawable(R.drawable.kkr),
                         Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_seventh")

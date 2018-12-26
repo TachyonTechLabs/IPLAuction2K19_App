@@ -616,7 +616,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                             Toast.makeText(getApplicationContext(),"Enter A Valid Code",Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            room_join_function(user_joincode,userEmail);
+                            room_join_function(user_joincode);
                         }
 
                         dialog.cancel();
@@ -635,7 +635,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     }
 
 
-    public void enterRoom(String room_id,String joinkey,String userEmail)
+    public void enterRoom(String room_id,String joinkey)
     {
         DocumentReference docRef2 = db.collection(room_id).document(userEmail);
         DocumentReference docRef = db.collection("Players").document(userEmail);
@@ -721,7 +721,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
 
     }
-    public void room_join_function(String user_joincode, final String userEmail)
+    public void room_join_function(String user_joincode)
     {
         DocumentReference docRef = db.collection("keyValues").document(user_joincode);
                        /* docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -748,7 +748,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                         numOfMembers = document.getString("numOfMembers");
                         owner = document.getString("owner");
                         joinkey = document.getString("joinKey");
-                        enterRoom(roomID,joinkey,userEmail);
+                        enterRoom(roomID,joinkey);
                     } else {
                         //Log.d(TAG, "No such document");
                     }
