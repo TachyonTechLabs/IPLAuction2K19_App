@@ -1,5 +1,7 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -167,6 +169,11 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 String teamname=(String) parent.getItemAtPosition(position);
 
                 if(position>0) {
+
+
+
+
+
                     list.remove(position);
                     docRef.update("Teams", list);
 
@@ -188,7 +195,31 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
             }
         });
     }
+/*  public void DialogBuilder(String teamname,List<String> list,int position)
+  {
 
+
+      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+      builder.setTitle("Confirm Team");
+      builder.setMessage("Are You Sure?");
+      builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+              list.remove(position);
+              docRef.update("Teams", list);
+
+              Toast.makeText(Start_Game.this, "Your team name is"+parent.getItemIdAtPosition(position), Toast.LENGTH_SHORT).show();
+              DocumentReference documentReference = db.collection("Players").document(userEmail);
+              documentReference.update("Team Name",teamname);
+
+
+
+          }
+      });
+      builder.setNegativeButton(R.string.no,null);
+      builder.show();
+
+  }*/
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
