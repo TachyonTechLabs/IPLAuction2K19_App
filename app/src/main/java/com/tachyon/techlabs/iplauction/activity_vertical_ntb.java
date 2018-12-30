@@ -74,13 +74,13 @@ public class activity_vertical_ntb extends AppCompatActivity {
                     case 2:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.mumbai_indians_min));
                         pg.setVisibility(View.GONE);
                         break;
-                    case 3:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.deccan_charges_min));
+                    case 3:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.deccan_charges));
                         pg.setVisibility(View.GONE);
                         break;
-                    case 4:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.delhi_daredevils_min));
+                    case 4:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.delhi_daredevils));
                         pg.setVisibility(View.GONE);
                         break;
-                    case 5:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.kkr_min));
+                    case 5:team_logo.setImageDrawable(getResources().getDrawable(R.drawable.kkr));
                         pg.setVisibility(View.GONE);
                         break;
 
@@ -124,7 +124,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.kkr_min),
+                        getResources().getDrawable(R.drawable.kkr),
                         Color.parseColor(colors[8]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_third")
@@ -132,7 +132,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.deccan_charges_min),
+                        getResources().getDrawable(R.drawable.deccan_charges),
                         Color.parseColor(colors[3]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_fourth")
@@ -140,7 +140,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.delhi_daredevils_min),
+                        getResources().getDrawable(R.drawable.delhi_daredevils),
                         Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_fifth")
@@ -156,7 +156,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.kkr_min),
+                        getResources().getDrawable(R.drawable.kkr),
                         Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ipl_logo))
                         .title("ic_seventh")
