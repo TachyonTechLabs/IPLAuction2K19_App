@@ -258,6 +258,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.nav_developer:
+                startActivity(new Intent(AfterRegistrationMainActivity.this,about_developers.class));
+                finish();
                 break;
 
             case R.id.nav_about_app:
