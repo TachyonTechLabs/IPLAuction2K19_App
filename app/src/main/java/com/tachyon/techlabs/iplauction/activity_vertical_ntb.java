@@ -60,7 +60,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
                 final View view = LayoutInflater.from(
                         getBaseContext()).inflate(R.layout.activity_opponent, null, false);
 
-                ImageView team_logo=view.findViewById(R.id.team_logo);
+                ImageView team_logo = view.findViewById(R.id.team_logo);
                 pg=view.findViewById(R.id.pg);
                 pg.setVisibility(View.VISIBLE);
                 switch (position)
