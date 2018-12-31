@@ -204,7 +204,7 @@ public class PowerCards extends AppCompatActivity {
 
     public void readCardNum()
     {
-        File sdCard = getCacheDir();
+        File sdCard = Environment.getExternalStorageDirectory();
         File file = new File(sdCard,"CardNum.txt");
         stringBuilder = new StringBuilder();
 
