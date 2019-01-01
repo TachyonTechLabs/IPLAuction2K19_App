@@ -60,12 +60,14 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     private GoogleSignInClient mGoogleSignInClient;
     EditText user_entered_code;
     String appName;
+    boolean game_start;
     Map<String, Object> owner_details = new HashMap<>();
     Map<String, Object> members = new HashMap<>();
    // Map<String, Object> nummembers = new HashMap<>();
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
     Map<String, Object> curr = new HashMap<>();
+    Map<String, Boolean> gamestart = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail,numUsed;
     String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
@@ -403,8 +405,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("joinkey",joinkey);
         owner_details.put("itemsPurchased",0);
 
+        gamestart.put("game start",false);
 
 
+        DocumentReference startgame=db.collection(id).document("START GAME");
+        startgame.set(gamestart);
         DocumentReference docRef = db.collection(id).document(userEmail);
              docRef.set(owner_details)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
