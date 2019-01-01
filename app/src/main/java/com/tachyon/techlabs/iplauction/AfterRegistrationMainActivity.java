@@ -50,7 +50,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-public class AfterRegistrationMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AfterRegistrationMainActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -106,19 +106,19 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
         myDB = new DataBaseHelper(this);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+   /*     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
+        mToggle.syncState();*/
 
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+       // navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        View headerView = navigationView.getHeaderView(0);
+       // View headerView = navigationView.getHeaderView(0);
 
         //String name = getIntent().getExtras().getString("name");
-        navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.setNavigationItemSelectedListener(this);
 
 
         // Access a Cloud Firestore instance from your Activity
@@ -188,7 +188,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         startActivity(log);
     }
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item))
         {
@@ -196,7 +196,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 
+   /*
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -211,12 +213,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 startActivity(new Intent(AfterRegistrationMainActivity.this,PLAYERS.class));
                 finish();
                 break;
-            /*
-            case R.id.nav_ongoing:
-                startActivity(new Intent(AfterRegistrationMainActivity.this,OngoingPlayer.class));
-                finish();
-                break;
-            */
+
             case R.id.nav_profile:
                 //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
                 Handler handler = new Handler();
@@ -276,6 +273,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    */
 
     public void signOut() {
         mGoogleSignInClient.signOut()
@@ -288,7 +286,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 });
     }
 
-    @Override
+
+  /*  @Override
     public void onBackPressed() {
         if(this.mDrawerLayout.isDrawerOpen(GravityCompat.START))
         {
@@ -308,6 +307,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         }
 
     }
+    */
 
    public void pushData(View view) {
 
