@@ -1,10 +1,13 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -149,6 +152,8 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
 
 
 
+
+
   
 
     public void update(final List<String> list)
@@ -228,7 +233,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 break;
 
             case R.id.nav_cards:
-                obj.storagepermission();
+                storagepermission();
 
                 break;
 
@@ -244,6 +249,9 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 break;
 
             case R.id.nav_developer:
+                startActivity(new Intent(this,about_developers.class));
+                finish();
+
                 break;
 
             case R.id.nav_about_app:
@@ -264,7 +272,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+      //  super.onBackPressed();
         if(this.mDrawerLayout.isDrawerOpen(GravityCompat.START))
         {
             this.mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -272,7 +280,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
         else
         {
             onResume();
-            final Intent cardtomain = new Intent(this,AfterRegistrationMainActivity.class);
+            final Intent cardtomain = new Intent(this,WaitingForPlayersActivity.class);
             startActivity(cardtomain);
             finish();
             //System.exit(0);
@@ -302,5 +310,42 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 boss_name = documentSnapshot.getString("owner");
             }
         });
+    }
+
+    public void storagepermission()
+    {
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+        }
+        else if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(Start_Game.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+        }
+        else {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(Start_Game.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+
+        }
     }
 }
