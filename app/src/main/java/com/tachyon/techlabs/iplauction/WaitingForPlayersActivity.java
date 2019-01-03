@@ -53,7 +53,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     String [] players;
     Button startgame;
-    boolean value=false;
+    int value;
+
 
 
     @Override
@@ -208,8 +209,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (documentSnapshot != null) {
 
-                    value=documentSnapshot.getBoolean("game start");
-                    if(value)
+                    value = documentSnapshot.getLong("start").intValue();
+                    if(value==1)
                     {
                         startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
                     }
@@ -265,7 +266,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     public void start_game(View view) {
         startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
         DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
-        start_game.update("game start",true);
+        start_game.update("start",1);
 
         finish();
 

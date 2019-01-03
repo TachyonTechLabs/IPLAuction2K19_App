@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -67,7 +69,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
     Map<String, Object> curr = new HashMap<>();
-    Map<String, Boolean> gamestart = new HashMap<>();
+    Map<String, Object> gamestart = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail,numUsed;
     String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
@@ -77,7 +79,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     StringBuilder rooms;
     Set<String> set=new HashSet<>();
     ArrayList<String> joined_room_array=new ArrayList<>();
-    String id;
+    String id,roomid;
+    int value;
 
 
     @Override
@@ -106,7 +109,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
 
-        myDB = new DataBaseHelper(this);
+        //myDB = new DataBaseHelper(this);
 
    /*     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
@@ -166,14 +169,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     public void updateUI(FirebaseUser user) {
         if (user != null) {
 
-            userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            userEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
             DocumentReference docRef = db.collection("Players").document(userEmail);
             docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                    if(documentSnapshot.exists())
+                    int  in = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("inRoom")).intValue();
+                    if(in==1)
                     {
-                        checkIfInRoom();
+                        checkIfStart();
                     }
                 }
             });
@@ -289,14 +293,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     }
 
 
-  /*  @Override
+    @Override
     public void onBackPressed() {
-        if(this.mDrawerLayout.isDrawerOpen(GravityCompat.START))
-        {
-            this.mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
             onResume();
             Intent lastActivity = new Intent(Intent.ACTION_MAIN);
             lastActivity.addCategory(Intent.CATEGORY_HOME);
@@ -306,10 +304,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
             startActivity(lastActivity);
             finish();
             //System.exit(0);
-        }
 
     }
-    */
+
 
    public void pushData(View view) {
 
@@ -336,6 +333,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
     }
 
+    /*
     public void checkIfInRoom()
     {
         //Toast.makeText(this, "checkinroom", Toast.LENGTH_SHORT).show();
@@ -343,11 +341,61 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                int  in = documentSnapshot.getLong("inRoom").intValue();
+                int  in = Objects.requireNonNull(documentSnapshot.getLong("inRoom")).intValue();
                 if(in==1)
                 {
-                    startActivity(new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class));
-                    finish();
+                    checkIfStart();
+                }
+            }
+        });
+    }
+    */
+
+    public void checkIfStart()
+    {
+
+        DocumentReference docname = db.collection("Players").document(userEmail);
+
+        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                roomid = documentSnapshot.getString("roomid");
+
+                setDisplay();
+
+            }
+        });
+
+    }
+
+    public void setDisplay()
+    {
+        DocumentReference start_game = db.collection(roomid).document("START GAME");
+
+        start_game.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if (documentSnapshot != null) {
+
+                    try{
+                        value = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("start")).intValue();
+                        if(value == 1)
+                        {
+                            //startActivity(new Intent(AfterRegistrationMainActivity.this,Start_Game.class));
+                            //finish();
+                        }
+                        else
+                        {
+                            startActivity(new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class));
+                            finish();
+                        }
+                    }
+                    catch (Exception e1)
+                    {
+                        e1.printStackTrace();
+                    }
+
+
                 }
             }
         });
@@ -405,7 +453,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("joinkey",joinkey);
         owner_details.put("itemsPurchased",0);
 
-        gamestart.put("game start",false);
+        gamestart.put("start",0);
 
 
         DocumentReference startgame=db.collection(id).document("START GAME");
