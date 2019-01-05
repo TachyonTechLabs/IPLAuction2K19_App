@@ -1,6 +1,8 @@
 package com.tachyon.techlabs.iplauction;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -31,7 +33,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -50,6 +54,8 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
     List<String> array = new ArrayList<>();
     AfterRegistrationMainActivity obj;
     String boss_name,roomid,key;
+    String id;
+    Map<String, Object> curr = new HashMap<>();
 
     // List<String> teamlist_db = new ArrayList<>();
 
@@ -279,25 +285,68 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
         }
         else
         {
-            onResume();
-            final Intent cardtomain = new Intent(this,WaitingForPlayersActivity.class);
-            startActivity(cardtomain);
-            finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Exit Game?");
+            builder.setMessage("Do you really wish to leave the room and exit?");
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    db.collection(roomid).document(userEmail).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            if(userEmail.equals(boss_name))
+                            {
+                                db.collection(roomid).document("CurrentPlayer").delete();
+                            }
+
+                            DocumentReference updateRef = db.collection("Players").document(userEmail);
+                            updateRef.update("inRoom",0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    startActivity(new Intent(Start_Game.this,AfterRegistrationMainActivity.class));
+                                    finish();
+                                    //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+            builder.setNegativeButton(R.string.no,null);
+            builder.show();
             //System.exit(0);
         }
     }
 
     public void ongoing(View view) {
-        if(boss_name.equals(userEmail))
-        {
-            startActivity(new Intent(Start_Game.this,AdminOngoingPlayer.class));
-            finish();
-        }
-        else
-        {
-            startActivity(new Intent(Start_Game.this,OngoingPlayer.class));
-            finish();
-        }
+        curr.put("curr",1);
+        DocumentReference documentReference = db.collection(roomid).document("CurrentPlayer");
+        documentReference.set(curr).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                if(boss_name.equals(userEmail))
+                {
+                    Intent admin = new Intent(Start_Game.this,AdminOngoingPlayer.class);
+                    admin.putExtra("roomid",roomid);
+                    admin.putExtra("userEmail",userEmail);
+                    admin.putExtra("boss_name",boss_name);
+                    startActivity(admin);
+                    finish();
+                }
+                else
+                {
+                    Intent member = new Intent(Start_Game.this,OngoingPlayer.class);
+                    member.putExtra("roomid",roomid);
+                    member.putExtra("userEmail",userEmail);
+                    member.putExtra("boss_name",boss_name);
+                    startActivity(member);
+                    finish();
+                }
+            }
+        });
+
 
     }
 
