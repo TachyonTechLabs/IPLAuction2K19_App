@@ -2,11 +2,14 @@ package com.tachyon.techlabs.iplauction;
 
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,14 +22,20 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -41,16 +50,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-public class AfterRegistrationMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AfterRegistrationMainActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -60,12 +71,14 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     private GoogleSignInClient mGoogleSignInClient;
     EditText user_entered_code;
     String appName;
+    boolean game_start;
     Map<String, Object> owner_details = new HashMap<>();
     Map<String, Object> members = new HashMap<>();
    // Map<String, Object> nummembers = new HashMap<>();
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
     Map<String, Object> curr = new HashMap<>();
+    //Map<String, Object> gamestart = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail,numUsed;
     String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
@@ -75,13 +88,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     StringBuilder rooms;
     Set<String> set=new HashSet<>();
     ArrayList<String> joined_room_array=new ArrayList<>();
-    String id;
+    String id,roomid;
+    int value;
+    int flag=0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_after_registration_main);
+
         /*
         sp=getSharedPreferences("joined_rooms",Context.MODE_PRIVATE);
         rooms=new StringBuilder();
@@ -104,21 +119,21 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
 
-        myDB = new DataBaseHelper(this);
+        //myDB = new DataBaseHelper(this);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+   /*     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
+        mToggle.syncState();*/
 
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+       // navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        View headerView = navigationView.getHeaderView(0);
+       // View headerView = navigationView.getHeaderView(0);
 
         //String name = getIntent().getExtras().getString("name");
-        navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.setNavigationItemSelectedListener(this);
 
 
         // Access a Cloud Firestore instance from your Activity
@@ -132,8 +147,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
 
         // Create a new user with a first and last name
-
-
 
 
 
@@ -163,15 +176,17 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     public void updateUI(FirebaseUser user) {
         if (user != null) {
+            setContentView(R.layout.activity_after_registration_main);
 
-            userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            userEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
             DocumentReference docRef = db.collection("Players").document(userEmail);
             docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                    if(documentSnapshot.exists())
+                    int  in = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("inRoom")).intValue();
+                    if(in==1)
                     {
-                        checkIfInRoom();
+                        checkIfStart();
                     }
                 }
             });
@@ -188,7 +203,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         startActivity(log);
     }
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item))
         {
@@ -196,7 +211,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 
+   /*
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -211,12 +228,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 startActivity(new Intent(AfterRegistrationMainActivity.this,PLAYERS.class));
                 finish();
                 break;
-            /*
-            case R.id.nav_ongoing:
-                startActivity(new Intent(AfterRegistrationMainActivity.this,OngoingPlayer.class));
-                finish();
-                break;
-            */
+
             case R.id.nav_profile:
                 //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
                 Handler handler = new Handler();
@@ -276,6 +288,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    */
 
     public void signOut() {
         mGoogleSignInClient.signOut()
@@ -288,14 +301,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
                 });
     }
 
+
     @Override
     public void onBackPressed() {
-        if(this.mDrawerLayout.isDrawerOpen(GravityCompat.START))
-        {
-            this.mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
             onResume();
             Intent lastActivity = new Intent(Intent.ACTION_MAIN);
             lastActivity.addCategory(Intent.CATEGORY_HOME);
@@ -305,9 +313,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
             startActivity(lastActivity);
             finish();
             //System.exit(0);
-        }
 
     }
+
 
    public void pushData(View view) {
 
@@ -334,6 +342,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
 
     }
 
+    /*
     public void checkIfInRoom()
     {
         //Toast.makeText(this, "checkinroom", Toast.LENGTH_SHORT).show();
@@ -341,14 +350,64 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                int  in = documentSnapshot.getLong("inRoom").intValue();
+                int  in = Objects.requireNonNull(documentSnapshot.getLong("inRoom")).intValue();
                 if(in==1)
+                {
+                    checkIfStart();
+                }
+            }
+        });
+    }
+    */
+
+    public void checkIfStart()
+    {
+
+        DocumentReference docname = db.collection("Players").document(userEmail);
+
+        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                roomid = documentSnapshot.getString("roomid");
+
+                setDisplay();
+
+            }
+        });
+
+    }
+
+    public void setDisplay()
+    {
+        DocumentReference start_game = db.collection(roomid).document("START GAME");
+
+        start_game.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if (Objects.requireNonNull(documentSnapshot).exists()) {
+                    Log.d("startgame","in if");
+
+                    try{
+                        value = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("start")).intValue();
+                        if(value == 1)
+                        {
+                            startActivity(new Intent(AfterRegistrationMainActivity.this,Start_Game.class));
+                        }
+                    }
+                    catch (Exception e1)
+                    {
+                        e1.printStackTrace();
+                    }
+                }
+                else
                 {
                     startActivity(new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class));
                     finish();
                 }
+
             }
         });
+
     }
 
     /*
@@ -382,6 +441,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
     */
 
     public void create_room(View view) {
+        final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
+        lyt_progress.setVisibility(View.VISIBLE);
+        //lyt_progress.setAlpha(1.0f);
+
         Random_id_generate obj=new Random_id_generate();
         long random_id=obj.id();
         id=random_id+"";
@@ -403,8 +466,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         owner_details.put("joinkey",joinkey);
         owner_details.put("itemsPurchased",0);
 
+        //gamestart.put("start",0);
 
 
+        //DocumentReference startgame=db.collection(id).document("START GAME");
+        //startgame.set(gamestart);
         DocumentReference docRef = db.collection(id).document(userEmail);
              docRef.set(owner_details)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -445,6 +511,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         }*/
 
     }
+
 
     public void setOwner()
     {
@@ -518,7 +585,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         docRef.set(curr).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
+                //checkIfStart();
             }
         });
     }
@@ -874,9 +941,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity implements 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_DENIED)
         {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+            ActivityCompat.requestPermissions(AfterRegistrationMainActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
         }
-         else if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+         else if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED)
         {
             Handler handlerCards = new Handler();

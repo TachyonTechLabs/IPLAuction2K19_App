@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -32,9 +33,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -51,11 +54,17 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     List<String> list;
     ArrayAdapter<String> adapter;
     String [] players;
+    Button startgame;
+    int value;
+    Map<String, Object> gamestart = new HashMap<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_for_players);
+        startgame=findViewById(R.id.button_start_game);
 
         member = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
@@ -66,7 +75,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         }
 
         DocumentReference docname = db.collection("Players").document(member);
-        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+       docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 roomid = documentSnapshot.getString("roomid");
@@ -124,12 +134,14 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         {
             bossTextView.setText(R.string.bosstextview);
             boss_name.setVisibility(View.GONE);
+
         }
         else
         {
           //  String text = R.string.membertextview+"";
             boss_name.setText(boss_namee);
             bossTextView.setText(R.string.membertextview);
+            startgame.setVisibility(View.GONE);
         }
     }
 
@@ -145,20 +157,69 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         });
     }
 
+
+
     public void getPlayersName()
     {
         db.collection(roomid).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 list = new ArrayList<>();
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    if(!document.getId().equals("CurrentPlayer"))
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(queryDocumentSnapshots)) {
+                    if(!document.getId().equals("CurrentPlayer") && !document.getId().equals("START GAME"))
                     list.add(document.getId());
                 }
                 // Log.d(TAG, list.toString());
                 // Toast.makeText(WaitingForPlayersActivity.this, list.toString(), Toast.LENGTH_SHORT).show();
                 setPlayerNames();
 
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        DocumentReference docname = db.collection("Players").document(member);
+
+        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+               String temp_roomid = documentSnapshot.getString("roomid");
+                key = documentSnapshot.getString("joinkey");
+                getstartgame_status(temp_roomid);
+
+            }
+        });
+           //getstartgane_status(roomid);
+
+
+
+
+
+
+
+    }
+
+    public void  getstartgame_status(String roomid)
+    {
+
+        final DocumentReference start_game = db.collection(roomid).document("START GAME");
+
+        start_game.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if (Objects.requireNonNull(documentSnapshot).exists()) {
+
+                    value = Objects.requireNonNull(documentSnapshot.getLong("start")).intValue();
+                    if(value==1)
+                    {
+                        //startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
+
+                    }
+
+                }
             }
         });
     }
@@ -207,6 +268,9 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     }
 
     public void start_game(View view) {
+        gamestart.put("start",1);
+        DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
+        start_game.set(gamestart);
         startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
         finish();
 

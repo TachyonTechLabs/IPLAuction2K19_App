@@ -1,5 +1,9 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +33,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
-    String useremail,id;
+    String userEmail,id,boss_name;
+    Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +50,25 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,players);
         playerlist.setAdapter(adapter);
 
+        extras = getIntent().getExtras();
         getId();
 
     }
 
     public void getId()
     {
+        /*
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         useremail = Objects.requireNonNull(currentUser).getEmail();
+        */
+        id = extras.getString("roomid");
+        userEmail = extras.getString("userEmail");
+        boss_name = extras.getString("boss_name");
+        setCurrentPlayer();
 
-        DocumentReference documentReference = db.collection("Players").document(useremail);
+        /*
+        DocumentReference documentReference = db.collection("Players").document(userEmail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -63,6 +76,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 setCurrentPlayer();
             }
         });
+        */
     }
 
 
@@ -76,6 +90,57 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit Game?");
+        builder.setMessage("Do you really wish to leave the room and exit?");
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                db.collection(id).document(userEmail).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        db.collection(id).document("START GAME").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                db.collection(id).document("CurrentPlayer").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        DocumentReference updateRef = db.collection("Players").document(userEmail);
+                                        updateRef.update("inRoom",0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+
+                                                Handler handler = new Handler();
+                                                Runnable runnable = new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        startActivity(new Intent(AdminOngoingPlayer.this,AfterRegistrationMainActivity.class));
+                                                        finish();
+                                                    }
+                                                };
+                                                handler.postDelayed(runnable,500);
+                                                //finish();
+                                                //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        //DocumentReference start_game = db.collection(id).document(Objects.requireNonNull("START GAME"));
+
+                    }
+                });
+
+            }
+        });
+        builder.setNegativeButton(R.string.no,null);
+        builder.show();
     }
 
 }

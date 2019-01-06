@@ -1,5 +1,12 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -18,16 +25,17 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-public class OngoingPlayer extends AppCompatActivity {
+public class OngoingPlayer extends AppCompatActivity{
 
     TextView name1text,name2text,pointtext,matchtext,runtext,wickettext,basetext;
     AllPlayerInfo allPlayerInfo = new AllPlayerInfo();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
-    String useremail;
+    String userEmail;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String id;
+    String id,boss_name;
     int current;
+    Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +49,25 @@ public class OngoingPlayer extends AppCompatActivity {
         runtext = findViewById(R.id.runstext);
         wickettext = findViewById(R.id.wicketstext);
         basetext =findViewById(R.id.basepricetext);
+        extras = getIntent().getExtras();
 
         getId();
     }
 
     public void getId()
     {
+        /*
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        useremail = Objects.requireNonNull(currentUser).getEmail();
+        userEmail = Objects.requireNonNull(currentUser).getEmail();
+        */
 
+        id = extras.getString("roomid");
+        userEmail = extras.getString("userEmail");
+        boss_name = extras.getString("boss_name");
+        getCurrent();
+
+        /*
         DocumentReference documentReference = db.collection("Players").document(useremail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -59,6 +76,7 @@ public class OngoingPlayer extends AppCompatActivity {
                 getCurrent();
             }
         });
+        */
     }
 
     public void getCurrent()
@@ -88,5 +106,43 @@ public class OngoingPlayer extends AppCompatActivity {
         runtext.setText(run);
         wickettext.setText(wicket);
         basetext.setText(base);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit Game?");
+        builder.setMessage("Do you really wish to leave the room and exit?");
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                db.collection(id).document(userEmail).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        DocumentReference updateRef = db.collection("Players").document(userEmail);
+                        updateRef.update("inRoom", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                Handler handler = new Handler();
+                                Runnable runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(new Intent(OngoingPlayer.this, AfterRegistrationMainActivity.class));
+                                        finish();
+                                    }
+                                };
+                                handler.postDelayed(runnable, 500);
+                                //finish();
+                                //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }                     //DocumentReference start_game = db.collection(id).document(Objects.requireNonNull("START GAME"));
+                });
+            }
+        });
+        builder.setNegativeButton(R.string.no,null);
+        builder.show();
     }
 }
