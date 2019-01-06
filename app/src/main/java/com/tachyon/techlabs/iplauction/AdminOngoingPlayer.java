@@ -3,6 +3,7 @@ package com.tachyon.techlabs.iplauction;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -102,18 +103,26 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 db.collection(id).document(userEmail).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        db.collection(id).document("CurrentPlayer").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        db.collection(id).document("START GAME").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                db.collection(id).document("START GAME").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection(id).document("CurrentPlayer").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         DocumentReference updateRef = db.collection("Players").document(userEmail);
                                         updateRef.update("inRoom",0).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                startActivity(new Intent(AdminOngoingPlayer.this,AfterRegistrationMainActivity.class));
-                                                finish();
+
+                                                Handler handler = new Handler();
+                                                Runnable runnable = new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        startActivity(new Intent(AdminOngoingPlayer.this,AfterRegistrationMainActivity.class));
+                                                        finish();
+                                                    }
+                                                };
+                                                handler.postDelayed(runnable,500);
                                                 //finish();
                                                 //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
                                                 //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();

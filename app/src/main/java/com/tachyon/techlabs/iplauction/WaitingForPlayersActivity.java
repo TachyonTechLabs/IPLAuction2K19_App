@@ -34,7 +34,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -54,6 +56,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     String [] players;
     Button startgame;
     int value;
+    Map<String, Object> gamestart = new HashMap<>();
 
 
 
@@ -162,8 +165,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 list = new ArrayList<>();
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    if(!document.getId().equals("CurrentPlayer"))
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(queryDocumentSnapshots)) {
+                    if(!document.getId().equals("CurrentPlayer") && !document.getId().equals("START GAME"))
                     list.add(document.getId());
                 }
                 // Log.d(TAG, list.toString());
@@ -202,17 +205,18 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     public void  getstartgame_status(String roomid)
     {
 
-        DocumentReference start_game = db.collection(roomid).document("START GAME");
+        final DocumentReference start_game = db.collection(roomid).document("START GAME");
 
-        start_game.addSnapshotListener(new com.google.firebase.firestore.EventListener<DocumentSnapshot>() {
+        start_game.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if (documentSnapshot != null) {
+                if (Objects.requireNonNull(documentSnapshot).exists()) {
 
-                    value = documentSnapshot.getLong("start").intValue();
+                    value = Objects.requireNonNull(documentSnapshot.getLong("start")).intValue();
                     if(value==1)
                     {
-                        startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
+                        //startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
+
                     }
 
                 }
@@ -264,10 +268,10 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     }
 
     public void start_game(View view) {
-        startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
+        gamestart.put("start",1);
         DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
-        start_game.update("start",1);
-
+        start_game.set(gamestart);
+        startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
         finish();
 
     }

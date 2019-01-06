@@ -2,11 +2,14 @@ package com.tachyon.techlabs.iplauction;
 
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,9 +28,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -42,6 +50,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +78,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
     Map<String, Object> curr = new HashMap<>();
-    Map<String, Object> gamestart = new HashMap<>();
+    //Map<String, Object> gamestart = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail,numUsed;
     String user_joincode,used_joinKey,joinkey,roomID,numOfMembers,owner;
@@ -81,12 +90,13 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     ArrayList<String> joined_room_array=new ArrayList<>();
     String id,roomid;
     int value;
+    int flag=0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_after_registration_main);
+
         /*
         sp=getSharedPreferences("joined_rooms",Context.MODE_PRIVATE);
         rooms=new StringBuilder();
@@ -140,8 +150,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
 
 
-
-
 // Add a new document with a generated ID
 
 
@@ -168,6 +176,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
     public void updateUI(FirebaseUser user) {
         if (user != null) {
+            setContentView(R.layout.activity_after_registration_main);
 
             userEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
             DocumentReference docRef = db.collection("Players").document(userEmail);
@@ -375,30 +384,30 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         start_game.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if (documentSnapshot != null) {
+                if (Objects.requireNonNull(documentSnapshot).exists()) {
+                    Log.d("startgame","in if");
 
                     try{
                         value = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("start")).intValue();
                         if(value == 1)
                         {
-                            //startActivity(new Intent(AfterRegistrationMainActivity.this,Start_Game.class));
-                            //finish();
-                        }
-                        else
-                        {
-                            startActivity(new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class));
-                            finish();
+                            startActivity(new Intent(AfterRegistrationMainActivity.this,Start_Game.class));
                         }
                     }
                     catch (Exception e1)
                     {
                         e1.printStackTrace();
                     }
-
-
                 }
+                else
+                {
+                    startActivity(new Intent(AfterRegistrationMainActivity.this,WaitingForPlayersActivity.class));
+                    finish();
+                }
+
             }
         });
+
     }
 
     /*
@@ -432,6 +441,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     */
 
     public void create_room(View view) {
+        final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
+        lyt_progress.setVisibility(View.VISIBLE);
+        //lyt_progress.setAlpha(1.0f);
+
         Random_id_generate obj=new Random_id_generate();
         long random_id=obj.id();
         id=random_id+"";
@@ -453,11 +466,11 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("joinkey",joinkey);
         owner_details.put("itemsPurchased",0);
 
-        gamestart.put("start",0);
+        //gamestart.put("start",0);
 
 
-        DocumentReference startgame=db.collection(id).document("START GAME");
-        startgame.set(gamestart);
+        //DocumentReference startgame=db.collection(id).document("START GAME");
+        //startgame.set(gamestart);
         DocumentReference docRef = db.collection(id).document(userEmail);
              docRef.set(owner_details)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -498,6 +511,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         }*/
 
     }
+
 
     public void setOwner()
     {
@@ -571,7 +585,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         docRef.set(curr).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
+                //checkIfStart();
             }
         });
     }
@@ -927,9 +941,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_DENIED)
         {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+            ActivityCompat.requestPermissions(AfterRegistrationMainActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
         }
-         else if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+         else if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED)
         {
             Handler handlerCards = new Handler();
