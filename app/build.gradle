@@ -73,6 +73,7 @@ dependencies {
     implementation 'com.github.GoodieBag:PinView:v1.3'
     //navtoolbar(for activity_vertical_ntb activity)
     implementation 'com.google.firebase:firebase-messaging:17.3.4' //fcm notification
+    implementation 'com.wajahatkarim3.EasyFlipView:EasyFlipView:2.1.2' //flip animation
 }
 
 

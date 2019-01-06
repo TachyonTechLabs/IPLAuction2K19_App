@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,7 +31,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-public class PaymentInfo extends AppCompatActivity {
+public class PaymentInfo extends AppCompatActivity  {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -42,6 +44,7 @@ public class PaymentInfo extends AppCompatActivity {
     ArrayList<String> item = new ArrayList<>();
     ArrayList<Integer> val = new ArrayList<>();
     int index,currentIndex;
+    View view;
     MainActivity mainActivity = new MainActivity();
     public TextView cardnum1,cardnum2,cardnum3,cardnum4,cardholder;
     public StringBuilder stringBuilder;
@@ -56,6 +59,26 @@ public class PaymentInfo extends AppCompatActivity {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        LayoutInflater li = LayoutInflater.from(this);
+        final EasyFlipView easyFlipView = (EasyFlipView) findViewById(R.id.flip);
+//        easyFlipView.flipTheView();
+
+
+        View v = li.inflate(R.layout.payment_card_layout,null,false);
+
+
+     /*   findViewById(R.id.payment_card_front).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                easyFlipView.setFlipDuration(1000);
+                easyFlipView.setFlipEnabled(true);
+               // Toast.makeText(SimpleViewFlipActivity.this, "Front Card", Toast.LENGTH_SHORT).show();
+                easyFlipView.flipTheView();
+            }
+        }); */
+
+
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
@@ -174,4 +197,6 @@ public class PaymentInfo extends AppCompatActivity {
         startActivity(new Intent(PaymentInfo.this,AfterRegistrationMainActivity.class));
         finish();
     }
+
+
 }
