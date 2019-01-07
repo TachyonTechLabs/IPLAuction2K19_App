@@ -1,6 +1,7 @@
 package com.tachyon.techlabs.iplauction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -64,7 +65,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
 
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
         progressBar_indeterminate_circle = findViewById(R.id.profile_progress);
 

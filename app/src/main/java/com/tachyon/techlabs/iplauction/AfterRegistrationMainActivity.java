@@ -391,7 +391,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                         value = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("start")).intValue();
                         if(value == 1)
                         {
-                            startActivity(new Intent(AfterRegistrationMainActivity.this,Start_Game.class));
+                            DocumentReference documentReference = db.collection("Players").document(userEmail);
+                            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    String boss = documentSnapshot.getString("Owner");
+                                    startIntent(boss);
+                                }
+                            });
+                            //startActivity(new Intent(AfterRegistrationMainActivity.this,Start_Game.class));
                         }
                     }
                     catch (Exception e1)
@@ -408,6 +416,28 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
             }
         });
 
+    }
+
+    public void startIntent(String bossname)
+    {
+        if(bossname.equals(userEmail))
+        {
+            Intent admin = new Intent(AfterRegistrationMainActivity.this,AdminOngoingPlayer.class);
+            admin.putExtra("roomid",roomid);
+            admin.putExtra("userEmail",userEmail);
+            admin.putExtra("boss_name",bossname);
+            startActivity(admin);
+            finish();
+        }
+        else
+        {
+            Intent member = new Intent(AfterRegistrationMainActivity.this,OngoingPlayer.class);
+            member.putExtra("roomid",roomid);
+            member.putExtra("userEmail",userEmail);
+            member.putExtra("boss_name",bossname);
+            startActivity(member);
+            finish();
+        }
     }
 
     /*
@@ -465,6 +495,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("roomid",id);
         owner_details.put("joinkey",joinkey);
         owner_details.put("itemsPurchased",0);
+        owner_details.put("myteam","");
 
         //gamestart.put("start",0);
 
@@ -722,6 +753,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         members.put("roomid",room_id);
         members.put("joinkey",joinkey);
         members.put("itemsPurchased",0);
+        members.put("myteam","");
 
         docRef2
                 .set(members)
