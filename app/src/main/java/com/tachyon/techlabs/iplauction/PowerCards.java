@@ -330,8 +330,8 @@ public class PowerCards extends AppCompatActivity {
         }
         else
         {
-            super.onBackPressed();
-            final Intent cardtomain = new Intent(PowerCards.this,Start_Game.class);
+            //super.onBackPressed();
+            final Intent cardtomain = new Intent(PowerCards.this,OngoingPlayer.class);
             startActivity(cardtomain);
             finish();
         }
