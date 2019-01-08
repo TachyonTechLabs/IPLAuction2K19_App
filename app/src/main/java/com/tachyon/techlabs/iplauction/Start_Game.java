@@ -1,7 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
@@ -52,7 +53,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String[] arr = {"Mumbai Indians", "CSK", "RCB"};
     List<String> array = new ArrayList<>();
-    AfterRegistrationMainActivity obj;
+    AfterRegistrationMainActivity obj = new AfterRegistrationMainActivity();
     String boss_name,roomid,key;
     String id;
     Map<String, Object> curr = new HashMap<>();
@@ -62,11 +63,22 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
 
 
     final DocumentReference docRef = db.collection("Teams").document(Objects.requireNonNull("All Teams"));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start__game);
         userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        DocumentReference docname = db.collection("Players").document(userEmail);
+        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                roomid = documentSnapshot.getString("roomid");
+                key = documentSnapshot.getString("joinkey");
+                //setStart();
+                getBossName();
+            }
+        });
 
         if(Build.VERSION.SDK_INT>22)
         {
@@ -91,15 +103,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
         array.add("CSK");
         spin = findViewById(R.id.team_listview);
 
-        DocumentReference docname = db.collection("Players").document(userEmail);
-        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                roomid = documentSnapshot.getString("roomid");
-                key = documentSnapshot.getString("joinkey");
-                getBossName();
-            }
-        });
+
 
 
 
@@ -130,6 +134,30 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
 
     }
 
+    public  void setStart()
+    {
+        DocumentReference start = db.collection(roomid).document("START GAME");
+        start.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if(Objects.requireNonNull(documentSnapshot).exists())
+                {
+                    int value = Objects.requireNonNull(documentSnapshot.getLong("start")).intValue();
+                    if(value != 1)
+                    {
+                        startActivity(new Intent(Start_Game.this,WaitingForPlayersActivity.class));
+                        finish();
+                    }
+                }
+                else
+                {
+                    startActivity(new Intent(Start_Game.this,AfterRegistrationMainActivity.class));
+                    finish();
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item))
@@ -155,8 +183,6 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
         });
 
     }
-
-
 
 
 
@@ -239,7 +265,39 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 break;
 
             case R.id.nav_cards:
-                storagepermission();
+                //obj.storagepermission();
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED)
+                {
+                    ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+                }
+                else if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED)
+                {
+                    Handler handlerCards = new Handler();
+                    Runnable runnableCards = new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Start_Game.this,PowerCards.class));
+                            finish();
+                        }
+                    };
+                    handlerCards.postDelayed(runnableCards,250);
+
+                }
+                else {
+                    Handler handlerCards = new Handler();
+                    Runnable runnableCards = new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Start_Game.this,PowerCards.class));
+                            finish();
+                        }
+                    };
+                    handlerCards.postDelayed(runnableCards,250);
+
+
+                }
 
                 break;
 
@@ -255,9 +313,6 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 break;
 
             case R.id.nav_developer:
-                startActivity(new Intent(this,about_developers.class));
-                finish();
-
                 break;
 
             case R.id.nav_about_app:
@@ -278,7 +333,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public void onBackPressed() {
-      //  super.onBackPressed();
+        //super.onBackPressed();
         if(this.mDrawerLayout.isDrawerOpen(GravityCompat.START))
         {
             this.mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -303,8 +358,15 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                             updateRef.update("inRoom",0).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    startActivity(new Intent(Start_Game.this,AfterRegistrationMainActivity.class));
-                                    finish();
+                                    Handler handler = new Handler();
+                                    Runnable runnable = new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            startActivity(new Intent(Start_Game.this, AfterRegistrationMainActivity.class));
+                                            finish();
+                                        }
+                                    };
+                                    handler.postDelayed(runnable, 500);
                                     //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
                                     //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
                                 }
@@ -318,6 +380,7 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
             builder.show();
             //System.exit(0);
         }
+
     }
 
     public void ongoing(View view) {
@@ -347,7 +410,6 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
             }
         });
 
-
     }
 
     public void getBossName()
@@ -359,42 +421,5 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 boss_name = documentSnapshot.getString("owner");
             }
         });
-    }
-
-    public void storagepermission()
-    {
-
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_DENIED)
-        {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
-        }
-        else if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-            Handler handlerCards = new Handler();
-            Runnable runnableCards = new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(Start_Game.this,PowerCards.class));
-                    finish();
-                }
-            };
-            handlerCards.postDelayed(runnableCards,250);
-
-        }
-        else {
-            Handler handlerCards = new Handler();
-            Runnable runnableCards = new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(Start_Game.this,PowerCards.class));
-                    finish();
-                }
-            };
-            handlerCards.postDelayed(runnableCards,250);
-
-
-        }
     }
 }

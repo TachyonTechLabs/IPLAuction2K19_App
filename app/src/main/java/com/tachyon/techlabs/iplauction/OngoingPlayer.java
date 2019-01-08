@@ -3,6 +3,10 @@ package com.tachyon.techlabs.iplauction;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -21,7 +25,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-public class OngoingPlayer extends AppCompatActivity {
+public class OngoingPlayer extends AppCompatActivity{
 
     TextView name1text,name2text,pointtext,matchtext,runtext,wickettext,basetext;
     AllPlayerInfo allPlayerInfo = new AllPlayerInfo();
@@ -45,7 +49,6 @@ public class OngoingPlayer extends AppCompatActivity {
         runtext = findViewById(R.id.runstext);
         wickettext = findViewById(R.id.wicketstext);
         basetext =findViewById(R.id.basepricetext);
-
         extras = getIntent().getExtras();
 
         getId();
@@ -117,18 +120,26 @@ public class OngoingPlayer extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         DocumentReference updateRef = db.collection("Players").document(userEmail);
-                        updateRef.update("inRoom",0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        updateRef.update("inRoom", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                startActivity(new Intent(OngoingPlayer.this,AfterRegistrationMainActivity.class));
-                                finish();
+
+                                Handler handler = new Handler();
+                                Runnable runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(new Intent(OngoingPlayer.this, AfterRegistrationMainActivity.class));
+                                        finish();
+                                    }
+                                };
+                                handler.postDelayed(runnable, 500);
+                                //finish();
                                 //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
                                 //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
+                    }                     //DocumentReference start_game = db.collection(id).document(Objects.requireNonNull("START GAME"));
                 });
-
             }
         });
         builder.setNegativeButton(R.string.no,null);

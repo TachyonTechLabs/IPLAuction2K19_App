@@ -204,8 +204,8 @@ public class PowerCards extends AppCompatActivity {
 
     public void readCardNum()
     {
-        File file;
-        file = new File(getCacheDir(),"CardNum.txt");
+        File sdCard = getCacheDir();
+        File file = new File(sdCard,"CardNum.txt");
         stringBuilder = new StringBuilder();
 
         try
@@ -331,7 +331,7 @@ public class PowerCards extends AppCompatActivity {
         else
         {
             super.onBackPressed();
-            final Intent cardtomain = new Intent(PowerCards.this,AfterRegistrationMainActivity.class);
+            final Intent cardtomain = new Intent(PowerCards.this,Start_Game.class);
             startActivity(cardtomain);
             finish();
         }
