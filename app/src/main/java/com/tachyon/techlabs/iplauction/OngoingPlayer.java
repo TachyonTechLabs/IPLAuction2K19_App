@@ -3,20 +3,26 @@ package com.tachyon.techlabs.iplauction;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
@@ -33,6 +41,10 @@ import javax.annotation.Nullable;
 public class OngoingPlayer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     TextView name1text,name2text,pointtext,matchtext,runtext,wickettext,basetext;
+    DrawerLayout mDrawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle mToggle;
+    Toolbar ongoing_toolbar;
     AllPlayerInfo allPlayerInfo = new AllPlayerInfo();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -42,39 +54,73 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     int current;
     Bundle extras;
     AfterRegistrationMainActivity afterRegistrationMainActivity = new AfterRegistrationMainActivity();
+    TextView toolbar_text;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    ImageView player_img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ongoing_player);
 
-        name1text = findViewById(R.id.name1);
-        name2text = findViewById(R.id.name2);
-        pointtext = findViewById(R.id.pointtext);
-        matchtext = findViewById(R.id.matchtext);
-        runtext = findViewById(R.id.runstext);
-        wickettext = findViewById(R.id.wicketstext);
-        basetext =findViewById(R.id.basepricetext);
+        storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        storageRef = storage.getReference();
+
+        name1text = findViewById(R.id.player_name1);
+        name2text = findViewById(R.id.player_name2);
+        pointtext = findViewById(R.id.point_text);
+        matchtext = findViewById(R.id.matchtextvalue);
+        runtext = findViewById(R.id.runstextvalue);
+        wickettext = findViewById(R.id.wicketstextvalue);
+        basetext = findViewById(R.id.base_price_value);
+        player_img = findViewById(R.id.player_img);
         extras = getIntent().getExtras();
+
+        //toolbar_text = findViewById(R.id.app_toolbar_nametxt);
+
+        ongoing_toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(ongoing_toolbar);
+        //toolbar_text.setText(R.string.ongoing_player);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.ongoing_player);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        //getSupportActionBar().setHomeAsUpIndicator(getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mydrawer);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,ongoing_toolbar,R.string.open,R.string.close);
+
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        NavigationView nav = (NavigationView) findViewById(R.id.navigation_view);
+        //View headerView = navigationView.getHeaderView(0);
+
+        //String name = getIntent().getExtras().getString("name");
+        nav.setNavigationItemSelectedListener(this);
 
         getId();
     }
 
     public void getId()
     {
-        /*
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         userEmail = Objects.requireNonNull(currentUser).getEmail();
-        */
 
+        /*
         id = extras.getString("roomid");
         userEmail = extras.getString("userEmail");
         boss_name = extras.getString("boss_name");
         getCurrent();
+        */
 
-        /*
-        DocumentReference documentReference = db.collection("Players").document(useremail);
+        DocumentReference documentReference = db.collection("Players").document(userEmail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -82,7 +128,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 getCurrent();
             }
         });
-        */
+
     }
 
     public void getCurrent()
@@ -100,6 +146,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
     public void setText()
     {
+        String fullname = allPlayerInfo.fullname[current]+"";
         String pt = allPlayerInfo.points[current]+"";
         String match = allPlayerInfo.match[current]+"";
         String run = allPlayerInfo.run[current]+"";
@@ -112,6 +159,23 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         runtext.setText(run);
         wickettext.setText(wicket);
         basetext.setText(base);
+
+        //storageRef.child(fullname+".png");
+        storageRef.child(fullname+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("playerimg",uri.toString());
+                Glide.with(getApplicationContext()).load(uri.toString()).into(player_img);
+                //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("playerimg","fail");
+            }
+        });
+        //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
     }
 
     @Override
@@ -184,7 +248,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mydrawer);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:id="@+id/drawerLayout"
+    android:id="@+id/mydrawer"
     android:fitsSystemWindows="true">
 
     <android.support.constraint.ConstraintLayout
@@ -19,35 +19,35 @@
         tools:context=".OngoingPlayer">
 
         <include
-            android:id="@+id/include2"
+            android:id="@+id/ongoing_toolbar"
             layout="@layout/app_toolbar">
 
         </include>
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/player_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:contentDescription="@string/placeholder"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include2"
+            app:layout_constraintTop_toBottomOf="@+id/ongoing_toolbar"
             app:srcCompat="@drawable/personplaceholder" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/player_points"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
             android:contentDescription="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include2"
+            app:layout_constraintTop_toBottomOf="@+id/ongoing_toolbar"
             app:srcCompat="@drawable/circular_bg" />
 
         <TextView
-            android:id="@+id/name1"
+            android:id="@+id/player_name1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -56,11 +56,11 @@
             android:text="TextView"
             android:textColor="@color/black"
             android:textSize="22sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/include2" />
+            app:layout_constraintStart_toEndOf="@+id/player_img"
+            app:layout_constraintTop_toBottomOf="@+id/ongoing_toolbar" />
 
         <TextView
-            android:id="@+id/name2"
+            android:id="@+id/player_name2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -69,11 +69,11 @@
             android:text="TextView"
             android:textColor="@color/black"
             android:textSize="22sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/name1" />
+            app:layout_constraintStart_toEndOf="@+id/player_img"
+            app:layout_constraintTop_toBottomOf="@+id/player_name1" />
 
         <TextView
-            android:id="@+id/pointtext"
+            android:id="@+id/point_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
@@ -81,13 +81,13 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+            app:layout_constraintBottom_toBottomOf="@+id/player_points"
+            app:layout_constraintEnd_toEndOf="@+id/player_points"
+            app:layout_constraintStart_toStartOf="@+id/player_points"
+            app:layout_constraintTop_toTopOf="@+id/player_points" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/txt_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -97,10 +97,10 @@
             android:textColor="@color/textgrey"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/player_img" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/txt_run"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -109,12 +109,12 @@
             android:text="@string/runs"
             android:textColor="@color/textgrey"
             android:textSize="22sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-            app:layout_constraintEnd_toStartOf="@+id/textView7"
-            app:layout_constraintStart_toEndOf="@+id/textView4" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/txt_match"
+            app:layout_constraintEnd_toStartOf="@+id/txt_wicket"
+            app:layout_constraintStart_toEndOf="@+id/txt_match" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/txt_wicket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -122,11 +122,11 @@
             android:text="@string/wickets"
             android:textColor="@color/textgrey"
             android:textSize="22sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txt_match"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/matchtext"
+            android:id="@+id/matchtextvalue"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -136,10 +136,10 @@
             android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_match" />
 
         <TextView
-            android:id="@+id/runstext"
+            android:id="@+id/runstextvalue"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -149,12 +149,12 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="22sp"
-            app:layout_constraintEnd_toStartOf="@+id/wicketstext"
-            app:layout_constraintStart_toEndOf="@+id/matchtext"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintEnd_toStartOf="@+id/wicketstextvalue"
+            app:layout_constraintStart_toEndOf="@+id/matchtextvalue"
+            app:layout_constraintTop_toBottomOf="@+id/txt_run" />
 
         <TextView
-            android:id="@+id/wicketstext"
+            android:id="@+id/wicketstextvalue"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -164,10 +164,10 @@
             android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_wicket" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/base_price_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -179,10 +179,10 @@
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/runstext" />
+            app:layout_constraintTop_toBottomOf="@+id/runstextvalue" />
 
         <TextView
-            android:id="@+id/basepricetext"
+            android:id="@+id/base_price_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -194,10 +194,10 @@
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/base_price_text" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/currnet_bid_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -209,10 +209,10 @@
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintTop_toBottomOf="@+id/current_bid_text" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/current_bid_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -224,10 +224,10 @@
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/basepricetext" />
+            app:layout_constraintTop_toBottomOf="@+id/base_price_value" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/available_bid_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -238,89 +238,89 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+            app:layout_constraintBottom_toTopOf="@+id/min_bid_img"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/barrier"
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/min_bid_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView20"
-            app:layout_constraintEnd_toStartOf="@+id/imageView5"
+            app:layout_constraintBottom_toTopOf="@+id/my_team"
+            app:layout_constraintEnd_toStartOf="@+id/safe_bid_img"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/blue_card" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/safe_bid_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView20"
-            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            app:layout_constraintBottom_toTopOf="@+id/my_team"
+            app:layout_constraintEnd_toStartOf="@+id/max_bid_img"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toEndOf="@+id/min_bid_img"
             app:srcCompat="@drawable/yellow_card" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/max_bid_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView20"
+            app:layout_constraintBottom_toTopOf="@+id/my_team"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintStart_toEndOf="@+id/safe_bid_img"
             app:srcCompat="@drawable/green_card" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/min_bid_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="+ 2 Cr"
             android:textColor="@color/darkblueinside"
             android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-            app:layout_constraintEnd_toEndOf="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="@+id/imageView4"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            app:layout_constraintBottom_toBottomOf="@+id/min_bid_img"
+            app:layout_constraintEnd_toEndOf="@+id/min_bid_img"
+            app:layout_constraintStart_toStartOf="@+id/min_bid_img"
+            app:layout_constraintTop_toTopOf="@+id/min_bid_img" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/safe_bid_vale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="+ 5 Cr"
             android:textColor="@color/darkyellowinside"
             android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintEnd_toEndOf="@+id/imageView5"
-            app:layout_constraintStart_toStartOf="@+id/imageView5"
-            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+            app:layout_constraintBottom_toBottomOf="@+id/safe_bid_img"
+            app:layout_constraintEnd_toEndOf="@+id/safe_bid_img"
+            app:layout_constraintStart_toStartOf="@+id/safe_bid_img"
+            app:layout_constraintTop_toTopOf="@+id/safe_bid_img" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/max_bid_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="+ 7 Cr"
             android:textColor="@color/darkgreeninside"
             android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6"
-            app:layout_constraintTop_toTopOf="@+id/imageView6" />
+            app:layout_constraintBottom_toBottomOf="@+id/max_bid_img"
+            app:layout_constraintEnd_toEndOf="@+id/max_bid_img"
+            app:layout_constraintStart_toStartOf="@+id/max_bid_img"
+            app:layout_constraintTop_toTopOf="@+id/max_bid_img" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/my_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -338,14 +338,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="455dp"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="textView15"
+            app:constraint_referenced_ids="currnet_bid_value"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:menu="@menu/navigation_menu"
@@ -353,4 +353,5 @@
         app:headerLayout="@layout/navigation_header">
 
     </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

@@ -72,6 +72,8 @@
         <item>SH</item>
     </string-array>
 
+    <string name="ongoing_player">Ongoing Player</string>
+
 
     <string name="app_description">IPL Auction App Description</string>
     <string name="app_copyright"> © 2018 Sardar Patel Institute Of Technology</string>

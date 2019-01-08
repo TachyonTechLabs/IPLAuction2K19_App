@@ -93,7 +93,9 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 roomid = documentSnapshot.getString("roomid");
                 key = documentSnapshot.getString("joinkey");
-                getBossName();
+                boss_namee = documentSnapshot.getString("Owner");
+                //getBossName();
+                setTexts();
                 getPlayersName();
             }
         });
@@ -101,13 +103,16 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
         roomtext = getString(R.string.yourroom);
         toolbarRoomWait = findViewById(R.id.app_toolbar);
+        setSupportActionBar(toolbarRoomWait);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(roomtext);
+        /*
         textViewRoomName = findViewById(R.id.app_toolbar_nametxt);
         textViewRoomName.setText(roomtext);
         textViewRoomName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) textViewRoomName.getLayoutParams();
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
         textViewRoomName.setLayoutParams(lp);
-
+        */
 
         bossTextView = findViewById(R.id.boss_text);
         boss_name = findViewById(R.id.boss_name);
@@ -143,7 +148,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 myteam = teams[0];
                 teamuser = list.get(position);
                 teamdoc = db.collection("Players").document("Teams");
-                if(boss_namee.equals(member))
+                if(boss_namee.equals("true"))
                     setTeam();
             }
         });
@@ -203,8 +208,9 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     {
         joinCodeDisplay.setText(key);
 
-        if(boss_namee.equals(member))
+        if(boss_namee.equals("true"))
         {
+            startgame.setVisibility(View.VISIBLE);
             bossTextView.setText(R.string.bosstextview);
             boss_name.setVisibility(View.GONE);
 
@@ -289,21 +295,21 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                     if(value==1)
                     {
                         //startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
-                        if(boss_namee.equals(member))
+                        if(boss_namee.equals("true"))
                         {
                             Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
-                            admin.putExtra("roomid",roomid);
-                            admin.putExtra("userEmail",member);
-                            admin.putExtra("boss_name",boss_namee);
+                            //admin.putExtra("roomid",roomid);
+                            //admin.putExtra("userEmail",member);
+                            //admin.putExtra("boss_name",boss_namee);
                             startActivity(admin);
                             finish();
                         }
                         else
                         {
                             Intent member = new Intent(WaitingForPlayersActivity.this,OngoingPlayer.class);
-                            member.putExtra("roomid",roomid);
-                            member.putExtra("userEmail",member);
-                            member.putExtra("boss_name",boss_namee);
+                            //member.putExtra("roomid",roomid);
+                            //member.putExtra("userEmail",member);
+                            //member.putExtra("boss_name",boss_namee);
                             startActivity(member);
                             finish();
                         }
@@ -334,7 +340,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 db.collection(roomid).document(member).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        if(member.equals(boss_namee))
+                        if(boss_namee.equals("true"))
                         {
                             db.collection(roomid).document("CurrentPlayer").delete();
                         }
@@ -360,14 +366,16 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     public void start_game(View view) {
         gamestart.put("start",1);
-        DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
-        start_game.set(gamestart);
         Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
-        admin.putExtra("roomid",roomid);
-        admin.putExtra("userEmail",member);
-        admin.putExtra("boss_name",boss_namee);
+        //admin.putExtra("roomid",roomid);
+        //admin.putExtra("userEmail",member);
+        //admin.putExtra("boss_name",boss_namee);
         startActivity(admin);
         finish();
+        DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
+        start_game.set(gamestart);
+        Log.d("startgameintent","called start game ");
+
 
     }
 }

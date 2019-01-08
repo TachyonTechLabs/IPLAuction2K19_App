@@ -423,18 +423,18 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         if(bossname.equals(userEmail))
         {
             Intent admin = new Intent(AfterRegistrationMainActivity.this,AdminOngoingPlayer.class);
-            admin.putExtra("roomid",roomid);
-            admin.putExtra("userEmail",userEmail);
-            admin.putExtra("boss_name",bossname);
+            //admin.putExtra("roomid",roomid);
+            //admin.putExtra("userEmail",userEmail);
+            //admin.putExtra("boss_name",bossname);
             startActivity(admin);
             finish();
         }
         else
         {
             Intent member = new Intent(AfterRegistrationMainActivity.this,OngoingPlayer.class);
-            member.putExtra("roomid",roomid);
-            member.putExtra("userEmail",userEmail);
-            member.putExtra("boss_name",bossname);
+            //member.putExtra("roomid",roomid);
+            //member.putExtra("userEmail",userEmail);
+            //member.putExtra("boss_name",bossname);
             startActivity(member);
             finish();
         }
