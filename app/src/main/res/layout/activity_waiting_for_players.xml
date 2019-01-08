@@ -24,6 +24,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/waiting_text" />
 
+    <LinearLayout
+        android:id="@+id/lyt_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.eyalbira.loadingdots.LoadingDots
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:LoadingDots_auto_play="true"
+            app:LoadingDots_dots_color="@color/white"
+            app:LoadingDots_dots_space="4dp" />
+
+        <!--
+        <com.material.components.widget.ViewLoadingDotsBounce
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/red_600" />
+            -->
+
+    </LinearLayout>
+
     <include
         android:id="@+id/app_toolbar_waiting_for_players"
         layout="@layout/app_toolbar"
@@ -152,7 +184,6 @@
     </ListView>
 
 
-
     <Button
         android:id="@+id/button_start_game"
         android:layout_width="match_parent"
@@ -167,6 +198,7 @@
         android:onClick="start_game"
         android:text="@string/start_game"
         android:textSize="22sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

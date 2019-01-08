@@ -57,17 +57,17 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void getId()
     {
-        /*
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        useremail = Objects.requireNonNull(currentUser).getEmail();
-        */
+        userEmail = Objects.requireNonNull(currentUser).getEmail();
+        /*
         id = extras.getString("roomid");
         userEmail = extras.getString("userEmail");
         boss_name = extras.getString("boss_name");
         setCurrentPlayer();
+        */
 
-        /*
         DocumentReference documentReference = db.collection("Players").document(userEmail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -76,7 +76,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 setCurrentPlayer();
             }
         });
-        */
+
     }
 
 

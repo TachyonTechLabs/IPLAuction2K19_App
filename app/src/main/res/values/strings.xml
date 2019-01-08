@@ -23,6 +23,8 @@
     <string name="close">Close</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="OK">OK</string>
+    <string name="CANCEL">"Cancel"</string>
 
     <string name="profile">Profile</string>
     <string name="placeholder"> </string>
@@ -58,6 +60,19 @@
     <string name="title_activity_power_cards">PowerCards</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string-array name="team_names">
+        <item>MI</item>
+        <item>CSK</item>
+        <item>DC</item>
+        <item>KXIP</item>
+        <item>KKR</item>
+        <item>RR</item>
+        <item>RCB</item>
+        <item>SH</item>
+    </string-array>
+
+    <string name="ongoing_player">Ongoing Player</string>
 
 
     <string name="app_description">IPL Auction App Description</string>

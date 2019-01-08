@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,8 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +61,11 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     Button startgame;
     int value;
     Map<String, Object> gamestart = new HashMap<>();
+    Map<String, String> teammap = new HashMap<>();
+    String [] teams;
+    List<String> teamnames;
+    String myteam,teamuser;
+    DocumentReference teamdoc;
 
 
 
@@ -66,13 +75,16 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_waiting_for_players);
         startgame=findViewById(R.id.button_start_game);
 
-        member = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        member = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-            //getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+
+        teams = getResources().getStringArray(R.array.team_names);
+        teamnames = new ArrayList<>(Arrays.asList(teams));
+        //teamnames = Arrays.asList(teams);
 
         DocumentReference docname = db.collection("Players").document(member);
 
@@ -81,7 +93,9 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 roomid = documentSnapshot.getString("roomid");
                 key = documentSnapshot.getString("joinkey");
-                getBossName();
+                boss_namee = documentSnapshot.getString("Owner");
+                //getBossName();
+                setTexts();
                 getPlayersName();
             }
         });
@@ -89,13 +103,16 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
         roomtext = getString(R.string.yourroom);
         toolbarRoomWait = findViewById(R.id.app_toolbar);
+        setSupportActionBar(toolbarRoomWait);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(roomtext);
+        /*
         textViewRoomName = findViewById(R.id.app_toolbar_nametxt);
         textViewRoomName.setText(roomtext);
         textViewRoomName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) textViewRoomName.getLayoutParams();
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
         textViewRoomName.setLayoutParams(lp);
-
+        */
 
         bossTextView = findViewById(R.id.boss_text);
         boss_name = findViewById(R.id.boss_name);
@@ -124,14 +141,76 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
        // Toast.makeText(this, players.toString(), Toast.LENGTH_SHORT).show();
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,players);
         members_joined.setAdapter(adapter);
+
+        members_joined.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myteam = teams[0];
+                teamuser = list.get(position);
+                teamdoc = db.collection("Players").document("Teams");
+                if(boss_namee.equals("true"))
+                    setTeam();
+            }
+        });
+    }
+
+    public  void setTeam()
+    {
+        teams = teamnames.toArray(new String[0]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Your Team");
+        builder.setSingleChoiceItems(teams, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                myteam = teamnames.get(which);
+            }
+        });
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, final int which) {
+
+                setPlayerTeam();
+                /*
+                final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
+                lyt_progress.setVisibility(View.VISIBLE);
+                DocumentReference documentReference = db.collection("Players").document(teamuser);
+                documentReference.update("myteam",myteam).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //teamnames.remove(myteam);
+                        lyt_progress.setVisibility(View.INVISIBLE);
+                    }
+                });
+                teamnames.remove(myteam);
+                Log.d("teanmane123",teamnames.toString());
+                //onResume();*/
+            }
+        });
+        builder.setNegativeButton(R.string.CANCEL,null);
+        builder.show();
+    }
+
+    public void setPlayerTeam()
+    {
+        //final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
+        //lyt_progress.setVisibility(View.VISIBLE);
+        //DocumentReference documentReference = db.collection("Players").document(teamuser);
+        teammap.put(teamuser,myteam);
+        teamdoc.set(teammap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                teamnames.remove(myteam);
+            }
+        });
     }
 
     public void setTexts()
     {
         joinCodeDisplay.setText(key);
 
-        if(boss_namee.equals(member))
+        if(boss_namee.equals("true"))
         {
+            startgame.setVisibility(View.VISIBLE);
             bossTextView.setText(R.string.bosstextview);
             boss_name.setVisibility(View.GONE);
 
@@ -202,7 +281,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     }
 
-    public void  getstartgame_status(String roomid)
+    public void  getstartgame_status(final String roomid)
     {
 
         final DocumentReference start_game = db.collection(roomid).document("START GAME");
@@ -216,6 +295,24 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                     if(value==1)
                     {
                         //startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
+                        if(boss_namee.equals("true"))
+                        {
+                            Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
+                            //admin.putExtra("roomid",roomid);
+                            //admin.putExtra("userEmail",member);
+                            //admin.putExtra("boss_name",boss_namee);
+                            startActivity(admin);
+                            finish();
+                        }
+                        else
+                        {
+                            Intent member = new Intent(WaitingForPlayersActivity.this,OngoingPlayer.class);
+                            //member.putExtra("roomid",roomid);
+                            //member.putExtra("userEmail",member);
+                            //member.putExtra("boss_name",boss_namee);
+                            startActivity(member);
+                            finish();
+                        }
 
                     }
 
@@ -243,7 +340,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 db.collection(roomid).document(member).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        if(member.equals(boss_namee))
+                        if(boss_namee.equals("true"))
                         {
                             db.collection(roomid).document("CurrentPlayer").delete();
                         }
@@ -269,10 +366,16 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     public void start_game(View view) {
         gamestart.put("start",1);
+        Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
+        //admin.putExtra("roomid",roomid);
+        //admin.putExtra("userEmail",member);
+        //admin.putExtra("boss_name",boss_namee);
+        startActivity(admin);
+        finish();
         DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
         start_game.set(gamestart);
-        startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
-        finish();
+        Log.d("startgameintent","called start game ");
+
 
     }
 }
