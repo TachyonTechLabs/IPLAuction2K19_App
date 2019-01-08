@@ -10,7 +10,7 @@
 
 
 
-    <com.wajahatkarim3.easyflipview.EasyFlipView
+ <!--   <com.wajahatkarim3.easyflipview.EasyFlipView
         android:id="@+id/cardFlipView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,15 +25,16 @@
 
 
     <include layout="@layout/payment_card_layout"
-            android:id="@+id/payment_card_id_back"/>
+            android:id="@+id/payment_card_id_back"/> -->
 
         <!-- Front Layout Goes Here -->
-        <include layout="@layout/payment_card_layout"
+      <!--  <include layout="@layout/payment_card_layout"
             android:id="@+id/payment_card_id_front"/>
-    </com.wajahatkarim3.easyflipview.EasyFlipView>
+    </com.wajahatkarim3.easyflipview.EasyFlipView>  -->
 
 
-    <!--  <ImageView
+
+     <ImageView
           android:id="@+id/payment_card_id"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
@@ -158,7 +159,6 @@
           android:textSize="12sp"
           app:layout_constraintBaseline_toBaselineOf="@+id/card_holder_name"
           app:layout_constraintStart_toEndOf="@+id/card_holder_name" />
-  -->
 
 
     <TextView
@@ -174,7 +174,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardFlipView" />
+        app:layout_constraintTop_toBottomOf="@+id/payment_card_id" />
 
     <ListView
         android:id="@+id/orders_history_listview"
@@ -185,6 +185,6 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardFlipView" />
+        app:layout_constraintTop_toBottomOf="@+id/my_orders_id" />
 
 </android.support.constraint.ConstraintLayout>

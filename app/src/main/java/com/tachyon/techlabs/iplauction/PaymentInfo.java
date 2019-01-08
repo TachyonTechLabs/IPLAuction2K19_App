@@ -119,35 +119,7 @@ public class PaymentInfo extends AppCompatActivity  {
             }
         });
 
-        final EasyFlipView easyFlipView = (EasyFlipView) findViewById(R.id.cardFlipView);
 
-        easyFlipView.setFlipDuration(1000);
-        easyFlipView.setFlipEnabled(true);
-
-
-        findViewById(R.id.payment_card_id_front).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(PaymentInfo.this, "Front Card", Toast.LENGTH_SHORT).show();
-                easyFlipView.flipTheView();
-            }
-        });
-
-        findViewById(R.id.payment_card_id_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(PaymentInfo.this, "Back Card", Toast.LENGTH_SHORT).show();
-                easyFlipView.flipTheView();
-            }
-        });
-
-        easyFlipView.setOnFlipListener(new EasyFlipView.OnFlipAnimationListener() {
-            @Override
-            public void onViewFlipCompleted(EasyFlipView easyFlipView, EasyFlipView.FlipState newCurrentSide) {
-                Toast.makeText(PaymentInfo.this,
-                        "Flipped once ! Ace revealed " + newCurrentSide, Toast.LENGTH_LONG).show();
-            }
-        });
 
 
 

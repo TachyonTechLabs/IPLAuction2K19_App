@@ -234,7 +234,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_developer:
-                startActivity(new Intent(OngoingPlayer.this,about_developers.class));
+                startActivity(new Intent(OngoingPlayer.this,developers.class));
                 finish();
                 break;
 
