@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,6 +20,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.wajahatkarim3.easyflipview.EasyFlipView;
+//import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,23 +48,25 @@ public class PaymentInfo extends AppCompatActivity  {
     MainActivity mainActivity = new MainActivity();
     public TextView cardnum1,cardnum2,cardnum3,cardnum4,cardholder;
     public StringBuilder stringBuilder;
+    // EasyFlipView easyFlipView = (EasyFlipView) findViewById(R.id.cardFlipView);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_info);
 
+
         if(Build.VERSION.SDK_INT>22)
         {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        LayoutInflater li = LayoutInflater.from(this);
-        final EasyFlipView easyFlipView = (EasyFlipView) findViewById(R.id.flip);
+       // LayoutInflater li = LayoutInflater.from(this);
+
 //        easyFlipView.flipTheView();
 
 
-        View v = li.inflate(R.layout.payment_card_layout,null,false);
+       // View v = li.inflate(R.layout.payment_card_layout,null,false);
 
 
      /*   findViewById(R.id.payment_card_front).setOnClickListener(new View.OnClickListener() {
@@ -117,7 +119,40 @@ public class PaymentInfo extends AppCompatActivity  {
             }
         });
 
+        final EasyFlipView easyFlipView = (EasyFlipView) findViewById(R.id.cardFlipView);
+
+        easyFlipView.setFlipDuration(1000);
+        easyFlipView.setFlipEnabled(true);
+
+
+        findViewById(R.id.payment_card_id_front).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(PaymentInfo.this, "Front Card", Toast.LENGTH_SHORT).show();
+                easyFlipView.flipTheView();
+            }
+        });
+
+        findViewById(R.id.payment_card_id_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(PaymentInfo.this, "Back Card", Toast.LENGTH_SHORT).show();
+                easyFlipView.flipTheView();
+            }
+        });
+
+        easyFlipView.setOnFlipListener(new EasyFlipView.OnFlipAnimationListener() {
+            @Override
+            public void onViewFlipCompleted(EasyFlipView easyFlipView, EasyFlipView.FlipState newCurrentSide) {
+                Toast.makeText(PaymentInfo.this,
+                        "Flipped once ! Ace revealed " + newCurrentSide, Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
     }
+
 
     public void readCardNum()
     {

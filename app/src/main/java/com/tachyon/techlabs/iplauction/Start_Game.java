@@ -313,6 +313,8 @@ public class Start_Game extends AppCompatActivity implements NavigationView.OnNa
                 break;
 
             case R.id.nav_developer:
+                startActivity(new Intent(Start_Game.this,developers.class));
+                finish();
                 break;
 
             case R.id.nav_about_app:

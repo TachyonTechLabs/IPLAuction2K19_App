@@ -48,11 +48,12 @@
 
         <activity android:name=".Start_Game" />
         <activity android:name=".OngoingPlayer" />
-        <activity android:name=".AdminOngoingPlayer"></activity>
+        <activity android:name=".AdminOngoingPlayer" />
         <activity
             android:name=".about_developers"
             android:label="@string/title_activity_about_developers"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".developers"></activity>
     </application>
 
 </manifest>
