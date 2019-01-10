@@ -1,13 +1,16 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -218,7 +221,8 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_cards:
-                afterRegistrationMainActivity.storagepermission();
+                //afterRegistrationMainActivity.storagepermission();
+                storagepermission();
 
                 break;
 
@@ -251,6 +255,43 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mydrawer);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void storagepermission()
+    {
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+        }
+        else if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(OngoingPlayer.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+        }
+        else {
+            Handler handlerCards = new Handler();
+            Runnable runnableCards = new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(OngoingPlayer.this,PowerCards.class));
+                    finish();
+                }
+            };
+            handlerCards.postDelayed(runnableCards,250);
+
+
+        }
     }
 
     @Override
