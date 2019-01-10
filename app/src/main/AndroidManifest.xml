@@ -52,7 +52,8 @@
             android:name=".about_developers"
             android:label="@string/title_activity_about_developers"
             android:theme="@style/AppTheme" />
-        <activity android:name=".developers"></activity>
+        <activity android:name=".developers" />
+        <activity android:name=".MyTeamActivity"></activity>
     </application>
 
 </manifest>

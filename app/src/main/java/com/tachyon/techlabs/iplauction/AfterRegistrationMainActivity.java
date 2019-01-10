@@ -183,11 +183,15 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
             docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                    int  in = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("inRoom")).intValue();
-                    if(in==1)
+                    if(Objects.requireNonNull(documentSnapshot).exists())
                     {
-                        checkIfStart();
+                        int  in = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("inRoom")).intValue();
+                        if(in==1)
+                        {
+                            checkIfStart();
+                        }
                     }
+
                 }
             });
         }

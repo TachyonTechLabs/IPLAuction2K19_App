@@ -148,7 +148,7 @@ android:layout_height="match_parent">
  <include layout="@layout/abhishek_developer"/>
 
         ​<FrameLayout
-        android:id="@+id/cell_title_view"
+        android:id="@+id/cell_title_view2"
         android:layout_width="match_parent"
         android:layout_below="@+id/heading"
         android:layout_height="wrap_content">
@@ -169,7 +169,7 @@ android:layout_height="match_parent">
 
 
                 <ImageView
-                    android:id="@+id/picture"
+                    android:id="@+id/picture2"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_centerVertical="true"
@@ -182,7 +182,7 @@ android:layout_height="match_parent">
                     card_view:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
-                    android:id="@+id/details"
+                    android:id="@+id/details2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
