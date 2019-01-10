@@ -29,7 +29,7 @@
     <string name="profile">Profile</string>
     <string name="placeholder"> </string>
     <string name="username">USERNAME</string>
-    <string name="my_team">My team</string>
+    <string name="my_team">My Team</string>
     <string name="price">PRICE</string>
     <string name="buy">BUY</string>
 
@@ -72,7 +72,9 @@
         <item>SH</item>
     </string-array>
 
-    <string name="ongoing_player">Ongoing Player</string>
+    <string name="ongoing_player">ONGOING PLAYER</string>
+    <string name="player_point">Player Point</string>
+    <string name="preffered_position">Preffered Position</string>
 
 
     <string name="app_description">IPL Auction App Description</string>

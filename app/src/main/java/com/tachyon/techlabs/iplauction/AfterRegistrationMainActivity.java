@@ -424,7 +424,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
     public void startIntent(String bossname)
     {
-        if(bossname.equals(userEmail))
+        if(bossname.equals("true"))
         {
             Intent admin = new Intent(AfterRegistrationMainActivity.this,AdminOngoingPlayer.class);
             //admin.putExtra("roomid",roomid);
