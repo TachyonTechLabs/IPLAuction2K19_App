@@ -27,6 +27,8 @@ public class qr_scanner extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(qr_scanner.this, result.getText(), Toast.LENGTH_SHORT).show();
+                        AfterRegistrationMainActivity obj=new AfterRegistrationMainActivity();
+                       obj.room_join_function(result.getText());
                     }
                 });
             }

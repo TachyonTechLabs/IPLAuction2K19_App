@@ -84,12 +84,18 @@
 
     <ImageView
         android:id="@+id/barcode"
-        android:src="@drawable/barcode_scan"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignEnd="@+id/join_code"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:onClick="qr_code"
-        android:layout_alignEnd="@+id/join_code"/>
+        android:src="@drawable/barcode_scan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.912"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/join_code_display"
@@ -135,7 +141,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/boss_name"
         android:layout_marginStart="16dp"
-
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto"
