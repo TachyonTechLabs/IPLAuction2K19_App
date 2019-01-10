@@ -9,15 +9,18 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.Result;
 
 public class qr_scanner extends AppCompatActivity {
     private CodeScanner mCodeScanner;
+    String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
+        userEmail=FirebaseAuth.getInstance().getCurrentUser().getEmail();
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(qr_scanner.this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -28,7 +31,7 @@ public class qr_scanner extends AppCompatActivity {
                     public void run() {
                         Toast.makeText(qr_scanner.this, result.getText(), Toast.LENGTH_SHORT).show();
                         AfterRegistrationMainActivity obj=new AfterRegistrationMainActivity();
-                       obj.room_join_function(result.getText());
+                       obj.room_join_function(result.getText(),userEmail);
                     }
                 });
             }

@@ -720,7 +720,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                             Toast.makeText(getApplicationContext(),"Enter A Valid Code",Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            room_join_function(user_joincode);
+                            room_join_function(user_joincode,userEmail);
                         }
 
                         dialog.cancel();
@@ -826,8 +826,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
 
     }
-    public void room_join_function(String user_joincode)
+    public void room_join_function(String user_joincode,String userEmail)
     {
+        this.userEmail=userEmail;
         DocumentReference docRef = db.collection("keyValues").document(user_joincode);
                        /* docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
