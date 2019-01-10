@@ -74,9 +74,9 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         name1text = findViewById(R.id.player_name1);
         name2text = findViewById(R.id.player_name2);
         pointtext = findViewById(R.id.point_text);
-        matchtext = findViewById(R.id.matchtextvalue);
-        runtext = findViewById(R.id.runstextvalue);
-        wickettext = findViewById(R.id.wicketstextvalue);
+        //matchtext = findViewById(R.id.matchtextvalue);
+        //runtext = findViewById(R.id.runstextvalue);
+        //wickettext = findViewById(R.id.wicketstextvalue);
         basetext = findViewById(R.id.base_price_value);
         player_img = findViewById(R.id.player_img);
         extras = getIntent().getExtras();
@@ -86,7 +86,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         ongoing_toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(ongoing_toolbar);
         //toolbar_text.setText(R.string.ongoing_player);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.ongoing_player);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.placeholder);
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -158,9 +158,9 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         name1text.setText(allPlayerInfo.fname[current]);
         name2text.setText(allPlayerInfo.sname[current]);
         pointtext.setText(pt);
-        matchtext.setText(match);
-        runtext.setText(run);
-        wickettext.setText(wicket);
+        //matchtext.setText(match);
+        //runtext.setText(run);
+        //wickettext.setText(wicket);
         basetext.setText(base);
 
         //storageRef.child(fullname+".png");

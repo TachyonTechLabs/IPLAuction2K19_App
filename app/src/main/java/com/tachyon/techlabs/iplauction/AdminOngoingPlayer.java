@@ -42,6 +42,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         setContentView(R.layout.activity_admin_ongoing_player);
 
         list = new ArrayList<>(Arrays.asList(allPlayerInfo.fullname));
+        list.remove(0);
 
         playerlist = findViewById(R.id.adminlist);
 

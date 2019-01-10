@@ -282,7 +282,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                String temp_roomid = documentSnapshot.getString("roomid");
                 key = documentSnapshot.getString("joinkey");
-                getstartgame_status(temp_roomid);
+                getstartgame_status(temp_roomid,boss_namee);
 
             }
         });
@@ -296,7 +296,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     }
 
-    public void  getstartgame_status(final String roomid)
+    public void  getstartgame_status(final String roomid,final  String bossName)
     {
 
         final DocumentReference start_game = db.collection(roomid).document("START GAME");
@@ -309,9 +309,12 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                     value = Objects.requireNonNull(documentSnapshot.getLong("start")).intValue();
                     if(value==1)
                     {
+                        Log.d("bossnameiswhat",value+"");
+                        Toast.makeText(WaitingForPlayersActivity.this, value+"", Toast.LENGTH_SHORT).show();
                         //startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
-                        if(boss_namee.equals("true"))
+                        if(bossName.equals("true"))
                         {
+                            Log.d("bosssnameiswhat",bossName);
                             Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
                             //admin.putExtra("roomid",roomid);
                             //admin.putExtra("userEmail",member);
@@ -321,6 +324,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                         }
                         else
                         {
+                            Log.d("bosssnameiswhat",bossName);
                             Intent member = new Intent(WaitingForPlayersActivity.this,OngoingPlayer.class);
                             //member.putExtra("roomid",roomid);
                             //member.putExtra("userEmail",member);
@@ -329,6 +333,11 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                             finish();
                         }
 
+                    }
+                    else
+                    {
+                        Log.d("bosssnameiswhat",value+"");
+                        Toast.makeText(WaitingForPlayersActivity.this, value+"", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -380,17 +389,24 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     }
 
     public void start_game(View view) {
-        gamestart.put("start",1);
         Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
         //admin.putExtra("roomid",roomid);
         //admin.putExtra("userEmail",member);
         //admin.putExtra("boss_name",boss_namee);
         startActivity(admin);
         finish();
-        DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
-        start_game.set(gamestart);
+
+        setStart();
+
         Log.d("startgameintent","called start game ");
 
 
+    }
+
+    public void setStart()
+    {
+        gamestart.put("start",1);
+        DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
+        start_game.set(gamestart);
     }
 }
