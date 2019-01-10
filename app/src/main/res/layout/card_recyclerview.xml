@@ -53,8 +53,28 @@
 
         </FrameLayout>
 
+        <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
+            android:id="@+id/circular_progress"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@+id/toolbarCard"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            app:drawDot="true"
+            app:dotWidth="13dp"
+            />
+
+
+
+
         <android.support.v7.widget.RecyclerView
-            android:layout_below="@id/toolbarCard"
+            android:layout_below="@id/circular_progress"
             android:id="@+id/card_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

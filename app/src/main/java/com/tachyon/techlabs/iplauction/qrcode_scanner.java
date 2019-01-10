@@ -13,10 +13,13 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.Result;
 
 public class qrcode_scanner extends AppCompatActivity {
     private CodeScanner mCodeScanner;
+    String userEmail;
+
     AfterRegistrationMainActivity obj=new AfterRegistrationMainActivity();
 
     @Override
@@ -24,6 +27,7 @@ public class qrcode_scanner extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_scanner);
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
+        userEmail=FirebaseAuth.getInstance().getCurrentUser().getEmail();
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
@@ -33,8 +37,9 @@ public class qrcode_scanner extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        String code_qrscan=result.getText().toString();
-                        obj.room_join_function(code_qrscan);
+                       // String code_qrscan=result.getText().toString();
+                        AfterRegistrationMainActivity obj=new AfterRegistrationMainActivity();
+                        obj.room_join_function(result.getText(),userEmail);
                         Toast.makeText(qrcode_scanner.this, result.getText(), Toast.LENGTH_SHORT).show();
 
                     }

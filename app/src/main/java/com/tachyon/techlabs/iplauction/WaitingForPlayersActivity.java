@@ -169,7 +169,22 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, final int which) {
 
-                setPlayerTeam();
+                AlertDialog.Builder builder = new AlertDialog.Builder(WaitingForPlayersActivity.this);
+                builder.setTitle("Confirm Team");
+                builder.setMessage("Are You Sure ?");
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setPlayerTeam();
+
+
+                            }
+                        });
+                builder.setNegativeButton(R.string.no,null);
+                builder.show();
+
+
+
                 /*
                 final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
                 lyt_progress.setVisibility(View.VISIBLE);

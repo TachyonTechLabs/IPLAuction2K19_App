@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -44,6 +45,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
+
 public class PowerCards extends AppCompatActivity {
     public static final String CHANNEL_ID="1001";
     Context context;
@@ -73,11 +76,17 @@ public class PowerCards extends AppCompatActivity {
     ViewGroup.LayoutParams params;
     String num="";
     StringBuilder stringBuilder;
+    static CountDownTimer ct;
+    static long millisinsec=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_recyclerview);
+
+        final CircularProgressIndicator circularProgress = findViewById(R.id.circular_progress);
+
+
 
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -161,6 +170,30 @@ public class PowerCards extends AppCompatActivity {
 
             }
 
+            //CountDown Timer Function
+
+          CountDownTimer  ct= new CountDownTimer(5*60 * 1000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    millisinsec=(millisUntilFinished/1000);
+                    String time=("Seconds remaining: " + millisUntilFinished / 1000);
+                    circularProgress.setProgress(millisinsec, 300);
+                    circularProgress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
+                    //  TextView timee=findViewById(R.id.textView2);
+                    //timee.setText(time);
+
+                    //  currenttime((millisUntilFinished / 1000));
+                }
+                public void onFinish() {
+                    // mTextField.setText("Done !");
+                }
+            }.start();
+
+
+
+
+
+
+
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 bgView.setVisibility(View.VISIBLE);
@@ -201,6 +234,8 @@ public class PowerCards extends AppCompatActivity {
         */
 
     }
+
+
 
     public void readCardNum()
     {
@@ -409,6 +444,51 @@ public class PowerCards extends AppCompatActivity {
     }
 
     */
+
+
+
+    private static final CircularProgressIndicator.ProgressTextAdapter TIME_TEXT_ADAPTER = new CircularProgressIndicator.ProgressTextAdapter() {
+        @Override
+        public String formatText(double time) {
+            time=time;
+          /*   int hours = (int) (time / 3600);
+            time %= 3600;
+            int minutes = (int) (time / 60);
+            int seconds = (int) (time % 60);
+            StringBuilder sb = new StringBuilder();
+            if (hours < 10) {
+                sb.append(0);
+            }
+            sb.append(hours).append(":");
+            if (minutes < 10) {
+                sb.append(0);
+            }
+            sb.append(minutes).append(":");
+            if (seconds < 10) {
+                sb.append(0);
+            }
+            sb.append(seconds);
+            return sb.toString();*/
+
+
+
+
+            //   StringBuilder sb = new StringBuilder();
+            String sb;
+            int minutes= (int) (millisinsec/60);
+            int seconds=(int) (millisinsec-(minutes*60));
+            if(seconds<10)
+                sb=minutes+":0"+seconds;
+
+            else
+            sb=minutes+":"+seconds;
+
+            return sb;
+
+
+        }
+    };
+
 
 
 
