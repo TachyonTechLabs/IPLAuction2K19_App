@@ -29,4 +29,19 @@
     <color name="darkyellowinside">#FF6F00</color>
     <color name="lightgreenback">#DCEDC8</color>
     <color name="darkgreeninside">#33691E</color>
+    <color name="oneui_grey_back">#F7F7F7</color>
+    <color name="legend_card_back">#F44336</color>
+    <color name="freehit_card_back">#64B5F6</color>
+    <color name="rtm_card_back">#8BC34A</color>
+    <color name="yorker_card_back">#FBC02D</color>
+    <color name="mi_circle">#004BA0</color>
+    <color name="csk_circle">#F9CD05</color>
+    <color name="kkr_circle">#2E0854</color>
+    <color name="rr_circle">#004BA0</color>
+    <color name="dc_circle">#223254</color>
+    <color name="rcb_circle">#EC1C24</color>
+    <color name="sh_circle">#FF822A</color>
+    <color name="kxip_circle">#ED1B24</color>
+    <color name="gl_circle">#E04F16</color>
+    <color name="rps_circle">#D11D9B</color>
 </resources>
