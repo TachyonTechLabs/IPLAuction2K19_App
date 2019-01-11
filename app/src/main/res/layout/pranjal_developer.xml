@@ -1,357 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/cell_content_view"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:visibility="gone"
-    android:layout_height="wrap_content"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="800dp"
-        card_view:cardCornerRadius="25dp"
-        card_view:cardBackgroundColor="#f0ffffff"
-        card_view:cardElevation="0dp">
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <LinearLayout
-                android:id="@+id/dev_name_layout"
-                android:orientation="horizontal"
-                android:layout_marginTop="60dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/dev_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:textStyle="bold"
-                    android:textSize="22sp"
-                    android:textColor="@color/black"
-                    android:text="@string/developername1"/>
-
-                <ImageView
-                    android:layout_toEndOf="@id/dev_name"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:src="@drawable/verification"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/dev_location"
-                android:layout_below="@id/dev_name_layout"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <ImageView
-                    android:id="@+id/dev_loc"
-                    android:layout_width="20sp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/round_location_on_black_24"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="Andheri "/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_below="@id/dev_location"
-                android:id="@+id/dev_year_branch"
-                android:orientation="horizontal"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp">
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SE"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"/>
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="EXTC"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_below="@id/dev_year_branch"
-                android:id="@+id/dev_social"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="75dp"
-                android:layout_marginEnd="75dp">
-
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/twitter"
-                    android:onClick="twitterbtn"/>
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/facebook"
-                    android:onClick="facebookbtn"/>
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/google_plus"
-                    android:onClick="googleplusbtn"/>
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/instagram"
-                    android:onClick="instagrambtn"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/powered_by_text"
-                android:layout_below="@id/dev_social"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:text="Powered By"/>
-
-            <RelativeLayout
-                android:id="@+id/dev_powered_by"
-                android:layout_below="@id/powered_by_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <LinearLayout
-                    android:id="@+id/dev_android_studio"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp">
-
-                    <ImageView
-                        android:layout_weight="0"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/android_studio"/>
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Android Studio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_below="@id/dev_android_studio"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp">
-
-                    <ImageView
-                        android:layout_weight="0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/round_subject_black_24"/>
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Java, XML, support libraries"
-                        android:layout_marginStart="15dp"
-                        android:layout_gravity="center"/>
-
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/dev_powered_by2"
-                android:layout_below="@id/dev_powered_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <LinearLayout
-                    android:id="@+id/dev_firebase"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp">
-
-                    <ImageView
-                        android:layout_weight="0"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/firebase"/>
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Firebase"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_below="@id/dev_firebase"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp">
-
-                    <ImageView
-                        android:layout_weight="0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/round_subject_black_24"/>
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Authentication, Analytics, Crashlytics, Realtime Databse, Glide, support libraries"
-                        android:layout_marginStart="15dp"
-                        android:layout_gravity="center"/>
-
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/dev_powered_by3"
-                android:layout_below="@id/dev_powered_by2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <LinearLayout
-                    android:id="@+id/dev_adobe_xd"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp">
-
-                    <ImageView
-                        android:layout_weight="0"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/adobe_xd"/>
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:text="Adobe XD"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_below="@id/dev_adobe_xd"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp">
-
-                    <ImageView
-                        android:layout_weight="0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/round_subject_black_24"/>
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Prototyping, Wireframing, Material Designing"
-                        android:layout_marginStart="15dp"
-                        android:layout_gravity="center"/>
-
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
-
-
-            <Button
-                android:layout_below="@id/dev_powered_by3"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_round_rect"
-                android:text="Email"
-                android:textColor="@color/white"
-                android:onClick="sendemailbtn"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-
-
-
-
-
-</FrameLayout>
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/dev_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/pranjal"
+        android:transitionName="dev_image_transition"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <TextView
+        android:id="@+id/dev_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/developername1"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:transitionName="dev_name_transition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev_img" />
+
+    <LinearLayout
+        android:id="@+id/class_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev_name">
+
+        <TextView
+            android:id="@+id/year_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/year"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/branch_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/branch"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dev_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/dev1_desc"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:transitionName="dev_desc_transition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/class_linear_layout" />
+
+
+    <ImageView
+        android:id="@+id/google_plus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/circular_bg"
+        app:layout_constraintEnd_toStartOf="@+id/facebook"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/twitter"
+        app:layout_constraintTop_toBottomOf="@+id/dev_desc" />
+
+    <ImageView
+        android:id="@+id/facebook"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/circular_bg"
+        app:layout_constraintEnd_toStartOf="@+id/instagram"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/google_plus"
+        app:layout_constraintTop_toBottomOf="@+id/dev_desc" />
+
+    <ImageView
+        android:id="@+id/instagram"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/circular_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/facebook"
+        app:layout_constraintTop_toBottomOf="@+id/dev_desc" />
+
+    <ImageView
+        android:id="@+id/twitter"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/circular_bg"
+        app:layout_constraintEnd_toStartOf="@+id/google_plus"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev_desc" />
+
+    <ImageView
+        android:id="@+id/twitter_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/twitter"
+        app:layout_constraintEnd_toEndOf="@+id/twitter"
+        app:layout_constraintStart_toStartOf="@+id/twitter"
+        app:layout_constraintTop_toTopOf="@+id/twitter"
+        app:srcCompat="@drawable/twitter" />
+
+    <ImageView
+        android:id="@+id/google_plus_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/google_plus"
+        app:layout_constraintStart_toStartOf="@+id/google_plus"
+        app:layout_constraintTop_toTopOf="@+id/google_plus"
+        app:srcCompat="@drawable/google_plus" />
+
+    <ImageView
+        android:id="@+id/facebook_icon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/facebook"
+        app:layout_constraintEnd_toEndOf="@+id/facebook"
+        app:layout_constraintStart_toStartOf="@+id/facebook"
+        app:layout_constraintTop_toTopOf="@+id/facebook"
+        app:srcCompat="@drawable/facebook" />
+
+    <ImageView
+        android:id="@+id/instagram_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/instagram"
+        app:layout_constraintEnd_toEndOf="@+id/instagram"
+        app:layout_constraintStart_toStartOf="@+id/instagram"
+        app:layout_constraintTop_toTopOf="@+id/instagram"
+        app:srcCompat="@drawable/instagram" />
+
+    <Button
+        android:id="@+id/email_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/round_blue_btn"
+        android:text="@string/email"
+        android:textColor="@color/email_btn_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/google_plus"
+        app:layout_constraintVertical_bias="0.7" />
+</android.support.constraint.ConstraintLayout>

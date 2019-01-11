@@ -201,7 +201,7 @@ public class PaymentInfo extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(PaymentInfo.this,AfterRegistrationMainActivity.class));
+        startActivity(new Intent(PaymentInfo.this,OngoingPlayer.class));
         finish();
     }
 

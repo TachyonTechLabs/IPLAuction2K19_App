@@ -21,31 +21,9 @@
             android:textSize="20sp"
             android:textColor="@color/black" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_alignParentEnd="true"
-            android:layout_width="89dp"
-            android:layout_height="125dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="@string/placeholder"
-            app:srcCompat="@drawable/ipl_logo" />
-
-        <TextView
-            android:id="@+id/card_desc_bs"
-            android:layout_below="@id/card_name_bs"
-            android:layout_width="250dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/placeholder"
-            android:textSize="18sp"
-            android:textColor="@color/black" />
-
-        <TextView
+    <TextView
             android:id="@+id/card_pricetxt_bs"
-            android:layout_below="@id/card_desc_bs"
+            android:layout_below="@id/card_name_bs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -57,7 +35,7 @@
         <TextView
             android:id="@+id/card_pricevalue_bs"
             android:layout_alignParentEnd="true"
-            android:layout_below="@id/card_desc_bs"
+            android:layout_below="@id/card_name_bs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -78,6 +56,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/round_blue_btn"
         android:letterSpacing="0.5"
+        android:visibility="visible"
         android:text="@string/buy"
         android:textColor="@color/white"
         android:textSize="18sp" />
@@ -88,6 +67,7 @@
         android:layout_below="@id/card_pay_bs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         app:pinWidth="40dp"
         app:pinHeight="40dp"
         app:pinLength="4"
@@ -105,7 +85,7 @@
         android:layout_below="@id/pinView"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="30dp"
         android:text="@string/enterpin"/>

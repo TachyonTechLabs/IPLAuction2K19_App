@@ -7,6 +7,8 @@
     <string name="page1sub">Pick your own dream team by bidding for different players.</string>
     <string name="page2title">Excellent team rules the world</string>
     <string name="page2sub">Choose your players wisely and smartly.You can buy and sell them anytime you want.</string>
+    <string name="year">SE</string>
+    <string name="branch">EXTC</string>
 
 
     <string name="createroom">Create Room</string>
@@ -92,7 +94,11 @@
 
     <string name="developername1">Pranjal Chaudhari</string>
     <string name="developername2">Abhishek Gupta</string>
-
+    <string name="dev1_desc">Android and UX/UI Developer</string>
+    <string name="dev2_desc">Android and backend Developer</string>
+    <string name="email">"Email"</string>
+    <string name="devlopers">DEVELOPERS</string>
+    <string name="dev_click">Click for more info</string>
 
 
     <string name="scan_qr_msg">Please Scan The QR Code \n To Join The Room</string>

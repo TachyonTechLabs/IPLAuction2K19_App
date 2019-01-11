@@ -44,4 +44,8 @@
     <color name="kxip_circle">#ED1B24</color>
     <color name="gl_circle">#E04F16</color>
     <color name="rps_circle">#D11D9B</color>
+    <color name="twitter_facebook">#BCE3FF</color>
+    <color name="google_insta">#FFD4C6</color>
+    <color name="email_btn_text">#155405</color>
+    <color name="email_btn_back">#7CFF79</color>
 </resources>
