@@ -91,6 +91,6 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/card_bottom_sheet_buy"/>
+    <include layout="@layout/card_bottom_sheet_buy" />
 
 </android.support.design.widget.CoordinatorLayout>

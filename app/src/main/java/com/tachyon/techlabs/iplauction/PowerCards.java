@@ -87,6 +87,7 @@ public class PowerCards extends AppCompatActivity {
     StringBuilder stringBuilder;
     static CountDownTimer ct;
     static long millisinsec=0;
+    RelativeLayout.LayoutParams bottomparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +158,7 @@ public class PowerCards extends AppCompatActivity {
         params = bottonSheetLayout.getLayoutParams();
 
         txt_bs_name = findViewById(R.id.card_name_bs);
-        txt_bs_desc = findViewById(R.id.card_desc_bs);
+        //txt_bs_desc = findViewById(R.id.card_desc_bs);
         txt_bs_value = findViewById(R.id.card_pricevalue_bs);
 
         //num = paymentInfo.cardnum4.getText().toString();
@@ -189,8 +190,13 @@ public class PowerCards extends AppCompatActivity {
                 if(newState == BottomSheetBehavior.STATE_COLLAPSED)
                 {
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    //bottomSheetBehavior.setPeekHeight(0);
+                    //bottomparams.setMargins(0,0,0,0);
+                    //bottonSheetLayout.setLayoutParams(bottomparams);
+                    buyBtn.setVisibility(View.VISIBLE);
                     bgView.setVisibility(View.GONE);
                     pinText.setVisibility(View.GONE);
+                    pin.setVisibility(View.GONE);
                     getWindow().setStatusBarColor(ContextCompat.getColor(bottomSheet.getContext(), R.color.white));
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 }
@@ -213,6 +219,7 @@ public class PowerCards extends AppCompatActivity {
             }
         });
 
+        /*
         bgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,6 +235,8 @@ public class PowerCards extends AppCompatActivity {
 
             }
         });
+
+        */
 
 
         buyBtn.setOnClickListener(new View.OnClickListener() {
@@ -290,8 +299,15 @@ public class PowerCards extends AppCompatActivity {
 
     public void buyCard()
     {
-        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.MATCH_PARENT - 100;
+        params.height = height;
+        //params.height = params.height - 100;
         bottonSheetLayout.setLayoutParams(params);
+        buyBtn.setVisibility(View.GONE);
+        //bottomparams.setMargins(0,100,0,0);
+        //bottonSheetLayout.setLayoutParams(bottomparams);
+        //bottomSheetBehavior.setPeekHeight(500);
+        //recyclerView.setEnabled(false);
         pin.setVisibility(View.VISIBLE);
         pinText.setVisibility(View.VISIBLE);
         String cardName = txt_bs_name.getText().toString();
@@ -354,6 +370,8 @@ public class PowerCards extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                                    buyBtn.setVisibility(View.VISIBLE);
+                                    //bottomSheetBehavior.setPeekHeight(0);
                                     pin.setVisibility(View.GONE);
                                     pinText.setVisibility(View.GONE);
 
@@ -386,6 +404,8 @@ public class PowerCards extends AppCompatActivity {
         {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            //bottomSheetBehavior.setPeekHeight(0);
+            buyBtn.setVisibility(View.VISIBLE);
             pin.setVisibility(View.GONE);
             pinText.setVisibility(View.GONE);
         }

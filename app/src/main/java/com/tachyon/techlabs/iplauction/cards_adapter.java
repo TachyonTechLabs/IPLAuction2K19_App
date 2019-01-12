@@ -72,25 +72,26 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
                     {
                         case 0 :
                             bs_name.setText(names[position]);
-                            bs_desc.setText(disc[position]);
+                            //bs_desc.setText(disc[position]);
                             bs_value.setText(R.string.yorker_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            //bottomSheetBehavior.setPeekHeight(300);
                             break;
                         case 1 :
                             bs_name.setText(names[position]);
-                            bs_desc.setText(disc[position]);
+                            //bs_desc.setText(disc[position]);
                             bs_value.setText(R.string.no_ball_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                         case 2 :
                             bs_name.setText(names[position]);
-                            bs_desc.setText(disc[position]);
+                            //bs_desc.setText(disc[position]);
                             bs_value.setText(R.string.right_to_match_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                         case 3 :
                             bs_name.setText(names[position]);
-                            bs_desc.setText(disc[position]);
+                            //bs_desc.setText(disc[position]);
                             bs_value.setText(R.string.legend_cards_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
@@ -113,7 +114,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
         this.bottonSheetLayout = bottomSheetLayout;
         this.bottomSheetBehavior = bottomSheetBehavior;
         this.bs_name = bs_name;
-        this.bs_desc = bs_desc;
+        //this.bs_desc = bs_desc;
         this.bs_value = bs_value;
 
     }
