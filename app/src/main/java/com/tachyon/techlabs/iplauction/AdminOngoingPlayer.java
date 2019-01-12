@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String userEmail,id,boss_name;
+    HashMap<String,Boolean> timer;
     Bundle extras;
 
     @Override
@@ -143,5 +145,6 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         builder.setNegativeButton(R.string.no,null);
         builder.show();
     }
+
 
 }

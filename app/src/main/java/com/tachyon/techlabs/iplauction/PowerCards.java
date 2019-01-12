@@ -1,8 +1,10 @@
 package com.tachyon.techlabs.iplauction;
+import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -21,6 +23,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -34,7 +38,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,6 +50,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 
@@ -57,6 +65,7 @@ public class PowerCards extends AppCompatActivity {
     public RelativeLayout bottonSheetLayout;
     public BottomSheetBehavior bottomSheetBehavior;
     View bgView;
+    CircularProgressIndicator circularProgress;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView txt_bs_name,txt_bs_desc,txt_bs_value;
     DocumentReference mainDoc;
@@ -84,7 +93,25 @@ public class PowerCards extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_recyclerview);
 
-        final CircularProgressIndicator circularProgress = findViewById(R.id.circular_progress);
+    circularProgress = findViewById(R.id.circular_progress);
+
+        CountDownTimer  ct= new CountDownTimer(1*60 * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                millisinsec=(millisUntilFinished/1000);
+                String time=("Seconds remaining: " + millisUntilFinished / 1000);
+                circularProgress.setProgress(millisinsec, 300);
+                circularProgress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
+                //  TextView timee=findViewById(R.id.textView2);
+                //timee.setText(time);
+
+                //  currenttime((millisUntilFinished / 1000));
+            }
+            public void onFinish() {
+                // mTextField.setText("Done !");
+                showDialogWarning();
+            }
+        }.start();
+
 
 
 
@@ -172,21 +199,6 @@ public class PowerCards extends AppCompatActivity {
 
             //CountDown Timer Function
 
-          CountDownTimer  ct= new CountDownTimer(5*60 * 1000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    millisinsec=(millisUntilFinished/1000);
-                    String time=("Seconds remaining: " + millisUntilFinished / 1000);
-                    circularProgress.setProgress(millisinsec, 300);
-                    circularProgress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
-                    //  TextView timee=findViewById(R.id.textView2);
-                    //timee.setText(time);
-
-                    //  currenttime((millisUntilFinished / 1000));
-                }
-                public void onFinish() {
-                    // mTextField.setText("Done !");
-                }
-            }.start();
 
 
 
@@ -235,6 +247,20 @@ public class PowerCards extends AppCompatActivity {
 
     }
 
+    private void showDialogWarning() {
+        final Dialog dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCanceledOnTouchOutside(false);
+    //    dialog.setCancelable(false);  //onnBackPress if i want to cancel the dialogbox
+        dialog.setContentView(R.layout.dialog_warning_timer);
+        WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+
+    }
 
 
     public void readCardNum()
@@ -488,8 +514,4 @@ public class PowerCards extends AppCompatActivity {
 
         }
     };
-
-
-
-
 }
