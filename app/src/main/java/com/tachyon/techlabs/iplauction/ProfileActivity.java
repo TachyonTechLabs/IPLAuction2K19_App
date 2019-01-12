@@ -203,7 +203,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         }
         else
         {
-            startActivity(new Intent(ProfileActivity.this,AfterRegistrationMainActivity.class));
+            startActivity(new Intent(ProfileActivity.this,OngoingPlayer.class));
             finish();
         }
 
