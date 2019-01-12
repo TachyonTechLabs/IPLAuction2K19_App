@@ -7,8 +7,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -23,12 +27,26 @@ import java.util.Objects;
 public class about_developers extends AppCompatActivity {
     CardView dev1_card,dev2_card;
     ImageView dev1_img,dev2_img;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView navigationView;
+
     TextView dev1_name_text,dev2_name_text,dev1_desc_text,dev2_desc_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_developers);
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mydrawer);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+
+//        mDrawerLayout.addDrawerListener(mToggle);
+  //      mToggle.syncState();
+
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.oneui_grey_back));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -75,5 +93,22 @@ public class about_developers extends AppCompatActivity {
                 startActivity(sharedIntent,options.toBundle());
             }
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        if(this.mDrawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            startActivity(new Intent(about_developers.this,OngoingPlayer.class));
+            finish();
+        }
+        super.onBackPressed();
+
     }
 }

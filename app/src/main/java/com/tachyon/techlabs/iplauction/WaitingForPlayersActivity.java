@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -65,6 +66,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     String [] teams;
     List<String> teamnames;
     String myteam,teamuser;
+    private ValueEventListener mReferenceListener;
     DocumentReference teamdoc;
 
 
@@ -262,7 +264,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(queryDocumentSnapshots)) {
                     if(!document.getId().equals("CurrentPlayer") && !document.getId().equals("START GAME"))
                     list.add(document.getId());
-                }
+                    }
                 // Log.d(TAG, list.toString());
                 // Toast.makeText(WaitingForPlayersActivity.this, list.toString(), Toast.LENGTH_SHORT).show();
                 setPlayerNames();
@@ -393,6 +395,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         //admin.putExtra("roomid",roomid);
         //admin.putExtra("userEmail",member);
         //admin.putExtra("boss_name",boss_namee);
+
+        storyline_selector_dialog();
         startActivity(admin);
         finish();
 
@@ -403,10 +407,47 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     }
 
+    private void storyline_selector_dialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Storyline");
+        builder.setSingleChoiceItems(teams, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                List<Integer> list=new ArrayList<>();
+                list.add(1);
+                list.add(2);
+                list.add(3);
+
+                Integer storyline_number = list.get(which);
+            }
+        });
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, final int which) {
+
+
+                }
+        });
+
+        builder.create();
+        builder.show();
+
+
+
+    }
+
     public void setStart()
     {
         gamestart.put("start",1);
         DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
         start_game.set(gamestart);
+    }
+
+    @Override
+    protected void onStop() {
+
+
+        super.onStop();
     }
 }

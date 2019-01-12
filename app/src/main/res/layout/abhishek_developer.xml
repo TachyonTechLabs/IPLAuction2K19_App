@@ -188,6 +188,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/round_blue_btn"
         android:text="@string/email"
+        android:onClick="abhi_email"
         android:textColor="@color/email_btn_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,5 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -66,5 +67,12 @@ public class PranjalActivity extends AppCompatActivity {
         }
     }
 
+    public void pranjal_email(View view) {
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, "pranjalpchaudhari99@gmail.com");
+        startActivity(Intent.createChooser(intent, "Send Email"));
+    }
 }
 

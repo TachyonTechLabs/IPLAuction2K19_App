@@ -26,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -62,6 +63,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
 
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));

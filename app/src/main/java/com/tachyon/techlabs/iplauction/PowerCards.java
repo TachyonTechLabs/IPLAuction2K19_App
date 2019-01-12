@@ -1,32 +1,24 @@
 package com.tachyon.techlabs.iplauction;
 import android.app.Dialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,20 +30,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.Nullable;
 
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 
@@ -75,6 +62,7 @@ public class PowerCards extends AppCompatActivity {
     int currentAmount,currentNumOfCards,itemsPurchased;
     AppConstants appConstants = new AppConstants();
     int card_amount=0;
+    String users_password;
     Button buyBtn;
     int flag=0;
     String history;
@@ -93,10 +81,12 @@ public class PowerCards extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_recyclerview);
+        circularProgress = findViewById(R.id.circular_progress);
+        passwordDialog();
 
-    circularProgress = findViewById(R.id.circular_progress);
 
-        CountDownTimer  ct= new CountDownTimer(1*60 * 1000, 1000) {
+
+         ct= new CountDownTimer(1*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);
@@ -111,7 +101,7 @@ public class PowerCards extends AppCompatActivity {
                 // mTextField.setText("Done !");
                 showDialogWarning();
             }
-        }.start();
+        };
 
 
 
@@ -254,6 +244,79 @@ public class PowerCards extends AppCompatActivity {
 
         */
 
+    }
+
+    private void passwordDialog() {
+
+     final   AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        final View viewlayout = inflater.inflate(R.layout.dialog_password, null);
+
+
+        builder.setCancelable(false);
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(viewlayout)
+                // Add action buttons
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //dialog.cancel();
+                        // sign in the user ...
+                        // Toast.makeText(this,"Joined successfully",Toast.LENGTH_SHORT).show();
+                    }
+                });
+        final AlertDialog alert=builder.create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                EditText user_password_field= viewlayout.findViewById(R.id.password);
+                users_password = user_password_field.getText().toString();
+
+
+                if(crosscheck_password(users_password)) {
+
+                    alert.dismiss();
+                    ct.start();
+                }
+                    else if(!crosscheck_password(users_password)) {
+
+                     if(users_password.matches(""))
+                    {
+                        Toast.makeText(getApplicationContext(),"Empty Password",Toast.LENGTH_SHORT).show();
+
+                    }
+                    else
+                    Toast.makeText(context, "Incorrect Password", Toast.LENGTH_SHORT).show();
+
+                }
+
+                else
+                    Toast.makeText(context, "Invalid Password", Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        });
+
+
+
+    }
+
+    private boolean crosscheck_password(String users_password) {
+        if(users_password.matches("Abhishek"))
+        {
+            Toast.makeText(context, "Correct Password", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else
+        return false;
     }
 
     private void showDialogWarning() {
