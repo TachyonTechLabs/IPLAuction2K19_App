@@ -54,6 +54,8 @@ public class about_developers extends AppCompatActivity {
                 pairs[1] = new Pair<View,String>(dev1_name_text,"dev_name_transition");
                 pairs[2] = new Pair<View,String>(dev1_desc_text,"dev_desc_transition");
 
+                ReflowText.addExtras(sharedIntent,new ReflowText.ReflowableTextView(dev1_name_text));
+
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(about_developers.this,pairs);
 
                 startActivity(sharedIntent,options.toBundle());
