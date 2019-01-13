@@ -65,7 +65,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         getId();
 
         extras = getIntent().getExtras();
-        
+
     }
 
     public void getId()
