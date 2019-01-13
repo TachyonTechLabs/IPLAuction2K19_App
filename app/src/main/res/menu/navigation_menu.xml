@@ -12,10 +12,10 @@
         android:title="Profile" />
     <item
         android:id="@+id/nav_opponents"
-        android:title="Opponennts" />
+        android:title="Opponents" />
     <item
         android:id="@+id/nav_players"
-        android:title="Players" />
+        android:title="Ongoing Players" />
     <item
         android:id="@+id/nav_payments_info"
         android:title="Payment Info" />

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#0336ff</color>
     <color name="colorPrimaryDark">#00000000</color>
-    <color name="colorAccent">#6200EE</color>
+    <color name="colorAccent">#6200ee</color>
     <color name="startBackgroundBlack">#202124</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -48,4 +48,19 @@
     <color name="google_insta">#FFD4C6</color>
     <color name="email_btn_text">#155405</color>
     <color name="email_btn_back">#7CFF79</color>
+    <color name="mi_opp_back">#D1DAFF</color>
+    <color name="csk_opp_back">#FFEED2</color>
+    <color name="kkr_opp_back">#F1D5FF</color>
+    <color name="rcb_opp_back">#FFCCD2</color>
+    <color name="mi_text">#223480</color>
+    <color name="csk_text">#FF6600</color>
+    <color name="kkr_text">#430064</color>
+    <color name="rr_text">#223480</color>
+    <color name="dc_text">#223254</color>
+    <color name="rcb_text">#C1011A</color>
+    <color name="sh_text">#FF6600</color>
+    <color name="kxip_text">#ED2228</color>
+    <color name="gl_text">#E04F16</color>
+    <color name="rps_text">#D11D9B</color>
+
 </resources>

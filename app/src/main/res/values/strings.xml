@@ -54,6 +54,10 @@
     <string name="currentbid">Current Bid</string>
     <string name="availablebids">Available Bids</string>
 
+    <string name="opponents">Opponents</string>
+    <string name="players">Players</string>
+    <string name="balance">Balance</string>
+
     <string name="developeremail1">pranjalpchaudhari99@gmail.com</string>
     <string name="developeremail2">abhishekgupta97023@gmail.com</string>
     <string name="dev1_name">PRANJAL CHAUDHARI</string>
@@ -97,7 +101,7 @@
     <string name="dev1_desc">Android and UX/UI Developer</string>
     <string name="dev2_desc">Android and backend Developer</string>
     <string name="email">"Email"</string>
-    <string name="devlopers">DEVELOPERS</string>
+    <string name="devlopers">Developers</string>
     <string name="dev_click">Click for more info</string>
 
 

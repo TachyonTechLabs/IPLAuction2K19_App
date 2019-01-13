@@ -236,6 +236,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.nav_opponents:
+                startActivity(new Intent(ProfileActivity.this,OpponentsActivity.class));
                 break;
 
             case R.id.nav_cards:

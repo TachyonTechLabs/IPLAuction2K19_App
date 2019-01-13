@@ -9,9 +9,16 @@
     android:fitsSystemWindows="true">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/dev_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/oneui_grey_back">
+
+        <include
+            android:id="@+id/dev_toolbar"
+            layout="@layout/app_toolbar">
+
+        </include>
 
 
         <TextView
@@ -22,10 +29,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/devlopers"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

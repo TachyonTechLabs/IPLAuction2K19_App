@@ -442,19 +442,22 @@ public class PowerCards extends AppCompatActivity {
                                 }
                             });
 
-                    mainDoc.update("itemsPurchased",itemsPurchased).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            startActivity(new Intent(PowerCards.this,PaymentInfo.class));
-                            finish();
-                        }
-                    });
+                    showHistory();
+
+
 
 
                 }
             }
 
         });
+    }
+
+    public void showHistory()
+    {
+        mainDoc.update("itemsPurchased",itemsPurchased);
+        //startActivity(new Intent(PowerCards.this,PaymentInfo.class));
+        //finish();
     }
 
     public void cardback(View view) {
