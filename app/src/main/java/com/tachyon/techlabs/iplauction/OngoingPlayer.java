@@ -34,6 +34,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -61,6 +64,11 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     FirebaseStorage storage;
     StorageReference storageRef;
     ImageView player_img;
+    Handler handler;
+    Runnable runnable;
+    DocumentReference curr_doc;
+    Query query;
+    ListenerRegistration registration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +114,8 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         //String name = getIntent().getExtras().getString("name");
         nav.setNavigationItemSelectedListener(this);
 
+        handler = new Handler();
+
         getId();
     }
 
@@ -136,8 +146,8 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
     public void getCurrent()
     {
-        DocumentReference documentReference = db.collection(id).document("CurrentPlayer");
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        curr_doc = db.collection(id).document("CurrentPlayer");
+        curr_doc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 current = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("curr")).intValue();
@@ -192,13 +202,13 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_players:
-                startActivity(new Intent(OngoingPlayer.this,PLAYERS.class));
-                finish();
+                //startActivity(new Intent(OngoingPlayer.this,PLAYERS.class));
+                //finish();
                 break;
 
             case R.id.nav_profile:
                 //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
-                Handler handler = new Handler();
+                //Handler handler = new Handler();
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -206,18 +216,30 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         finish();
                     }
                 };
-                handler.postDelayed(runnable,250);
+                handler.postDelayed(runnable,150);
 
                 break;
 
             case R.id.nav_opponents:
-                startActivity(new Intent(OngoingPlayer.this,activity_vertical_ntb.class));
-                finish();
+                Runnable opp_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OngoingPlayer.this,OpponentsActivity.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(opp_runnable,150);
                 break;
 
             case R.id.nav_payments_info:
-                startActivity(new Intent(OngoingPlayer.this,PaymentInfo.class));
-                finish();
+                Runnable dev_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OngoingPlayer.this,PaymentInfo.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(dev_runnable,150);
                 break;
 
             case R.id.nav_cards:
@@ -233,13 +255,26 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_about_us:
-                startActivity(new Intent(OngoingPlayer.this,About.class));
-                finish();
+                Runnable about_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OngoingPlayer.this,About.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(about_runnable,150);
                 break;
 
             case R.id.nav_developer:
-                startActivity(new Intent(OngoingPlayer.this,about_developers.class));
-                finish();
+                //Handler handler = new Handler();
+                Runnable pay_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OngoingPlayer.this,about_developers.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(pay_runnable,150);
                 break;
 
             case R.id.nav_about_app:
@@ -295,40 +330,84 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit Game?");
-        builder.setMessage("Do you really wish to leave the room and exit?");
-        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                db.collection(id).document(userEmail).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        DocumentReference updateRef = db.collection("Players").document(userEmail);
-                        updateRef.update("inRoom", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-                                Handler handler = new Handler();
-                                Runnable runnable = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startActivity(new Intent(OngoingPlayer.this, AfterRegistrationMainActivity.class));
-                                        finish();
-                                    }
-                                };
-                                handler.postDelayed(runnable, 500);
-                                //finish();
-                                //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
-                                //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }                     //DocumentReference start_game = db.collection(id).document(Objects.requireNonNull("START GAME"));
-                });
+
+    @Override
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Exit Game?");
+            builder.setMessage("Do you really wish to leave the room and exit?");
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    db.collection(id).document(userEmail).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            DocumentReference updateRef = db.collection("Players").document(userEmail);
+                            updateRef.update("inRoom", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    Handler handler = new Handler();
+                                    Runnable runnable = new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            startActivity(new Intent(OngoingPlayer.this, AfterRegistrationMainActivity.class));
+                                            finish();
+                                        }
+                                    };
+                                    handler.postDelayed(runnable, 500);
+                                    //finish();
+                                    //Toast.makeText(WaitingForPlayersActivity.this, "Left the room", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }                     //DocumentReference start_game = db.collection(id).document(Objects.requireNonNull("START GAME"));
+                    });
+                }
+            });
+            builder.setNegativeButton(R.string.no,null);
+            builder.show();
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        query = db.collection(id);
+        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
             }
         });
-        builder.setNegativeButton(R.string.no,null);
-        builder.show();
+        registration.remove();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        query = db.collection(id);
+        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+            }
+        });
+        registration.remove();
+        super.onDestroy();
     }
 }

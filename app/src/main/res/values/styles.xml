@@ -10,15 +10,16 @@
         <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
         <item name="android:windowActivityTransitions">true</item>
+        <!--<item name="android:windowContentTransitions">true</item>-->
         <!-- specify enter and exit transitions -->
         <!--<item name="android:windowEnterTransition">@transition/explode</item>-->
         <!--<item name="android:windowExitTransition">@transition/explode</item>-->
 
         <!-- specify shared element transitions -->
         <item name="android:windowSharedElementEnterTransition">
-            @transition/reflow_enter</item>
+            @transition/detail_transition</item>
         <item name="android:windowSharedElementExitTransition">
-            @transition/reflow_exit</item>
+            @transition/detail_transition</item>
 
     </style>
 

@@ -53,9 +53,10 @@
             android:label="@string/title_activity_about_developers"
             android:theme="@style/AppTheme" />
         <activity android:name=".developers" />
-        <activity android:name=".MyTeamActivity"></activity>
+        <activity android:name=".MyTeamActivity" />
         <activity android:name=".PranjalActivity" />
         <activity android:name=".AbhishekActivity" />
+        <activity android:name=".OpponentsActivity"></activity>
     </application>
 
 </manifest>
