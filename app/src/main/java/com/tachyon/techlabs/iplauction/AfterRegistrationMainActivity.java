@@ -176,7 +176,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
     public void updateUI(FirebaseUser user) {
         if (user != null) {
-            setContentView(R.layout.activity_after_registration_main);
+
 
             userEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
             DocumentReference docRef = db.collection("Players").document(userEmail);
@@ -189,6 +189,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                         if(in==1)
                         {
                             checkIfStart();
+                        }
+                        else
+                        {
+                            setContentView(R.layout.activity_after_registration_main);
                         }
                     }
 

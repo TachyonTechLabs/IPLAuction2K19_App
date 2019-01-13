@@ -62,12 +62,12 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     String [] players;
     Button startgame;
-    int value;
+    int value,storyFlag=0;
     Map<String, Object> gamestart = new HashMap<>();
     Map<String, String> teammap = new HashMap<>();
-    String [] teams;
-    List<String> teamnames;
-    String myteam,teamuser;
+    String [] teams,story;
+    List<String> teamnames,storynames;
+    String myteam,teamuser,selectedStory;
     private ValueEventListener mReferenceListener;
     DocumentReference teamdoc;
     DocumentReference start_game;
@@ -91,6 +91,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
         teams = getResources().getStringArray(R.array.team_names);
         teamnames = new ArrayList<>(Arrays.asList(teams));
+        story = getResources().getStringArray(R.array.story_lines);
+        storynames = new ArrayList<>(Arrays.asList(story));
         //teamnames = Arrays.asList(teams);
 
         DocumentReference docname = db.collection("Players").document(member);
@@ -163,32 +165,39 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     public  void setTeam()
     {
-        teams = teamnames.toArray(new String[0]);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Your Team");
-        builder.setSingleChoiceItems(teams, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                myteam = teamnames.get(which);
-            }
-        });
-        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, final int which) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(WaitingForPlayersActivity.this);
-                builder.setTitle("Confirm Team");
-                builder.setMessage("Are You Sure ?");
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setPlayerTeam();
+        if(teamuser.equals(member))
+        {
+            storyline_selector_dialog();
+        }
+        else
+        {
+            teams = teamnames.toArray(new String[0]);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Select Your Team");
+            builder.setSingleChoiceItems(teams, 0, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    myteam = teamnames.get(which);
+                }
+            });
+            builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, final int which) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WaitingForPlayersActivity.this);
+                    builder.setTitle("Confirm Team");
+                    builder.setMessage("Are You Sure ?");
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setPlayerTeam();
 
 
-                            }
-                        });
-                builder.setNegativeButton(R.string.no,null);
-                builder.show();
+                        }
+                    });
+                    builder.setNegativeButton(R.string.no,null);
+                    builder.show();
 
 
 
@@ -206,10 +215,12 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                 teamnames.remove(myteam);
                 Log.d("teanmane123",teamnames.toString());
                 //onResume();*/
-            }
-        });
-        builder.setNegativeButton(R.string.CANCEL,null);
-        builder.show();
+                }
+            });
+            builder.setNegativeButton(R.string.CANCEL,null);
+            builder.show();
+        }
+
     }
 
     public void setPlayerTeam()
@@ -217,6 +228,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         //final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
         //lyt_progress.setVisibility(View.VISIBLE);
         //DocumentReference documentReference = db.collection("Players").document(teamuser);
+        teammap.clear();
         teammap.put(teamuser,myteam);
         teamdoc.set(teammap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -267,7 +279,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 list = new ArrayList<>();
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(queryDocumentSnapshots)) {
-                    if(!document.getId().equals("CurrentPlayer") && !document.getId().equals("START GAME"))
+                    if(!document.getId().equals("CurrentPlayer") && !document.getId().equals("START GAME") && !document.getId().equals("Story"))
                     list.add(document.getId());
                     }
                 // Log.d(TAG, list.toString());
@@ -402,49 +414,68 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         //admin.putExtra("userEmail",member);
         //admin.putExtra("boss_name",boss_namee);
 
-        storyline_selector_dialog();
+        //storyline_selector_dialog();
         startActivity(admin);
+        
+        setStart();
+
         finish();
 
-        setStart();
+        /*
+        if(storyFlag==1)
+        {
+
+
+        }
+
+        */
+
 
         Log.d("startgameintent","called start game ");
 
 
     }
 
-    private void storyline_selector_dialog() {
+    public void storyline_selector_dialog() {
+
+        //String [] storyline = {"StoryLine 1","StoryLine 2"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Storyline");
-        builder.setSingleChoiceItems(teams, 0, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(story, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                List<Integer> list=new ArrayList<>();
-                list.add(1);
-                list.add(2);
-                list.add(3);
-
-                Integer storyline_number = list.get(which);
+                //List<Integer> list=new ArrayList<>();
+                //list.add(1);
+                //list.add(2);
+                //list.add(3);
+                selectedStory = storynames.get(which);
             }
         });
         builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, final int which) {
-
-
+                    setStory();
                 }
         });
 
-        builder.create();
+        //builder.create();
         builder.show();
 
+    }
 
+    public void setStory()
+    {
+        DocumentReference story_doc = db.collection(roomid).document("Story");
+        teammap.clear();
+        teammap.put("story",selectedStory);
+        story_doc.set(teammap);
 
     }
 
     public void setStart()
     {
+        gamestart.clear();
         gamestart.put("start",1);
         DocumentReference start_game = db.collection(roomid).document(Objects.requireNonNull("START GAME"));
         start_game.set(gamestart);
