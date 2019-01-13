@@ -416,7 +416,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
         //storyline_selector_dialog();
         startActivity(admin);
-        
+
         setStart();
 
         finish();
