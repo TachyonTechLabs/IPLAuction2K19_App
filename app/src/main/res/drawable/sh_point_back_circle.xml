@@ -4,10 +4,10 @@
     android:padding="10dp">
 
     <solid
-        android:color="@color/mi_circle" />
+        android:color="@color/sh_circle" />
 
     <size
-        android:height="40dp"
-        android:width="40dp"
+        android:height="80dp"
+        android:width="80dp"
         />
 </shape>

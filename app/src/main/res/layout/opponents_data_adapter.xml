@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/mi_circle"
+        android:background="@drawable/mi_point_back_circle"
         app:cardBackgroundColor="@color/mi_opp_back"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
