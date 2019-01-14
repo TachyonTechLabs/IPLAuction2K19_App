@@ -190,10 +190,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                         {
                             checkIfStart();
                         }
-                        else
-                        {
-                            setContentView(R.layout.activity_after_registration_main);
-                        }
+                    }
+                    else
+                    {
+                        setContentView(R.layout.activity_after_registration_main);
                     }
 
                 }
