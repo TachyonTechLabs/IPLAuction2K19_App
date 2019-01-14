@@ -1,6 +1,7 @@
 package com.tachyon.techlabs.iplauction;
 
 import android.content.Intent;
+import android.app.SharedElementCallback;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -10,12 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.util.List;
 import java.util.Objects;
 
 public class PranjalActivity extends AppCompatActivity {
     ImageView twitter,google_plus,facebook,instagram,dev;
     Button email_btn;
+    //TextView dev1_name_text,dev1_desc_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,24 @@ public class PranjalActivity extends AppCompatActivity {
         facebook = findViewById(R.id.facebook);
         instagram = findViewById(R.id.instagram);
         email_btn = findViewById(R.id.email_btn);
+
+        final TextView dev1_name_text = (TextView) findViewById(R.id.dev1_main_name);
+        final TextView dev1 = (TextView) findViewById(R.id.dev_name);
+        //dev1_desc_text = findViewById(R.id.dev1_main_descc);
+
+        setEnterSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+               // super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
+                ReflowText.setupReflow(getIntent(),dev1);
+            }
+
+            @Override
+            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                //super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots);
+                ReflowText.setupReflow(new ReflowText.ReflowableTextView(dev1));
+            }
+        });
 
 
         for(int i=0;i<2;i++)
