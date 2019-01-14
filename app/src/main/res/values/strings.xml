@@ -35,6 +35,9 @@
     <string name="price">PRICE</string>
     <string name="price_small">Price</string>
     <string name="buy">BUY</string>
+    <string name="sell_to">Sell To</string>
+    <string name="sell">Sell</string>
+    <string name="amount">Enter Amount</string>
 
     <string name="yorker">YORKER</string>
     <string name="noBall">NO BALL</string>

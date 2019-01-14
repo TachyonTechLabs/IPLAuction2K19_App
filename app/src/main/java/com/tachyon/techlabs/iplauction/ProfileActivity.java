@@ -56,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     ArrayList<String> rooms=new ArrayList<String>();
     SharedPreferences sp;
     Spinner spin;
+    TextView profile_myteam;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         }
 
         progressBar_indeterminate_circle = findViewById(R.id.profile_progress);
+        profile_myteam = findViewById(R.id.profile_myteam);
+
+        profile_myteam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this,MyTeamActivity.class));
+            }
+        });
 
         listView = findViewById(R.id.profile_listview);
         //teams=findViewById(R.id.team_listview);

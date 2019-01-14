@@ -79,6 +79,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     ImageView point_back;
     Drawable drawable;
     GradientDrawable gradientDrawable;
+    TextView my_team;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,16 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         basetext = findViewById(R.id.base_price_value);
         player_img = findViewById(R.id.player_img);
         extras = getIntent().getExtras();
+
+        my_team = findViewById(R.id.my_team_op);
+
+        my_team.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OngoingPlayer.this,MyTeamActivity.class));
+                finish();
+            }
+        });
 
         //toolbar_text = findViewById(R.id.app_toolbar_nametxt);
 

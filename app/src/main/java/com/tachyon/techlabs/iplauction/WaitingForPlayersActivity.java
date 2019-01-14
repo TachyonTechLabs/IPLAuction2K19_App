@@ -156,7 +156,6 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 myteam = teams[0];
                 teamuser = list.get(position);
-                teamdoc = db.collection("Players").document("Teams");
                 if(boss_namee.equals("true"))
                     setTeam();
             }
@@ -228,9 +227,10 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         //final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
         //lyt_progress.setVisibility(View.VISIBLE);
         //DocumentReference documentReference = db.collection("Players").document(teamuser);
+        teamdoc = db.collection("Players").document(teamuser);
         teammap.clear();
-        teammap.put(teamuser,myteam);
-        teamdoc.set(teammap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        //teammap.put(teamuser,myteam);
+        teamdoc.update("myteam",myteam).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 teamnames.remove(myteam);

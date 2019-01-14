@@ -190,6 +190,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                         {
                             checkIfStart();
                         }
+                        else
+                        {
+                            setContentView(R.layout.activity_after_registration_main);
+                        }
                     }
                     else
                     {
@@ -504,6 +508,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("joinkey",joinkey);
         owner_details.put("itemsPurchased",0);
         owner_details.put("myteam","");
+        owner_details.put("players_bought",0);
 
         //gamestart.put("start",0);
 
@@ -762,6 +767,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         members.put("joinkey",joinkey);
         members.put("itemsPurchased",0);
         members.put("myteam","");
+        members.put("players_bought",0);
 
         docRef2
                 .set(members)

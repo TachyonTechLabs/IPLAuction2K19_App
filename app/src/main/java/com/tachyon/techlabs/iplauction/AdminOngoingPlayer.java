@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,6 +37,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -48,9 +54,17 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     FirebaseUser currentUser;
     String userEmail,id,boss_name;
     HashMap<String,Boolean> timer;
+    HashMap<String,Object> sell = new HashMap<>();
     Bundle extras;
     private Menu menu;
-    String storyline;
+    String storyline,current_player;
+    TextView ipl_player;
+    int num_bought;
+    TextInputEditText bid_value;
+    List<String> users;
+    String [] usernames;
+    Spinner spinner;
+    String selectedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +76,9 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         //list.remove(0);
 
         playerlist = findViewById(R.id.adminlist);
+        ipl_player = findViewById(R.id.ipl_player_admin_text);
+        bid_value = findViewById(R.id.text_input_value_admin);
+        spinner = findViewById(R.id.player_spinner);
         getId();
 
         extras = getIntent().getExtras();
@@ -86,6 +103,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 id = documentSnapshot.getString("roomid");
+                addUserList();
                 getStoryLine();
                 setCurrentPlayer();
             }
@@ -126,6 +144,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void setDisplayPlayer()
     {
+        Collections.sort(list);
         players = new String[list.size()];
         players = list.toArray(players);
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,players);
@@ -140,6 +159,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 documentReference.update("curr",list.get(position));
+                ipl_player.setText(list.get(position));
+                current_player = list.get(position);
             }
         });
 
@@ -226,6 +247,80 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     }
 
 
+    public void sellPlayer(View view) {
+        if(TextUtils.isEmpty(bid_value.getText().toString().trim()))
+        {
+            bid_value.setError("Enter Amount");
+        }
+        else if(TextUtils.isEmpty(spinner.getSelectedItem().toString().trim()))
+        {
+            Toast.makeText(this, "Select User who bought player", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            selectedUser = spinner.getSelectedItem().toString();
+            getNumber();
+        }
 
+    }
 
+    public void getNumber()
+    {
+        DocumentReference getNum_doc = db.collection("Players").document(selectedUser);
+        getNum_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                num_bought = Objects.requireNonNull(documentSnapshot.getLong("players_bought")).intValue();
+                num_bought+=1;
+                sellCurrentPlayer();
+            }
+        });
+    }
+
+    public void addUserList()
+    {
+        db.collection(id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                users = new ArrayList<>();
+                for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots)
+                {
+                    if(!documentSnapshot.getId().equals("CurrentPlayer") && !documentSnapshot.getId().equals("START GAME") && !documentSnapshot.getId().equals("Story"))
+                    users.add(documentSnapshot.getId());
+                }
+                users.remove(userEmail);
+                usernames = new String[users.size()];
+
+                for(int i=0;i<users.size();i++)
+                {
+                    usernames[i] = users.get(i);
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminOngoingPlayer.this,android.R.layout.simple_spinner_dropdown_item,usernames);
+                spinner.setAdapter(adapter);
+            }
+        });
+    }
+
+    public void sellCurrentPlayer()
+    {
+        sell.clear();
+        sell.put("1",current_player);
+        sell.put("2",bid_value.getText().toString().trim());
+        DocumentReference sell_doc = db.collection("Players").document(selectedUser)
+                .collection("MyTeam").document(num_bought+"");
+
+        sell_doc.set(sell).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                updateNumber();
+                Toast.makeText(AdminOngoingPlayer.this, "Player sold successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void updateNumber()
+    {
+        DocumentReference updateNUm_doc = db.collection("Players").document(selectedUser);
+        updateNUm_doc.update("players_bought",num_bought);
+    }
 }
