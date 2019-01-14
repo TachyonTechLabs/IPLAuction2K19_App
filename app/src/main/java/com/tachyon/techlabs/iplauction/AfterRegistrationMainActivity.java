@@ -3,6 +3,7 @@ package com.tachyon.techlabs.iplauction;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -27,6 +30,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -193,6 +198,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                         else
                         {
                             setContentView(R.layout.activity_after_registration_main);
+                           if( !isNetworkAvailable())
+                               connecttoInternet();
+
+
                         }
                     }
 
@@ -203,6 +212,22 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         {
             goToLogin();
         }
+    }
+
+    private void connecttoInternet() {
+
+        final Dialog dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCanceledOnTouchOutside(false);
+        //    dialog.setCancelable(false);  //onnBackPress if i want to cancel the dialogbox
+        dialog.setContentView(R.layout.dialog_nointernet);
+        WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+
     }
 
     public void goToLogin()
@@ -1020,5 +1045,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

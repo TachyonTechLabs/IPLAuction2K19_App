@@ -33,11 +33,12 @@
     <item android:title="About">
         <menu>
             <item
+                android:id="@+id/nav_about_us"
+                android:title="Rules" />
+            <item
                 android:id="@+id/nav_share"
                 android:title="Share app" />
-            <item
-                android:id="@+id/nav_about_us"
-                android:title="About Us" />
+
             <item
                 android:id="@+id/nav_developer"
                 android:title="About Developer" />

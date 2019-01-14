@@ -1,5 +1,4 @@
 package com.tachyon.techlabs.iplauction;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera2" />
 
@@ -47,18 +48,15 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".OngoingPlayer" />
-
-
         <activity android:name=".AdminOngoingPlayer">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
 
-        <intent-filter>
-            <action android:name="android.intent.action.SEARCH" />
-        </intent-filter>
-        <meta-data android:name="android.app.searchable"
-            android:resource="@xml/searchable"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
-
-
         <activity
             android:name=".about_developers"
             android:label="@string/title_activity_about_developers"
@@ -67,7 +65,8 @@
         <activity android:name=".MyTeamActivity" />
         <activity android:name=".PranjalActivity" />
         <activity android:name=".AbhishekActivity" />
-        <activity android:name=".OpponentsActivity"></activity>
+        <activity android:name=".OpponentsActivity" />
+        <activity android:name=".Rules"></activity>
     </application>
 
 </manifest>
