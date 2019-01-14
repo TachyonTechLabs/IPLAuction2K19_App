@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -69,6 +71,14 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     DocumentReference curr_doc;
     Query query;
     ListenerRegistration registration;
+    String storyline,currentPlayer;
+    DocumentReference ongoing_doc;
+    String fname,sname,color,fullname;
+    int point;
+    long base_price;
+    ImageView point_back;
+    Drawable drawable;
+    GradientDrawable gradientDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +92,9 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         name1text = findViewById(R.id.player_name1);
         name2text = findViewById(R.id.player_name2);
         pointtext = findViewById(R.id.point_text);
+        point_back = findViewById(R.id.player_point_back);
+        drawable = getDrawable(R.drawable.csk_point_back_circle);
+        gradientDrawable = (GradientDrawable) drawable;
         //matchtext = findViewById(R.id.matchtextvalue);
         //runtext = findViewById(R.id.runstextvalue);
         //wickettext = findViewById(R.id.wicketstextvalue);
@@ -138,10 +151,22 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 id = documentSnapshot.getString("roomid");
-                getCurrent();
+                getStoryLine();
             }
         });
 
+    }
+
+    public void getStoryLine()
+    {
+        DocumentReference story_ref = db.collection(id).document("Story");
+        story_ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                storyline = Objects.requireNonNull(documentSnapshot.get("story")).toString();
+                getCurrent();
+            }
+        });
     }
 
     public void getCurrent()
@@ -150,15 +175,26 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         curr_doc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                current = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("curr")).intValue();
+                try
+                {
+                    currentPlayer = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).get("curr")).toString();
+                    getTextPlayer();
+                }
+                catch(Exception exp)
+                {
+                    exp.printStackTrace();
+                }
+
                 //Toast.makeText(OngoingPlayer.this, current+"", Toast.LENGTH_SHORT).show();
-                setText();
+
             }
         });
     }
 
-    public void setText()
+    public void getTextPlayer()
     {
+
+        /*
         String fullname = allPlayerInfo.fullname[current]+"";
         String pt = allPlayerInfo.points[current]+"";
         String match = allPlayerInfo.match[current]+"";
@@ -173,7 +209,57 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         //wickettext.setText(wicket);
         basetext.setText(base);
 
+        */
+        ongoing_doc = db.collection(storyline).document(currentPlayer);
+        ongoing_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                fname = Objects.requireNonNull(documentSnapshot.get("fname")).toString();
+                sname = Objects.requireNonNull(documentSnapshot.get("sname")).toString();
+                point = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
+                base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
+                color = Objects.requireNonNull(documentSnapshot.get("color")).toString();
+                setTextPlayer();
+
+            }
+        });
+
+
         //storageRef.child(fullname+".png");
+        //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
+    }
+
+    public void setTextPlayer()
+    {
+        name1text.setText(fname);
+        name2text.setText(sname);
+        pointtext.setText(String.valueOf(point));
+        basetext.setText(String.valueOf(base_price));
+        switch (color)
+        {
+            case "rcb" : point_back.setBackgroundResource(R.drawable.rcb_point_back_circle);
+                break;
+            case "mi" : point_back.setBackgroundResource(R.drawable.mi_point_back_circle);
+                break;
+            case "csk" : point_back.setBackgroundResource(R.drawable.csk_point_back_circle);
+                break;
+            case "rr" : point_back.setBackgroundResource(R.drawable.rr_point_back_circle);
+                break;
+            case "dc" : point_back.setBackgroundResource(R.drawable.dc_point_back_circle);
+                break;
+            case "kkr" : point_back.setBackgroundResource(R.drawable.kkr_point_back_circle);
+                break;
+            case "sh" : point_back.setBackgroundResource(R.drawable.sh_point_back_circle);
+                break;
+            case "kxip" : point_back.setBackgroundResource(R.drawable.kxip_point_back_circle);
+                break;
+            case "gl" : point_back.setBackgroundResource(R.drawable.gl_point_back_circle);
+                break;
+            case "rps" : point_back.setBackgroundResource(R.drawable.rps_point_back_circle);
+                break;
+        }
+        //
+        fullname = fname.toLowerCase()+""+sname.toLowerCase();
         storageRef.child(fullname+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -182,13 +268,12 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
             }
         })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("playerimg","fail");
-            }
-        });
-        //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("playerimg","fail");
+                    }
+                });
     }
 
     @Override

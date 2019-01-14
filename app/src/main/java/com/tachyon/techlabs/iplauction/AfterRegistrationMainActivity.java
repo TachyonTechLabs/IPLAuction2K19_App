@@ -77,7 +77,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
    // Map<String, Object> nummembers = new HashMap<>();
     Map<String, Object> keyvalues = new HashMap<>();
     Map<String, Object> used = new HashMap<>();
-    Map<String, Object> curr = new HashMap<>();
+    Map<String, String> curr = new HashMap<>();
     //Map<String, Object> gamestart = new HashMap<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail,numUsed;
@@ -190,10 +190,10 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                         {
                             checkIfStart();
                         }
-                        else
-                        {
-                            setContentView(R.layout.activity_after_registration_main);
-                        }
+                    }
+                    else
+                    {
+                        setContentView(R.layout.activity_after_registration_main);
                     }
 
                 }
@@ -619,7 +619,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
     public void setCurrentPlayer()
     {
-        curr.put("curr",1);
+        curr.put("curr","");
         DocumentReference docRef = db.collection(id).document("CurrentPlayer");
         docRef.set(curr).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

@@ -416,7 +416,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
         //storyline_selector_dialog();
         startActivity(admin);
-        
+
         setStart();
 
         finish();
@@ -483,6 +483,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        query = db.collection(roomid);
         registration= query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {

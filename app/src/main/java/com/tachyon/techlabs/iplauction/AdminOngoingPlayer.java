@@ -113,7 +113,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 if(task.isSuccessful())
                 {
                     list = new ArrayList<>();
-                    for(QueryDocumentSnapshot documentSnapshot : task.getResult())
+                    for(QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult()))
                     {
                         list.add(documentSnapshot.getId());
                     }
@@ -139,7 +139,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         playerlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                documentReference.update("curr",position+1);
+                documentReference.update("curr",list.get(position));
             }
         });
 

@@ -33,6 +33,7 @@
     <string name="username">USERNAME</string>
     <string name="my_team">My Team</string>
     <string name="price">PRICE</string>
+    <string name="price_small">Price</string>
     <string name="buy">BUY</string>
 
     <string name="yorker">YORKER</string>
