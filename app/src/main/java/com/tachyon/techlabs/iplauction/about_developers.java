@@ -38,9 +38,9 @@ public class about_developers extends AppCompatActivity implements NavigationVie
     Toolbar dev_toolbar;
     CardView dev1_card,dev2_card;
     ImageView dev1_img,dev2_img;
-    //private DrawerLayout mDrawerLayout;
-    //private ActionBarDrawerToggle mToggle;
-    //private NavigationView navigationView;
+  //  private DrawerLayout mDrawerLayout;
+   // private ActionBarDrawerToggle mToggle;
+ //   private NavigationView navigationView;
 
     TextView dev1_name_text,dev2_name_text,dev1_desc_text,dev2_desc_text;
     ConstraintLayout layout;
@@ -292,6 +292,7 @@ public class about_developers extends AppCompatActivity implements NavigationVie
     /*
     @Override
     public void onBackPressed() {
+
 
         if(this.mDrawerLayout.isDrawerOpen(GravityCompat.START))
         {
