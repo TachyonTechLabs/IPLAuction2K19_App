@@ -78,6 +78,11 @@
         <item>SH</item>
     </string-array>
 
+    <string-array name="story_lines">
+        <item>StoryLine1</item>
+        <item>StoryLine2</item>
+    </string-array>
+
     <string name="ongoing_player">ONGOING PLAYER</string>
     <string name="player_point">Player Point</string>
     <string name="preffered_position">Preffered Position</string>
