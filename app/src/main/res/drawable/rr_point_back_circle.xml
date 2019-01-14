@@ -4,10 +4,10 @@
     android:padding="10dp">
 
     <solid
-        android:color="@color/kkr_circle" />
+        android:color="@color/rr_circle" />
 
     <size
-        android:height="40dp"
-        android:width="40dp"
+        android:height="80dp"
+        android:width="80dp"
         />
 </shape>

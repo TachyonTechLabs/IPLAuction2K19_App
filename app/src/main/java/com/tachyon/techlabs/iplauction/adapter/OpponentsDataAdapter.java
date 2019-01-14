@@ -2,8 +2,6 @@ package com.tachyon.techlabs.iplauction.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tachyon.techlabs.iplauction.R;
-import com.tachyon.techlabs.iplauction.cards_adapter;
 
 public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdapter.ViewHolder>{
 
@@ -40,9 +37,9 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
         {
             super(view);
 
-            opp_team_name = (TextView) view.findViewById(R.id.team_oda_text);
+            opp_team_name = (TextView) view.findViewById(R.id.player_name_mtda);
             opp_team_player = (TextView) view.findViewById(R.id.player_oda_text);
-            opp_team_balance = (TextView) view.findViewById(R.id.balance_oda_text);
+            opp_team_balance = (TextView) view.findViewById(R.id.price_mtda);
             opp_team_cardView = (CardView) view.findViewById(R.id.custom_opponent_oda);
             placeholder_team_cardview = opp_team_cardView;
             team_name_text = opp_team_name;
