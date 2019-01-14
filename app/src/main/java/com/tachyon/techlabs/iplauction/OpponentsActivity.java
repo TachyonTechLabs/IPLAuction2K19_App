@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -165,15 +166,10 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
                 startActivity(Intent.createChooser(share,"Share Via"));
                 break;
 
-            case R.id.nav_about_us:
-                Runnable about_runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(OpponentsActivity.this,About.class));
-                        finish();
-                    }
-                };
-                handler.postDelayed(about_runnable,150);
+            case R.id.nav_rules:
+                Uri uri = Uri.parse("https://drive.google.com/open?id=1JfX0bJFk_twjF4v_DdErvxr9O_5oVlB5"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 break;
 
             case R.id.nav_developer:

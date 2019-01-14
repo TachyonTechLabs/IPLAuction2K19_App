@@ -32,17 +32,19 @@
             android:textSize="22sp"
             android:textColor="@color/black" />
 
-        <TextView
+        <EditText
             android:id="@+id/card_pricevalue_bs"
             android:layout_alignParentEnd="true"
+            android:hint="Amount"
+            android:inputType="number"
             android:layout_below="@id/card_name_bs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="48dp"
-            android:text="@string/placeholder"
             android:textSize="22sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            />
 
     <Button
         android:id="@+id/card_pay_bs"

@@ -350,15 +350,10 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 startActivity(Intent.createChooser(share,"Share Via"));
                 break;
 
-            case R.id.nav_about_us:
-                Runnable about_runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(OngoingPlayer.this,About.class));
-                        finish();
-                    }
-                };
-                handler.postDelayed(about_runnable,150);
+            case R.id.nav_rules:
+                Uri uri = Uri.parse("https://drive.google.com/open?id=1JfX0bJFk_twjF4v_DdErvxr9O_5oVlB5"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 break;
 
             case R.id.nav_developer:
@@ -374,7 +369,16 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_about_app:
+                Runnable about_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OngoingPlayer.this,About.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(about_runnable,150);
                 break;
+
 
             case R.id.nav_logout:
                 afterRegistrationMainActivity.signOut();

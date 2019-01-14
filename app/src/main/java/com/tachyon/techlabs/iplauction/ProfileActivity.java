@@ -1,6 +1,7 @@
 package com.tachyon.techlabs.iplauction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -50,8 +51,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private NavigationView navigationView;
     private ProgressBar progressBar_indeterminate_circle;
     private int animation_type = ItemAnimation.FADE_IN;
-    int [] val = new int[3];
-    String [] text = {"Initial Balance","Current Balance","Power Cards"};
+    int [] val = new int[5];
+    String [] text = {"Joined Room","Joining Code","Initial Balance","Current Balance","Power Cards"};
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> rooms=new ArrayList<String>();
     SharedPreferences sp;
@@ -105,9 +106,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                val[0] = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
-                val[1] = Objects.requireNonNull(documentSnapshot.getLong("Initial_Amount")).intValue();
-                val[2] = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
+                val[3] = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                val[2] = Objects.requireNonNull(documentSnapshot.getLong("Initial_Amount")).intValue();
+                val[4] = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
+                String roomid = Objects.requireNonNull(documentSnapshot.getString("roomid"));
+                val[0]=(int)Long.parseLong(roomid);
+                String key = Objects.requireNonNull(documentSnapshot.getString("joinkey"));
+                val[1]=Integer.parseInt(key);
                 setData();
             }
         });
@@ -258,9 +263,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 share.setType("text/plain");
                 startActivity(Intent.createChooser(share,"Share Via"));
 
-            case R.id.nav_about_us:
-                startActivity(new Intent(ProfileActivity.this,About.class));
-                finish();
+            case R.id.nav_rules:
+                Uri uri = Uri.parse("https://drive.google.com/open?id=1JfX0bJFk_twjF4v_DdErvxr9O_5oVlB5"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 break;
 
             case R.id.nav_developer:

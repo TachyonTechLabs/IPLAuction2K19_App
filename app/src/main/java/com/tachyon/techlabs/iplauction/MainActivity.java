@@ -1,5 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       // connecttoInternet();
 
         mAuth = FirebaseAuth.getInstance();
         userdirect= mAuth.getCurrentUser();
@@ -192,4 +196,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             signIn();
         }
     }
+
+    private void connecttoInternet() {
+
+        final Dialog dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCanceledOnTouchOutside(false);
+        //    dialog.setCancelable(false);  //onnBackPress if i want to cancel the dialogbox
+        dialog.setContentView(R.layout.dialog_nointernet);
+        WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+
+    }
+
 }
