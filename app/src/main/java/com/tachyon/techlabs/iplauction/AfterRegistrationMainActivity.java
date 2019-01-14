@@ -3,6 +3,7 @@ package com.tachyon.techlabs.iplauction;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,12 +24,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -53,8 +60,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -89,6 +98,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     Set<String> set=new HashSet<>();
     ArrayList<String> joined_room_array=new ArrayList<>();
     String id,roomid;
+    List<String> admin_list=new ArrayList<>();
     int value;
     int flag=0;
 
@@ -96,6 +106,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        add_admin_list();
+
 
         /*
         sp=getSharedPreferences("joined_rooms",Context.MODE_PRIVATE);
@@ -156,6 +168,19 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
     }
 
+    private void add_admin_list() {
+        String[] strs = { "abhishekgupta97023@gmail.com",
+                "piyush.fcb@gmail.com",
+                "parthshingala06@gmail.com",
+                "harshsohni@gmail.com",
+                "bhagatsiddhant88@gmail.com",
+                "pradhumansp@gmail.com",
+                "ayushazuri@gmail.com"};
+
+        //something like this?
+        admin_list.addAll(Arrays.asList(strs));
+    }
+
     // [START on_start_check_user]
     @Override
     public void onStart() {
@@ -190,10 +215,30 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                         {
                             checkIfStart();
                         }
+                        else
+                        {
+                            setContentView(R.layout.activity_after_registration_main);
+                            CardView create_room=findViewById(R.id.create_room);
+                            if(admin_list.contains(userEmail))
+                                create_room.setVisibility(View.VISIBLE);
+                            else
+                                create_room.setVisibility(View.GONE);
+
+                        }
                     }
                     else
                     {
                         setContentView(R.layout.activity_after_registration_main);
+                        CardView create_room=findViewById(R.id.create_room);
+                        if(admin_list.contains(userEmail))
+                            create_room.setVisibility(View.VISIBLE);
+                        else
+                            create_room.setVisibility(View.GONE);
+
+
+                        if( !isNetworkAvailable())
+                            connecttoInternet();
+
                     }
 
                 }
@@ -203,6 +248,23 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         {
             goToLogin();
         }
+    }
+
+    private void connecttoInternet() {
+
+        final Dialog dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCanceledOnTouchOutside(false);
+        //    dialog.setCancelable(false);  //onnBackPress if i want to cancel the dialogbox
+        dialog.setContentView(R.layout.dialog_nointernet);
+        dialog.setTitle("Failed To Connect To The Internet");
+        WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+
     }
 
     public void goToLogin()
@@ -1020,5 +1082,12 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

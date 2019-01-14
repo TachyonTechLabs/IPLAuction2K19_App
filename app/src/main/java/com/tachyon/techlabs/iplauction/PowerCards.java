@@ -109,20 +109,27 @@ public class PowerCards extends AppCompatActivity {
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        int[] imgs = {R.drawable.ipl_logo,
-                R.drawable.ipl_logo,
-                R.drawable.ipl_logo,
-                R.drawable.ipl_logo};
+        int[] imgs = {R.drawable.yorkerr,
+                R.drawable.no_ball_card,
+                R.drawable.rtmm,
+                R.drawable.legendd};
 
         String[] names = {"YORKER",
-                "NO BALL",
+                "FREE HIT",
                 "RIGHT TO MATCH",
-                "LEGEND CARDS"};
+                "LEGEND CARD"};
 
-        String[] disc = {"DESCRIPTION",
-                "DESCRIPTION",
-                "DESCRIPTION",
-                "DESCRIPTION"};
+        String[] disc = {
+                "After a particular player appears on the screen, a team, which uses this card on some other team, can prohibit the latter team from bidding for that player",
+                "This card can be applied to change the preferred\n" +
+                        "position of a player in your lineup after you have\n" +
+                        "completed your team after the\n" +
+                        "completion of the auction",
+                "A player which has been successfully bid by a team\n" +
+                        "can be purchased by another team at the same\n" +
+                        "price if the team possessing this card uses it for\n" +
+                        "that player","This card allows a team to purchase an extra\n" +
+                "legend"};
 
         String[] price = {"PRICE",
                 "PRICE",
