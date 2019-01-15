@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -75,11 +76,13 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     DocumentReference ongoing_doc;
     String fname,sname,color,fullname;
     int point;
-    long base_price;
+    String base_price;
     ImageView point_back;
     Drawable drawable;
     GradientDrawable gradientDrawable;
     TextView my_team;
+    String [] bp;
+    long multiplier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         player_img = findViewById(R.id.player_img);
         extras = getIntent().getExtras();
 
-        my_team = findViewById(R.id.my_team_op);
+        //my_team = findViewById(R.id.my_team_op);
 
 /*        my_team.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,8 +164,19 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                id = documentSnapshot.getString("roomid");
-                getStoryLine();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        id = documentSnapshot.getString("roomid");
+                        getStoryLine();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
 
@@ -174,8 +188,19 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         story_ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                storyline = Objects.requireNonNull(documentSnapshot.get("story")).toString();
-                getCurrent();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        storyline = Objects.requireNonNull(documentSnapshot.get("story")).toString();
+                        getCurrent();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
     }
@@ -186,14 +211,18 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         curr_doc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                try
+                if(documentSnapshot.exists())
                 {
-                    currentPlayer = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).get("curr")).toString();
-                    getTextPlayer();
-                }
-                catch(Exception exp)
-                {
-                    exp.printStackTrace();
+                    try
+                    {
+                        currentPlayer = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).get("curr")).toString();
+                        getTextPlayer();
+                    }
+                    catch(Exception exp)
+                    {
+                        exp.printStackTrace();
+                        Toast.makeText(OngoingPlayer.this, exp.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 //Toast.makeText(OngoingPlayer.this, current+"", Toast.LENGTH_SHORT).show();
@@ -225,12 +254,24 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         ongoing_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                fname = Objects.requireNonNull(documentSnapshot.get("fname")).toString();
-                sname = Objects.requireNonNull(documentSnapshot.get("sname")).toString();
-                point = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
-                base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
-                color = Objects.requireNonNull(documentSnapshot.get("color")).toString();
-                setTextPlayer();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        fname = Objects.requireNonNull(documentSnapshot.get("fname")).toString();
+                        sname = Objects.requireNonNull(documentSnapshot.get("sname")).toString();
+                        point = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
+                        //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
+                        base_price = documentSnapshot.getString("Price");
+                        //color = Objects.requireNonNull(documentSnapshot.get("color")).toString();
+                        setTextPlayer();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
 
             }
         });
@@ -244,8 +285,28 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     {
         name1text.setText(fname);
         name2text.setText(sname);
+        String pricebase = base_price;
+        base_price = base_price.replace(" ","#");
+        bp = base_price.split("#");
+        String mul = bp[1].toLowerCase();
+        String total;
+        long basep;
+
+        if(mul.equals("cr"))
+        {
+            multiplier = 10000000;
+            basep = Integer.parseInt(bp[0]) * multiplier;
+            total = basep+"";
+        }
+        else if(mul.equals("lakhs"))
+        {
+            multiplier = 100000;
+            basep = Integer.parseInt(bp[0]) * multiplier;
+            total = basep+"";
+        }
         pointtext.setText(String.valueOf(point));
-        basetext.setText(String.valueOf(base_price));
+        basetext.setText(pricebase);
+        /*
         switch (color)
         {
             case "rcb" : point_back.setBackgroundResource(R.drawable.rcb_point_back_circle);
@@ -268,7 +329,8 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 break;
             case "rps" : point_back.setBackgroundResource(R.drawable.rps_point_back_circle);
                 break;
-        }
+            default:break;
+        }*/
         //
         fullname = fname.toLowerCase()+""+sname.toLowerCase();
         storageRef.child(fullname+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -283,6 +345,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("playerimg","fail");
+                        Toast.makeText(OngoingPlayer.this, "Not able to load player image", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

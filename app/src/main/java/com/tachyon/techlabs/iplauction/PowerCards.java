@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goodiebag.pinview.Pinview;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -170,11 +171,23 @@ public class PowerCards extends AppCompatActivity {
         mainDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
-                currentNumOfCards = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
-                itemsPurchased = Objects.requireNonNull(documentSnapshot.getLong("itemsPurchased")).intValue();
-                itemsPurchased = itemsPurchased +1;
-                Toast.makeText(context, itemsPurchased+"", Toast.LENGTH_SHORT).show();
+
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                        currentNumOfCards = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
+                        itemsPurchased = Objects.requireNonNull(documentSnapshot.getLong("itemsPurchased")).intValue();
+                        itemsPurchased = itemsPurchased +1;
+
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                //Toast.makeText(context, itemsPurchased+"", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -447,7 +460,14 @@ public class PowerCards extends AppCompatActivity {
 
                                     //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
                                 }
-                            });
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            ;
 
                     showHistory();
 

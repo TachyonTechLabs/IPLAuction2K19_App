@@ -109,14 +109,26 @@ public class PaymentInfo extends AppCompatActivity  {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                totalHistory = Objects.requireNonNull(documentSnapshot.getLong("itemsPurchased")).intValue();
-                itemNameArray = new String[totalHistory];
-                itemValueArray = new int[totalHistory];
-                //Toast.makeText(PaymentInfo.this, totalHistory+"", Toast.LENGTH_SHORT).show();
-                //totalHistory = totalHistory+1;
-                index = totalHistory;
-                if(index!=0)
-                setHistory(totalHistory);
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        totalHistory = Objects.requireNonNull(documentSnapshot.getLong("itemsPurchased")).intValue();
+                        itemNameArray = new String[totalHistory];
+                        itemValueArray = new int[totalHistory];
+                        //Toast.makeText(PaymentInfo.this, totalHistory+"", Toast.LENGTH_SHORT).show();
+                        //totalHistory = totalHistory+1;
+                        index = totalHistory;
+                        if(index!=0)
+                            setHistory(totalHistory);
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(mainActivity, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
             }
         });
 
@@ -165,26 +177,37 @@ public class PaymentInfo extends AppCompatActivity  {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
-                    itemNameArray[currentIndex] = Objects.requireNonNull(documentSnapshot).getString("0");
-                    itemValueArray[currentIndex] = Objects.requireNonNull(documentSnapshot.getLong("1")).intValue();
-                    //Toast.makeText(PaymentInfo.this, itemName, Toast.LENGTH_SHORT).show();
-
-                    //itemNameArray[0] = itemName;
-                    //itemValueArray[0] = itemValue;
-                    //itemNameArray[1] = itemName;
-                    //itemValueArray[1] = itemValue;
-                    //Toast.makeText(PaymentInfo.this, itemNameArray[1], Toast.LENGTH_SHORT).show();
-                    //item.add(itemName);
-                    //val.add(itemValue);
-                    //setHistoryDisplay();
-                    totalHistory=totalHistory-1;
-                    if(totalHistory>0)
+                    if(documentSnapshot.exists())
                     {
-                        setHistory(totalHistory);
+                        try
+                        {
+                            itemNameArray[currentIndex] = Objects.requireNonNull(documentSnapshot).getString("0");
+                            itemValueArray[currentIndex] = Objects.requireNonNull(documentSnapshot.getLong("1")).intValue();
+                            //Toast.makeText(PaymentInfo.this, itemName, Toast.LENGTH_SHORT).show();
+
+                            //itemNameArray[0] = itemName;
+                            //itemValueArray[0] = itemValue;
+                            //itemNameArray[1] = itemName;
+                            //itemValueArray[1] = itemValue;
+                            //Toast.makeText(PaymentInfo.this, itemNameArray[1], Toast.LENGTH_SHORT).show();
+                            //item.add(itemName);
+                            //val.add(itemValue);
+                            //setHistoryDisplay();
+                            totalHistory=totalHistory-1;
+                            if(totalHistory>0)
+                            {
+                                setHistory(totalHistory);
+                            }
+                            else {
+                                setHistoryDisplay();
+                            }
+                        }
+                        catch(Exception exp)
+                        {
+                            Toast.makeText(mainActivity, exp.toString(), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    else {
-                        setHistoryDisplay();
-                    }
+
                 }
             });
 

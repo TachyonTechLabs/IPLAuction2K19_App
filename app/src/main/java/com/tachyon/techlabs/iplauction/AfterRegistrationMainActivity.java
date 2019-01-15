@@ -175,7 +175,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                 "harshsohni@gmail.com",
                 "bhagatsiddhant88@gmail.com",
                 "pradhumansp@gmail.com",
-                "ayushazuri@gmail.com"};
+                "ayushazuri@gmail.com",
+                "pranjalpchaudhari99@gmail.com","pranjalpchoudhary99@gmail.com"};
 
         //something like this?
         admin_list.addAll(Arrays.asList(strs));
@@ -210,21 +211,29 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     if(Objects.requireNonNull(documentSnapshot).exists())
                     {
-                        int  in = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("inRoom")).intValue();
-                        if(in==1)
+                        try
                         {
-                            checkIfStart();
-                        }
-                        else
-                        {
-                            setContentView(R.layout.activity_after_registration_main);
-                            CardView create_room=findViewById(R.id.create_room);
-                            if(admin_list.contains(userEmail))
-                                create_room.setVisibility(View.VISIBLE);
+                            int  in = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("inRoom")).intValue();
+                            if(in==1)
+                            {
+                                checkIfStart();
+                            }
                             else
-                                create_room.setVisibility(View.GONE);
+                            {
+                                setContentView(R.layout.activity_after_registration_main);
+                                CardView create_room=findViewById(R.id.create_room);
+                                if(admin_list.contains(userEmail))
+                                    create_room.setVisibility(View.VISIBLE);
+                                else
+                                    create_room.setVisibility(View.GONE);
 
+                            }
                         }
+                        catch (Exception exp)
+                        {
+                            Toast.makeText(AfterRegistrationMainActivity.this, exp.toString(), Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                     else
                     {
@@ -438,9 +447,21 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                roomid = documentSnapshot.getString("roomid");
 
-                setDisplay();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        roomid = documentSnapshot.getString("roomid");
+
+                        setDisplay();
+                    }
+                    catch(Exception exp)
+                    {
+                        Toast.makeText(AfterRegistrationMainActivity.this, exp.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
 
             }
         });
@@ -475,6 +496,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     catch (Exception e1)
                     {
                         e1.printStackTrace();
+                        Toast.makeText(AfterRegistrationMainActivity.this, e1.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
@@ -587,6 +609,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(AfterRegistrationMainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -631,6 +654,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(AfterRegistrationMainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -674,6 +698,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(AfterRegistrationMainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -840,6 +865,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(AfterRegistrationMainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -856,6 +882,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(AfterRegistrationMainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
