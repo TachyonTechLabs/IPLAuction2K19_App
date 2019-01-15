@@ -53,8 +53,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_toRightOf="@id/cardimg"
                     android:orientation="vertical"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintHorizontal_bias="0.0"
                     card_view:layout_constraintStart_toEndOf="@+id/cardimg"
                     card_view:layout_constraintTop_toTopOf="parent">
 
@@ -73,9 +76,9 @@
                     <TextView
                         android:id="@+id/carddescript"
                         android:layout_width="wrap_content"
-                        android:autoSizeTextType="uniform"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:autoSizeTextType="uniform"
                         android:padding="10dp"
                         android:text="Description"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
