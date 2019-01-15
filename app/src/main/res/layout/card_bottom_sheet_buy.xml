@@ -33,9 +33,10 @@
             android:textColor="@color/black" />
 
         <EditText
-            android:id="@+id/card_pricevalue_bs"
+            android:id="@+id/card_pricevalue_edittext"
             android:layout_alignParentEnd="true"
             android:hint="Amount"
+            android:visibility="gone"
             android:inputType="number"
             android:layout_below="@id/card_name_bs"
             android:layout_width="wrap_content"

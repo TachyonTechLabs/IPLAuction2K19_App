@@ -116,7 +116,7 @@
 
     <string name="scan_qr_msg">Please Scan The QR Code \n To Join The Room</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="yorker_desc">After a particular player appears on the screen, a team, which uses this card on some other team, can prohibit the latter team from bidding for that player</string>
 
 
 </resources>

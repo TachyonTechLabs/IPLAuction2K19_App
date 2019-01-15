@@ -3,6 +3,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -23,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.goodiebag.pinview.Pinview;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,7 +32,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -50,6 +49,7 @@ public class PowerCards extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
+    EditText users_price;
     public RelativeLayout bottonSheetLayout;
     public BottomSheetBehavior bottomSheetBehavior;
     View bgView;
@@ -120,17 +120,16 @@ public class PowerCards extends AppCompatActivity {
                 "RIGHT TO MATCH",
                 "LEGEND CARD"};
 
-        String[] disc = {
-                "After a particular player appears on the screen, a team, which uses this card on some other team, can prohibit the latter team from bidding for that player",
-                "This card can be applied to change the preferred\n" +
-                        "position of a player in your lineup after you have\n" +
-                        "completed your team after the\n" +
-                        "completion of the auction",
+      //  String[] disc=res.getStringArray(R.array.description);
+        Resources res = getResources();
+        String[] disc = {res.getString(R.string.yorker_desc),
+                "This card can be applied to change the preferred position of a player in your lineup after you have completed your team after the completion of the auction",
                 "A player which has been successfully bid by a team\n" +
                         "can be purchased by another team at the same\n" +
                         "price if the team possessing this card uses it for\n" +
                         "that player","This card allows a team to purchase an extra\n" +
                 "legend"};
+
 
         String[] price = {"PRICE",
                 "PRICE",
@@ -154,16 +153,18 @@ public class PowerCards extends AppCompatActivity {
         bottonSheetLayout = findViewById(R.id.botton_sheet_layout_id);
         bottomSheetBehavior = BottomSheetBehavior.from(bottonSheetLayout);
         params = bottonSheetLayout.getLayoutParams();
+        users_price=findViewById(R.id.card_pricevalue_edittext);
 
         txt_bs_name = findViewById(R.id.card_name_bs);
+        users_price.setVisibility(View.GONE);
         //txt_bs_desc = findViewById(R.id.card_desc_bs);
-        txt_bs_value = findViewById(R.id.card_pricevalue_bs);
+       // txt_bs_value = findViewById(R.id.card_pricevalue_bs);
 
         //num = paymentInfo.cardnum4.getText().toString();
         //num = paymentInfo.stringBuilder.substring(12,16);
         readCardNum();
 
-        adapter = new cards_adapter(context,imgs,disc,names,price,bottonSheetLayout,bottomSheetBehavior,txt_bs_name,txt_bs_desc,txt_bs_value);
+        adapter = new cards_adapter(context,imgs,disc,names,price,bottonSheetLayout,bottomSheetBehavior,txt_bs_name,txt_bs_desc);
 
         recyclerView.setAdapter(adapter);
 
@@ -204,6 +205,7 @@ public class PowerCards extends AppCompatActivity {
                     //bottomparams.setMargins(0,0,0,0);
                     //bottonSheetLayout.setLayoutParams(bottomparams);
                     buyBtn.setVisibility(View.VISIBLE);
+                    users_price.setVisibility(View.GONE);
                     bgView.setVisibility(View.GONE);
                     pinText.setVisibility(View.GONE);
                     pin.setVisibility(View.GONE);
@@ -225,6 +227,8 @@ public class PowerCards extends AppCompatActivity {
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 bgView.setVisibility(View.VISIBLE);
+                users_price.setVisibility(View.GONE);
+                buyBtn.setVisibility(View.VISIBLE);
                 bgView.setAlpha(slideOffset);
             }
         });
@@ -387,6 +391,9 @@ public class PowerCards extends AppCompatActivity {
         //params.height = params.height - 100;
         bottonSheetLayout.setLayoutParams(params);
         buyBtn.setVisibility(View.GONE);
+        users_price.setVisibility(View.VISIBLE);
+
+
         //bottomparams.setMargins(0,100,0,0);
         //bottonSheetLayout.setLayoutParams(bottomparams);
         //bottomSheetBehavior.setPeekHeight(500);
@@ -416,9 +423,10 @@ public class PowerCards extends AppCompatActivity {
         {
             @Override
             public void onDataEntered(Pinview pinview, boolean b)
-            {
+            {    String price_string= users_price.getText().toString();
+                final long card_price_bid_value = Long.parseLong(price_string);
                 DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
-                if(pinview.getValue().equals(num))
+                if((pinview.getValue().equals(num))&& (card_price_bid_value<20000000) )
                 {
                     switch (flag) {
                         case 1:
@@ -457,6 +465,7 @@ public class PowerCards extends AppCompatActivity {
                                     //bottomSheetBehavior.setPeekHeight(0);
                                     pin.setVisibility(View.GONE);
                                     pinText.setVisibility(View.GONE);
+                                    users_price.setVisibility(View.GONE);
 
                                     //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
                                 }
@@ -475,6 +484,8 @@ public class PowerCards extends AppCompatActivity {
 
 
                 }
+                else
+                    Toast.makeText(context, "Please Enter Lesser Value", Toast.LENGTH_SHORT).show();
             }
 
         });

@@ -32,7 +32,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
     private RelativeLayout bottonSheetLayout;
     private BottomSheetBehavior bottomSheetBehavior;
     View bgView;
-    TextView bs_name,bs_desc,bs_value;
+    TextView bs_name,bs_desc;
 
 
     /*
@@ -73,26 +73,26 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
                         case 0 :
                             bs_name.setText(names[position]);
                             //bs_desc.setText(disc[position]);
-                            bs_value.setText(R.string.yorker_price);
+                         //   bs_value.setText(R.string.yorker_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             //bottomSheetBehavior.setPeekHeight(300);
                             break;
                         case 1 :
                             bs_name.setText(names[position]);
                             //bs_desc.setText(disc[position]);
-                            bs_value.setText(R.string.no_ball_price);
+                          //  bs_value.setText(R.string.no_ball_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                         case 2 :
                             bs_name.setText(names[position]);
                             //bs_desc.setText(disc[position]);
-                            bs_value.setText(R.string.right_to_match_price);
+                            //bs_value.setText(R.string.right_to_match_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                         case 3 :
                             bs_name.setText(names[position]);
                             //bs_desc.setText(disc[position]);
-                            bs_value.setText(R.string.legend_cards_price);
+                           // bs_value.setText(R.string.legend_cards_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
                     }
@@ -104,7 +104,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
 
     public cards_adapter(Context context,int[]img, String[] disc, String[] name,String [] price,
                          RelativeLayout bottomSheetLayout,BottomSheetBehavior bottomSheetBehavior,
-                         TextView bs_name,TextView bs_desc,TextView bs_value)
+                         TextView bs_name,TextView bs_desc)
     {
         this.c = context;
         this.carsimgs = img;
@@ -115,7 +115,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
         this.bottomSheetBehavior = bottomSheetBehavior;
         this.bs_name = bs_name;
         //this.bs_desc = bs_desc;
-        this.bs_value = bs_value;
+      //  this.bs_value = bs_value;
 
     }
 
