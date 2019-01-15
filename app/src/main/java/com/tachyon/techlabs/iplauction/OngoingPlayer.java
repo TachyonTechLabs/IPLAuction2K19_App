@@ -258,12 +258,12 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 {
                     try
                     {
-                        fname = Objects.requireNonNull(documentSnapshot.get("fname")).toString();
-                        sname = Objects.requireNonNull(documentSnapshot.get("sname")).toString();
+                        fname = Objects.requireNonNull(documentSnapshot.getString("fname")).toString();
+                        sname = Objects.requireNonNull(documentSnapshot.getString("sname")).toString();
                         point = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
                         //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
                         base_price = documentSnapshot.getString("Price");
-                        //color = Objects.requireNonNull(documentSnapshot.get("color")).toString();
+                        color = Objects.requireNonNull(documentSnapshot.getString("color")).toString();
                         setTextPlayer();
                     }
                     catch(Exception e)
@@ -306,7 +306,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         }
         pointtext.setText(String.valueOf(point));
         basetext.setText(pricebase);
-        /*
+
         switch (color)
         {
             case "rcb" : point_back.setBackgroundResource(R.drawable.rcb_point_back_circle);
@@ -330,9 +330,13 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
             case "rps" : point_back.setBackgroundResource(R.drawable.rps_point_back_circle);
                 break;
             default:break;
-        }*/
+        }
         //
+        //fname = fname.replace(" ","");
+        sname = sname.replace(" ","");
         fullname = fname.toLowerCase()+""+sname.toLowerCase();
+        Log.d("playername",fullname);
+
         storageRef.child(fullname+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

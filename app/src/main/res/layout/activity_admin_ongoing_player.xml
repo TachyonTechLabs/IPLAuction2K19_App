@@ -124,6 +124,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:hint="@string/amount"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>
