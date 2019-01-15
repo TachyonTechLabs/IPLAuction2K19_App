@@ -78,9 +78,22 @@ public class MyTeamActivity extends AppCompatActivity {
         team_img_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                   team_name = documentSnapshot.getString("myteam");
-                   Log.d("qwertyuiop",team_name);
-                   setTeamImg();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        team_name = documentSnapshot.getString("myteam");
+                        //Log.d("qwertyuiop",team_name);
+                        setTeamImg();
+                    }
+                    catch(Exception exp)
+                    {
+                        String error = exp.toString();
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
             }
         });
     }
@@ -120,8 +133,19 @@ public class MyTeamActivity extends AppCompatActivity {
         get_num_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                bought = Objects.requireNonNull(documentSnapshot.getLong("players_bought")).intValue();
-                getListOfPlayers();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        bought = Objects.requireNonNull(documentSnapshot.getLong("players_bought")).intValue();
+                        getListOfPlayers();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
     }
@@ -134,16 +158,24 @@ public class MyTeamActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful())
                 {
-                    list = new ArrayList<>();
-                    for(QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult()))
+                    try
                     {
-                        list.add(documentSnapshot.getId());
+                        list = new ArrayList<>();
+                        for(QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult()))
+                        {
+                            list.add(documentSnapshot.getId());
+                        }
+                        total = list.size();
+                        //Log.d("qwertyuiop",total+"");
+                        playernameArray = new String[total];
+                        playerpriceArray = new long[total];
+                        setListOfPlayers(1);
                     }
-                    total = list.size();
-                    Log.d("qwertyuiop",total+"");
-                    playernameArray = new String[total];
-                    playerpriceArray = new long[total];
-                    setListOfPlayers(1);
+                    catch(Exception ex)
+                    {
+                        Toast.makeText(context, ex.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
@@ -159,21 +191,32 @@ public class MyTeamActivity extends AppCompatActivity {
         setplayer_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String n = documentSnapshot.getString("1");
-                //Log.d("qwertyuiop",n);
-                Long l = Long.parseLong(documentSnapshot.getString("2"));
-                playernameArray[index] = n;//documentSnapshot.getString("1");
-                playerpriceArray[index] = l;//Long.parseLong(documentSnapshot.getString("2"));
-                //Toast.makeText(MyTeamActivity.this, playernameArray[index], Toast.LENGTH_SHORT).show();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        String n = documentSnapshot.getString("1");
+                        //Log.d("qwertyuiop",n);
+                        Long l = Long.parseLong(documentSnapshot.getString("2"));
+                        playernameArray[index] = n;//documentSnapshot.getString("1");
+                        playerpriceArray[index] = l;//Long.parseLong(documentSnapshot.getString("2"));
+                        //Toast.makeText(MyTeamActivity.this, playernameArray[index], Toast.LENGTH_SHORT).show();
 
-                if(sizes<total)
-                {
-                    setListOfPlayers(sizes+1);
+                        if(sizes<total)
+                        {
+                            setListOfPlayers(sizes+1);
+                        }
+                        else
+                        {
+                            showPLayerData();
+                        }
+                    }
+                    catch(Exception exp)
+                    {
+                        Toast.makeText(context, exp.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else
-                {
-                    showPLayerData();
-                }
+
             }
         });
     }

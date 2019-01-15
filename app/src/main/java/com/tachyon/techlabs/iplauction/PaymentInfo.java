@@ -108,6 +108,7 @@ public class PaymentInfo extends AppCompatActivity  {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+
                 totalHistory = Objects.requireNonNull(documentSnapshot.getLong("itemsPurchased")).intValue();
                 itemNameArray = new String[totalHistory];
                 itemValueArray = new int[totalHistory];
