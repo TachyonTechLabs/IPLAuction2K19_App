@@ -105,14 +105,14 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
         my_team = findViewById(R.id.my_team_op);
 
-        my_team.setOnClickListener(new View.OnClickListener() {
+/*        my_team.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(OngoingPlayer.this,MyTeamActivity.class));
                 finish();
             }
         });
-
+*/
         //toolbar_text = findViewById(R.id.app_toolbar_nametxt);
 
         ongoing_toolbar = (Toolbar) findViewById(R.id.app_toolbar);
