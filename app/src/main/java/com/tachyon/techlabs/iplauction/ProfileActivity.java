@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -106,14 +107,26 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                val[3] = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
-                val[2] = Objects.requireNonNull(documentSnapshot.getLong("Initial_Amount")).intValue();
-                val[4] = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
-                String roomid = Objects.requireNonNull(documentSnapshot.getString("roomid"));
-                val[0]=(int)Long.parseLong(roomid);
-                String key = Objects.requireNonNull(documentSnapshot.getString("joinkey"));
-                val[1]=Integer.parseInt(key);
-                setData();
+
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        val[3] = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                        val[2] = Objects.requireNonNull(documentSnapshot.getLong("Initial_Amount")).intValue();
+                        val[4] = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
+                        String roomid = Objects.requireNonNull(documentSnapshot.getString("roomid"));
+                        val[0]=(int)Long.parseLong(roomid);
+                        String key = Objects.requireNonNull(documentSnapshot.getString("joinkey"));
+                        val[1]=Integer.parseInt(key);
+                        setData();
+                    }
+                    catch(Exception exp)
+                    {
+                        Toast.makeText(ProfileActivity.this, exp.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
 

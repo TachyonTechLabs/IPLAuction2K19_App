@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,6 +64,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     TextInputEditText bid_value;
     List<String> users;
     String [] usernames;
+    String [] userTeam;
     Spinner spinner;
     String selectedUser;
 
@@ -102,10 +104,21 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                id = documentSnapshot.getString("roomid");
-                addUserList();
-                getStoryLine();
-                setCurrentPlayer();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        id = documentSnapshot.getString("roomid");
+                        addUserList();
+                        getStoryLine();
+                        setCurrentPlayer();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(AdminOngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
 
@@ -117,8 +130,19 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         story_ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                storyline = Objects.requireNonNull(documentSnapshot.get("story")).toString();
-                setStoryLine();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        storyline = Objects.requireNonNull(documentSnapshot.get("story")).toString();
+                        setStoryLine();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(AdminOngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
     }
@@ -270,9 +294,20 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         getNum_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                num_bought = Objects.requireNonNull(documentSnapshot.getLong("players_bought")).intValue();
-                num_bought+=1;
-                sellCurrentPlayer();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        num_bought = Objects.requireNonNull(documentSnapshot.getLong("players_bought")).intValue();
+                        num_bought+=1;
+                        sellCurrentPlayer();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(AdminOngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
     }
@@ -295,8 +330,36 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 {
                     usernames[i] = users.get(i);
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminOngoingPlayer.this,android.R.layout.simple_spinner_dropdown_item,usernames);
-                spinner.setAdapter(adapter);
+
+                addTeamList();
+            }
+        });
+    }
+
+    public  void addTeamList()
+    {
+        userTeam = new String[users.size()];
+        DocumentReference add_team_doc = db.collection("Players").document("Teams");
+        add_team_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        for(int i =0;i<users.size();i++)
+                        {
+                            userTeam[i] = documentSnapshot.getString(usernames[i]);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminOngoingPlayer.this,android.R.layout.simple_spinner_dropdown_item,usernames);
+                        spinner.setAdapter(adapter);
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(AdminOngoingPlayer.this,e.toString() , Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
@@ -314,6 +377,12 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             public void onSuccess(Void aVoid) {
                 updateNumber();
                 Toast.makeText(AdminOngoingPlayer.this, "Player sold successfully", Toast.LENGTH_SHORT).show();
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AdminOngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

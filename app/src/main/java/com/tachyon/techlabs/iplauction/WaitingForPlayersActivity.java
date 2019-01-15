@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,7 +68,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     Map<String, String> teammap = new HashMap<>();
     String [] teams,story;
     List<String> teamnames,storynames;
-    String myteam,teamuser,selectedStory;
+    String myteam,teamuser,selectedStory="";
     private ValueEventListener mReferenceListener;
     DocumentReference teamdoc;
     DocumentReference start_game;
@@ -100,12 +101,24 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
        docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                roomid = documentSnapshot.getString("roomid");
-                key = documentSnapshot.getString("joinkey");
-                boss_namee = documentSnapshot.getString("Owner");
-                //getBossName();
-                setTexts();
-                getPlayersName();
+
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        roomid = documentSnapshot.getString("roomid");
+                        key = documentSnapshot.getString("joinkey");
+                        boss_namee = documentSnapshot.getString("Owner");
+                        //getBossName();
+                        setTexts();
+                        getPlayersName();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(WaitingForPlayersActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
         members_joined= (ListView) findViewById(R.id.waiting_player_listview);
@@ -228,12 +241,18 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         //lyt_progress.setVisibility(View.VISIBLE);
         //DocumentReference documentReference = db.collection("Players").document(teamuser);
         teamdoc = db.collection("Players").document(teamuser);
-        teammap.clear();
+        //teammap.clear();
         //teammap.put(teamuser,myteam);
         teamdoc.update("myteam",myteam).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 teamnames.remove(myteam);
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(WaitingForPlayersActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -264,8 +283,19 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                boss_namee = documentSnapshot.getString("owner");
-                setTexts();
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        boss_namee = documentSnapshot.getString("owner");
+                        setTexts();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(WaitingForPlayersActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
     }
@@ -299,9 +329,20 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         docname.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-               String temp_roomid = documentSnapshot.getString("roomid");
-                key = documentSnapshot.getString("joinkey");
-                getstartgame_status(temp_roomid,boss_namee);
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        String temp_roomid = documentSnapshot.getString("roomid");
+                        key = documentSnapshot.getString("joinkey");
+                        getstartgame_status(temp_roomid,boss_namee);
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(WaitingForPlayersActivity.this,e.toString() , Toast.LENGTH_SHORT).show();
+                    }
+                }
+
 
             }
         });
@@ -326,38 +367,45 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (Objects.requireNonNull(documentSnapshot).exists()) {
 
-                    value = Objects.requireNonNull(documentSnapshot.getLong("start")).intValue();
-                    if(value==1)
+                    try
                     {
-                        Log.d("bossnameiswhat",value+"");
-                        Toast.makeText(WaitingForPlayersActivity.this, value+"", Toast.LENGTH_SHORT).show();
-                        //startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
-                        if(bossName.equals("true"))
+                        value = Objects.requireNonNull(documentSnapshot.getLong("start")).intValue();
+                        if(value==1)
                         {
-                            Log.d("bosssnameiswhat",bossName);
-                            Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
-                            //admin.putExtra("roomid",roomid);
-                            //admin.putExtra("userEmail",member);
-                            //admin.putExtra("boss_name",boss_namee);
-                            startActivity(admin);
-                            finish();
+                            Log.d("bossnameiswhat",value+"");
+                            Toast.makeText(WaitingForPlayersActivity.this, value+"", Toast.LENGTH_SHORT).show();
+                            //startActivity(new Intent(WaitingForPlayersActivity.this,Start_Game.class));
+                            if(bossName.equals("true"))
+                            {
+                                Log.d("bosssnameiswhat",bossName);
+                                Intent admin = new Intent(WaitingForPlayersActivity.this,AdminOngoingPlayer.class);
+                                //admin.putExtra("roomid",roomid);
+                                //admin.putExtra("userEmail",member);
+                                //admin.putExtra("boss_name",boss_namee);
+                                startActivity(admin);
+                                finish();
+                            }
+                            else
+                            {
+                                Log.d("bosssnameiswhat",bossName);
+                                Intent member = new Intent(WaitingForPlayersActivity.this,OngoingPlayer.class);
+                                //member.putExtra("roomid",roomid);
+                                //member.putExtra("userEmail",member);
+                                //member.putExtra("boss_name",boss_namee);
+                                startActivity(member);
+                                finish();
+                            }
+
                         }
                         else
                         {
-                            Log.d("bosssnameiswhat",bossName);
-                            Intent member = new Intent(WaitingForPlayersActivity.this,OngoingPlayer.class);
-                            //member.putExtra("roomid",roomid);
-                            //member.putExtra("userEmail",member);
-                            //member.putExtra("boss_name",boss_namee);
-                            startActivity(member);
-                            finish();
+                            Log.d("bosssnameiswhat",value+"");
+                            Toast.makeText(WaitingForPlayersActivity.this, value+"", Toast.LENGTH_SHORT).show();
                         }
-
                     }
-                    else
+                    catch(Exception exp)
                     {
-                        Log.d("bosssnameiswhat",value+"");
-                        Toast.makeText(WaitingForPlayersActivity.this, value+"", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WaitingForPlayersActivity.this,exp.toString() , Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -399,6 +447,12 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
                                 //Toast.makeText(WaitingForPlayersActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
                             }
                         });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(WaitingForPlayersActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
