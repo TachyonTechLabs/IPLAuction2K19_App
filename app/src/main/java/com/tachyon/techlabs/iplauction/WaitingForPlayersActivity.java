@@ -66,14 +66,17 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     int value,storyFlag=0;
     Map<String, Object> gamestart = new HashMap<>();
     Map<String, String> teammap = new HashMap<>();
+    Map<String, Integer> opp_bugdet = new HashMap<>();
     String [] teams,story;
-    List<String> teamnames,storynames;
+    List<String> teamnames,storynames,opp;
+    List<Integer> money;
     String myteam,teamuser,selectedStory="";
     private ValueEventListener mReferenceListener;
     DocumentReference teamdoc;
     DocumentReference start_game;
     Query query;
     ListenerRegistration registration;
+    int idx;
 
 
 
@@ -94,6 +97,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         teamnames = new ArrayList<>(Arrays.asList(teams));
         story = getResources().getStringArray(R.array.story_lines);
         storynames = new ArrayList<>(Arrays.asList(story));
+        money = new ArrayList<>();
         //teamnames = Arrays.asList(teams);
 
         DocumentReference docname = db.collection("Players").document(member);
@@ -469,6 +473,8 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         //admin.putExtra("boss_name",boss_namee);
 
         //storyline_selector_dialog();
+        //getOpponetsBudget(1);
+        //setOpponentsBudget(0);
         startActivity(admin);
 
         setStart();
@@ -524,6 +530,57 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         teammap.clear();
         teammap.put("story",selectedStory);
         story_doc.set(teammap);
+
+    }
+
+    public void getOpponetsBudget(int index)
+    {
+        idx = index;
+        DocumentReference getPrice = db.collection("Players").document(list.get(index));
+        getPrice.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        money.add(Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue());
+                        opp.add(documentSnapshot.getString("myteam"));
+                        if(idx<list.size())
+                        {
+                            getOpponetsBudget(idx+1);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(WaitingForPlayersActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+    }
+    public void setOpponentsBudget(int num)
+    {
+        //int i = num;
+        DocumentReference opponent_doc = db.collection(roomid).document("Opponents Budget");
+        for(int i=num;i<list.size();i++)
+        {
+            opp_bugdet.put(opp.get(num),money.get(num));
+        }
+
+        opponent_doc.set(opp_bugdet).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(WaitingForPlayersActivity.this, "Budget not set successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

@@ -67,6 +67,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     String [] userTeam;
     Spinner spinner;
     String selectedUser;
+    int bought_value,currentAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     try
                     {
                         id = documentSnapshot.getString("roomid");
+                        currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
                         addUserList();
                         getStoryLine();
                         setCurrentPlayer();
@@ -331,7 +333,9 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     usernames[i] = users.get(i);
                 }
 
-                addTeamList();
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminOngoingPlayer.this,android.R.layout.simple_spinner_dropdown_item,usernames);
+                spinner.setAdapter(adapter);
+                //addTeamList();
             }
         });
     }
@@ -339,7 +343,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     public  void addTeamList()
     {
         userTeam = new String[users.size()];
-        DocumentReference add_team_doc = db.collection("Players").document("Teams");
+        DocumentReference add_team_doc = db.collection("Players").document(selectedUser);
         add_team_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -349,10 +353,10 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     {
                         for(int i =0;i<users.size();i++)
                         {
-                            userTeam[i] = documentSnapshot.getString(usernames[i]);
+                            userTeam[i] = documentSnapshot.getString("myteam");
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminOngoingPlayer.this,android.R.layout.simple_spinner_dropdown_item,usernames);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminOngoingPlayer.this,android.R.layout.simple_spinner_dropdown_item,userTeam);
                         spinner.setAdapter(adapter);
                     }
                     catch(Exception e)
@@ -366,6 +370,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void sellCurrentPlayer()
     {
+        bought_value = Integer.parseInt(bid_value.getText().toString().trim());
+        currentAmount = currentAmount - bought_value;
         sell.clear();
         sell.put("1",current_player);
         sell.put("2",bid_value.getText().toString().trim());
@@ -391,5 +397,6 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     {
         DocumentReference updateNUm_doc = db.collection("Players").document(selectedUser);
         updateNUm_doc.update("players_bought",num_bought);
+        updateNUm_doc.update("Current_Amount",currentAmount);
     }
 }
