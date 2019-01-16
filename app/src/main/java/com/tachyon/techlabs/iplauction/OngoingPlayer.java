@@ -58,6 +58,9 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String userEmail;
+    int phase;
+    int point;
+    int currentAmount;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String id,boss_name;
     int current;
@@ -75,7 +78,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     String storyline,currentPlayer;
     DocumentReference ongoing_doc;
     String fname,sname,color,fullname;
-    int point;
+    int point1,point2,point3;
     String base_price;
     ImageView point_back;
     Drawable drawable;
@@ -147,6 +150,31 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         getId();
     }
 
+    private void readphase() {
+
+        DocumentReference documentReference = db.collection(id).document("State");
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        String phase_state = documentSnapshot.getString("phase");
+
+
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        });
+
+    }
+
     public void getId()
     {
 
@@ -163,27 +191,98 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
         DocumentReference documentReference = db.collection("Players").document(userEmail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists())
-                {
-                    try
-                    {
-                        id = documentSnapshot.getString("roomid");
-                        getStatePlayer();
-                        getStoryLine();
+                                                         @Override
+                                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                             if (documentSnapshot.exists()) {
+                                                                 try {
+                                                                     id = documentSnapshot.getString("roomid");
+                                                                     getStatePlayer();
+                                                                     //  getphase_state();
+                                                                     getStoryLine();
+
+                                                                 } catch (Exception e) {
+                                                                     Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                                                 }
+                                                             }
+
+                                                         }
+                                                     });
+    }
+
+          /*  private void getphase_state() {
+
+                DocumentReference doc = db.collection(id).document("State");
+                doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        phase = Objects.requireNonNull(documentSnapshot.getLong("phase")).intValue();
+                    }
+                });
+                logic_for_phases(phase);
+            }
+
+            private void logic_for_phases(int phase_current) {
+                DocumentReference documentReference = db.collection("Players").document(userEmail);
+                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists())
+                        {
+                            try
+                            {
+                                //id = documentSnapshot.getString("roomid");
+                                currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                               }
+                            catch(Exception e)
+                            {
+                                Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
                     }
-                    catch(Exception e)
+                });
+
+
+                if(phase_current==1)
+                {
+                    int diff = point2 - point1;
+                    switch (diff)
                     {
-                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        case 1: loss=(0.9*);
+
+
+                        case  3:
+
+                            loss=(0.2*);
+                        case 5:
+                            loss=(0.3*);
                     }
                 }
+                else
+                {
+                    int diff = point3 - point2;
 
-            }
-        });
+                    switch (diff)
+                    {
 
-    }
+
+                        case 1: profit=(0.1*);
+
+
+                        case  3: profit=(0.2*);
+
+
+                        case 5:profit =(0.3*);
+
+                    }
+
+
+                }
+
+
+        }*/
+
+
 
     public void getStoryLine()
     {
@@ -277,7 +376,10 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         {
                             fname = Objects.requireNonNull(documentSnapshot.getString("fname")).toString();
                             sname = Objects.requireNonNull(documentSnapshot.getString("sname")).toString();
-                            point = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
+                            point1 = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
+                            point2 = Objects.requireNonNull(documentSnapshot.getLong("p2")).intValue();
+                            point3 = Objects.requireNonNull(documentSnapshot.getLong("p3")).intValue();
+
                             //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
                             base_price = documentSnapshot.getString("Price");
                             //color = Objects.requireNonNull(documentSnapshot.getString("color")).toString();
@@ -385,7 +487,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         fullname = fname.toLowerCase()+""+sname.toLowerCase();
         Log.d("playername",fullname);
 
-        storageRef.child(fullname+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageRef.child(fullname+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Log.d("playerimg",uri.toString());
@@ -626,3 +728,4 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         super.onDestroy();
     }
 }
+

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -87,7 +90,7 @@ public class PowerCards extends AppCompatActivity {
 
 
 
-         ct= new CountDownTimer(1*60 * 1000, 1000) {
+         ct= new CountDownTimer(5*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);
@@ -149,6 +152,7 @@ public class PowerCards extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(true);
 
         bottonSheetLayout = findViewById(R.id.botton_sheet_layout_id);
         bottomSheetBehavior = BottomSheetBehavior.from(bottonSheetLayout);
@@ -355,6 +359,14 @@ public class PowerCards extends AppCompatActivity {
         lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
         dialog.show();
         dialog.getWindow().setAttributes(lp);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+               startActivity(new Intent(PowerCards.this,PaymentInfo.class));
+            }
+        }, 3000);
 
     }
 
@@ -425,30 +437,31 @@ public class PowerCards extends AppCompatActivity {
             public void onDataEntered(Pinview pinview, boolean b)
             {    String price_string= users_price.getText().toString();
                 final long card_price_bid_value = Long.parseLong(price_string);
-                DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
+               // DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
+                DocumentReference documentReference2 = db.collection("Players").document(userEmail);
                 if((pinview.getValue().equals(num))&& (card_price_bid_value<20000000) )
                 {
                     switch (flag) {
                         case 1:
                             //history = "Yorker#" + appConstants.Yorker_price;
-                            payHistory.put("0","Yorker");
-                            payHistory.put("1",card_price_bid_value);
-                            documentReference2.set(payHistory);
+                          //  payHistory.put("0","Yorker");
+                            payHistory.put("Yorker",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 2:
-                            payHistory.put("0","No Ball");
-                            payHistory.put("1",card_price_bid_value);
-                            documentReference2.set(payHistory);
+                           // payHistory.put("0","No Ball");
+                            payHistory.put("No Ball",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 3:
-                            payHistory.put("0","Right To Match");
-                            payHistory.put("1",card_price_bid_value);
-                            documentReference2.set(payHistory);
+                            //payHistory.put("0","Right To Match");
+                            payHistory.put("Right To Match",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 4:
-                            payHistory.put("0","Legend Cards");
-                            payHistory.put("1",card_price_bid_value);
-                            documentReference2.set(payHistory);
+                            //payHistory.put("0","Legend Cards");
+                            payHistory.put("Legend Card",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
                             break;
                     }
 
@@ -485,7 +498,7 @@ public class PowerCards extends AppCompatActivity {
 
                 }
                 else
-                    Toast.makeText(context, "Please Enter Lesser Value", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Please Enter Lesser Value or Check Your Password", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -497,6 +510,8 @@ public class PowerCards extends AppCompatActivity {
         //startActivity(new Intent(PowerCards.this,PaymentInfo.class));
         //finish();
     }
+
+
 
     public void cardback(View view) {
         onBackPressed();
@@ -515,10 +530,11 @@ public class PowerCards extends AppCompatActivity {
         }
         else
         {
+            Toast.makeText(context, "You Can't go back unless timer stops", Toast.LENGTH_SHORT).show();
             //super.onBackPressed();
-            final Intent cardtomain = new Intent(PowerCards.this,OngoingPlayer.class);
-            startActivity(cardtomain);
-            finish();
+            //final Intent cardtomain = new Intent(PowerCards.this,OngoingPlayer.class);
+            //startActivity(cardtomain);
+            //finish();
         }
 
     }
@@ -638,4 +654,5 @@ public class PowerCards extends AppCompatActivity {
 
         }
     };
+
 }

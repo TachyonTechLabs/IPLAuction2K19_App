@@ -32,7 +32,7 @@ public class ProfileListViewAdapter extends ArrayAdapter {
         txtValue = row.findViewById(R.id.listvalue);
         Toast.makeText(row.getContext(), listtext[1], Toast.LENGTH_SHORT).show();
         txtText.setText(listtext[position]);
-        if(position>1)
+        if(position==2 || (position==3))
         {
             valueText = "₹ "+listvalue[position];
         }

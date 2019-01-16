@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder>{
@@ -162,7 +165,8 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull cards_adapter.ViewHolder holder, int position) {
-        holder.imageViewCard.setImageResource(carsimgs[position]);
+       // holder.imageViewCard.setImageResource(carsimgs[position]);
+        Picasso.get().load(carsimgs[position]).into(holder.imageViewCard);
         holder.textdiscCard.setText(disc[position]);
         holder.textnamesCard.setText(names[position]);
         holder.textpriceCard.setText(price[position]);
