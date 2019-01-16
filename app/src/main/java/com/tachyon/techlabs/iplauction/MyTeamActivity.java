@@ -167,9 +167,9 @@ public class MyTeamActivity extends AppCompatActivity {
                         }
                         total = list.size();
                         //Log.d("qwertyuiop",total+"");
-                        playernameArray = new String[total];
-                        playerpriceArray = new long[total];
-                        setListOfPlayers(1);
+                        playernameArray = new String[bought];
+                        playerpriceArray = new long[bought];
+                        setListOfPlayers(0);
                     }
                     catch(Exception ex)
                     {
@@ -183,9 +183,9 @@ public class MyTeamActivity extends AppCompatActivity {
 
     public void setListOfPlayers(int size)
     {
-        index = size - 1 ;
-        sizes = size;
-        final String num = size+"";
+        index = size ;
+        sizes = size+1;
+        final String num = sizes+"";
 
         DocumentReference setplayer_doc = db.collection("Players").document(userEmail).collection("MyTeam").document(num);
         setplayer_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -202,9 +202,9 @@ public class MyTeamActivity extends AppCompatActivity {
                         playerpriceArray[index] = l;//Long.parseLong(documentSnapshot.getString("2"));
                         //Toast.makeText(MyTeamActivity.this, playernameArray[index], Toast.LENGTH_SHORT).show();
 
-                        if(sizes<total)
+                        if(index<bought-1)
                         {
-                            setListOfPlayers(sizes+1);
+                            setListOfPlayers(index+1);
                         }
                         else
                         {

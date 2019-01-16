@@ -124,8 +124,22 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:hint="@string/amount"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/fixed_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="setState"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

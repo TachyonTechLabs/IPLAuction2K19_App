@@ -432,22 +432,22 @@ public class PowerCards extends AppCompatActivity {
                         case 1:
                             //history = "Yorker#" + appConstants.Yorker_price;
                             payHistory.put("0","Yorker");
-                            payHistory.put("1",appConstants.Yorker_price);
+                            payHistory.put("1",card_price_bid_value);
                             documentReference2.set(payHistory);
                             break;
                         case 2:
                             payHistory.put("0","No Ball");
-                            payHistory.put("1",appConstants.noBall_price);
+                            payHistory.put("1",card_price_bid_value);
                             documentReference2.set(payHistory);
                             break;
                         case 3:
                             payHistory.put("0","Right To Match");
-                            payHistory.put("1",appConstants.rightToMatch_price);
+                            payHistory.put("1",card_price_bid_value);
                             documentReference2.set(payHistory);
                             break;
                         case 4:
                             payHistory.put("0","Legend Cards");
-                            payHistory.put("1",appConstants.legendCards);
+                            payHistory.put("1",card_price_bid_value);
                             documentReference2.set(payHistory);
                             break;
                     }

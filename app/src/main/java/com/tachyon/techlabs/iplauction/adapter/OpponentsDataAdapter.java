@@ -17,7 +17,7 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
     public Context context;
     public String [] teams;
     public int [] players;
-    public long [] balance;
+    public int [] balance;
     View view;
     ViewHolder viewHolder;
     CardView placeholder_team_cardview;
@@ -47,7 +47,7 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
 
     }
 
-    public OpponentsDataAdapter(Context context, String[] teams, int[] players, long[] balance, Resources resources)
+    public OpponentsDataAdapter(Context context, String[] teams, int[] players, int[] balance, Resources resources)
     {
         this.context = context;
         this.teams = teams;

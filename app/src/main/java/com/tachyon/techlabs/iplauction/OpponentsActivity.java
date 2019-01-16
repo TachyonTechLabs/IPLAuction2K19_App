@@ -21,9 +21,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.tachyon.techlabs.iplauction.adapter.OpponentsDataAdapter;
 
+import java.util.List;
 import java.util.Objects;
 
 public class OpponentsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -41,15 +48,24 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
     Handler handler;
     AfterRegistrationMainActivity afterRegistrationMainActivity = new AfterRegistrationMainActivity();
     OngoingPlayer ongoingPlayer = new OngoingPlayer();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String userEmail,id;
+    List<String> opp;
+    List<Integer> budget;
+    int [] bal = new int[10];
+    String [] teams = {"MI", "CSK", "KKR", "RR","DC","RCB","SH","KXIP","GL","RPS"};
+    int [] players = {2,5,9,2,5,8,2,3,6,2};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opponents);
 
-        String [] teams = {"MI", "CSK", "KKR", "RR","DC","RCB","SH","KXIP","GL","RPS"};
-        int [] players = {2,5,9,2,5,8,2,3,6,2};
+
+
         long [] balance = {100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000};
+
+        userEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
         opp_toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(opp_toolbar);
@@ -81,10 +97,59 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
 
         resources = getResources();
 
-        opponents_data_adapter = new OpponentsDataAdapter(context,teams,players,balance,resources);
+        getRoom();
+
+    }
+
+    public void getRoom()
+    {
+        DocumentReference room_doc = db.collection("Players").document(userEmail);
+        room_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        id = documentSnapshot.getString("roomid");
+                        getTeamName();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(OpponentsActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    public void getTeamName()
+    {
+        DocumentReference getTeam_doc = db.collection(id).document("Opponents Budget");
+        getTeam_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                bal[0] = Objects.requireNonNull(documentSnapshot.getLong("MI")).intValue();
+                bal[1] = Objects.requireNonNull(documentSnapshot.getLong("CSK")).intValue();
+                bal[2] = Objects.requireNonNull(documentSnapshot.getLong("KKR")).intValue();
+                bal[3] = Objects.requireNonNull(documentSnapshot.getLong("RR")).intValue();
+                bal[4] = Objects.requireNonNull(documentSnapshot.getLong("DC")).intValue();
+                bal[5] = Objects.requireNonNull(documentSnapshot.getLong("RCB")).intValue();
+                bal[6] = Objects.requireNonNull(documentSnapshot.getLong("SH")).intValue();
+                bal[7] = Objects.requireNonNull(documentSnapshot.getLong("KXIP")).intValue();
+                bal[8] = Objects.requireNonNull(documentSnapshot.getLong("GL")).intValue();
+                bal[9] = Objects.requireNonNull(documentSnapshot.getLong("RPS")).intValue();
+
+                setOpp();
+            }
+        });
+    }
+
+    public void setOpp()
+    {
+        opponents_data_adapter = new OpponentsDataAdapter(context,teams,players,bal,resources);
 
         recyclerView.setAdapter(opponents_data_adapter);
-
     }
 
     @Override
