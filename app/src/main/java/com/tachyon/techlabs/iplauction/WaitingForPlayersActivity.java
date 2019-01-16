@@ -67,6 +67,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     Map<String, Object> gamestart = new HashMap<>();
     Map<String, String> teammap = new HashMap<>();
     Map<String, Integer> opp_bugdet = new HashMap<>();
+    Map<String, Integer> statemap = new HashMap<>();
     String [] teams,story;
     List<String> teamnames,storynames,opp;
     List<Integer> money;
@@ -531,6 +532,9 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         teammap.put("story",selectedStory);
         story_doc.set(teammap);
 
+        DocumentReference state = db.collection(roomid).document("State");
+        statemap.put("state",0);
+        state.set(statemap);
     }
 
     public void getOpponetsBudget(int index)

@@ -45,17 +45,18 @@ import java.util.Objects;
 
 public class AdminOngoingPlayer extends AppCompatActivity {
 
-    List<String> list;
+    List<String> list,fix;
     AllPlayerInfo allPlayerInfo = new AllPlayerInfo();
     ArrayAdapter<String> adapter;
     String [] players;
-    ListView playerlist;
+    ListView playerlist,fixlist;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String userEmail,id,boss_name;
     HashMap<String,Boolean> timer;
     HashMap<String,Object> sell = new HashMap<>();
+    HashMap<String,Integer> statemap = new HashMap<>();
     Bundle extras;
     private Menu menu;
     String storyline,current_player;
@@ -68,6 +69,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     Spinner spinner;
     String selectedUser;
     int bought_value,currentAmount;
+    int s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         //list.remove(0);
 
         playerlist = findViewById(R.id.adminlist);
+        fixlist = findViewById(R.id.adminlist);
         ipl_player = findViewById(R.id.ipl_player_admin_text);
         bid_value = findViewById(R.id.text_input_value_admin);
         spinner = findViewById(R.id.player_spinner);
@@ -168,13 +171,41 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         });
     }
 
+    public void setFixedPlayer()
+    {
+        db.collection("Fixed Players").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    fix = new ArrayList<>();
+                    for(QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult()))
+                    {
+                        fix.add(documentSnapshot.getId());
+                    }
+
+                    setFixed();
+                }
+            }
+        });
+    }
+
+    public void setFixed()
+    {
+        Collections.sort(fix);
+        players = new String[fix.size()];
+        players = fix.toArray(players);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,players);
+        playerlist.setAdapter(adapter);
+    }
+
     public void setDisplayPlayer()
     {
         Collections.sort(list);
         players = new String[list.size()];
         players = list.toArray(players);
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,players);
-        playerlist.setAdapter(adapter);
+        fixlist.setAdapter(adapter);
     }
 
 
@@ -184,11 +215,42 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         playerlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                documentReference.update("curr",list.get(position));
-                ipl_player.setText(list.get(position));
-                current_player = list.get(position);
+                if(s==0)
+                {
+                    documentReference.update("curr",list.get(position));
+                    ipl_player.setText(list.get(position));
+                    current_player = list.get(position);
+                }
+                else if(s==1)
+                {
+                    documentReference.update("curr",fix.get(position));
+                    ipl_player.setText(fix.get(position));
+                    current_player = fix.get(position);
+                }
+
             }
         });
+
+        /*
+        fixlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(s==0)
+                {
+                    documentReference.update("curr",list.get(position));
+                    ipl_player.setText(list.get(position));
+                    current_player = list.get(position);
+                }
+                else if(s==1)
+                {
+                    documentReference.update("curr",fix.get(position));
+                    ipl_player.setText(fix.get(position));
+                    current_player = fix.get(position);
+                }
+
+            }
+        });
+        */
 
     }
 
@@ -316,6 +378,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void addUserList()
     {
+        getStatePlayer();
         db.collection(id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -338,6 +401,18 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 //addTeamList();
             }
         });
+    }
+
+    public void getStatePlayer()
+    {
+        DocumentReference doc = db.collection(id).document("State");
+        doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                s = Objects.requireNonNull(documentSnapshot.getLong("state")).intValue();
+            }
+        });
+
     }
 
     public  void addTeamList()
@@ -398,5 +473,12 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         DocumentReference updateNUm_doc = db.collection("Players").document(selectedUser);
         updateNUm_doc.update("players_bought",num_bought);
         updateNUm_doc.update("Current_Amount",currentAmount);
+    }
+
+    public void setState(View view) {
+        DocumentReference state_doc = db.collection(id).document("State");
+        state_doc.update("state",1);
+        s = 1;
+        setFixedPlayer();
     }
 }

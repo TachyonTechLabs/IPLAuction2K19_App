@@ -82,7 +82,8 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     GradientDrawable gradientDrawable;
     TextView my_team;
     String [] bp;
-    long multiplier;
+    double multiplier;
+    int s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,9 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     try
                     {
                         id = documentSnapshot.getString("roomid");
+                        getStatePlayer();
                         getStoryLine();
+
                     }
                     catch(Exception e)
                     {
@@ -231,6 +234,18 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         });
     }
 
+    public void getStatePlayer()
+    {
+        DocumentReference doc = db.collection(id).document("State");
+        doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                s = Objects.requireNonNull(documentSnapshot.getLong("state")).intValue();
+            }
+        });
+
+    }
+
     public void getTextPlayer()
     {
 
@@ -250,31 +265,63 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         basetext.setText(base);
 
         */
-        ongoing_doc = db.collection(storyline).document(currentPlayer);
-        ongoing_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists())
-                {
-                    try
+        if(s==0)
+        {
+            ongoing_doc = db.collection(storyline).document(currentPlayer);
+            ongoing_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.exists())
                     {
-                        fname = Objects.requireNonNull(documentSnapshot.getString("fname")).toString();
-                        sname = Objects.requireNonNull(documentSnapshot.getString("sname")).toString();
-                        point = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
-                        //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
-                        base_price = documentSnapshot.getString("Price");
-                        color = Objects.requireNonNull(documentSnapshot.getString("color")).toString();
-                        setTextPlayer();
+                        try
+                        {
+                            fname = Objects.requireNonNull(documentSnapshot.getString("fname")).toString();
+                            sname = Objects.requireNonNull(documentSnapshot.getString("sname")).toString();
+                            point = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
+                            //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
+                            base_price = documentSnapshot.getString("Price");
+                            //color = Objects.requireNonNull(documentSnapshot.getString("color")).toString();
+                            setTextPlayer();
+                        }
+                        catch(Exception e)
+                        {
+                            Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    catch(Exception e)
-                    {
-                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
-                    }
+
+
                 }
+            });
+        }
+        else if(s==1)
+        {
+            ongoing_doc = db.collection("Fixed Players").document(currentPlayer);
+            ongoing_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.exists())
+                    {
+                        try
+                        {
+                            fname = Objects.requireNonNull(documentSnapshot.getString("fname")).toString();
+                            sname = Objects.requireNonNull(documentSnapshot.getString("sname")).toString();
+                            point = Objects.requireNonNull(documentSnapshot.getLong("p")).intValue();
+                            //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
+                            base_price = documentSnapshot.getString("price");
+                            //color = Objects.requireNonNull(documentSnapshot.getString("color")).toString();
+                            setTextPlayer();
+                        }
+                        catch(Exception e)
+                        {
+                            Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
 
-            }
-        });
+                }
+            });
+        }
+
 
 
         //storageRef.child(fullname+".png");
@@ -290,23 +337,24 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
         bp = base_price.split("#");
         String mul = bp[1].toLowerCase();
         String total;
-        long basep;
+        double basep;
 
         if(mul.equals("cr"))
         {
             multiplier = 10000000;
-            basep = Integer.parseInt(bp[0]) * multiplier;
+            basep = Double.parseDouble(bp[0]) * multiplier;
             total = basep+"";
         }
         else if(mul.equals("lakhs"))
         {
             multiplier = 100000;
-            basep = Integer.parseInt(bp[0]) * multiplier;
+            basep =  Double.parseDouble(bp[0]) * multiplier;
             total = basep+"";
         }
         pointtext.setText(String.valueOf(point));
         basetext.setText(pricebase);
 
+        /*
         switch (color)
         {
             case "rcb" : point_back.setBackgroundResource(R.drawable.rcb_point_back_circle);
@@ -330,7 +378,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
             case "rps" : point_back.setBackgroundResource(R.drawable.rps_point_back_circle);
                 break;
             default:break;
-        }
+        }*/
         //
         //fname = fname.replace(" ","");
         sname = sname.replace(" ","");
