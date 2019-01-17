@@ -536,6 +536,21 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         statemap.put("state",0);
         statemap.put("phase",0);
         state.set(statemap);
+
+        DocumentReference opp = db.collection(roomid).document("Opponents");
+        statemap.clear();
+        statemap.put("MI",0);
+        statemap.put("CSK",0);
+        statemap.put("RCB",0);
+        statemap.put("DC",0);
+        statemap.put("RR",0);
+        statemap.put("GL",0);
+        statemap.put("SH",0);
+        statemap.put("KXIP",0);
+        statemap.put("KKR",0);
+        statemap.put("RPS",0);
+        opp.set(statemap);
+
     }
 
     public void getOpponetsBudget(int index)

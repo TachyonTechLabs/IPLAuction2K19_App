@@ -68,9 +68,10 @@ public class PowerCards extends AppCompatActivity {
     FirebaseUser currentUser;
     Spinner amount_multipler;
     String userEmail;
-    int currentAmount,currentNumOfCards,itemsPurchased;
+    int currentNumOfCards,itemsPurchased;
+    double currentAmount;
     AppConstants appConstants = new AppConstants();
-    int card_amount=0;
+    double card_amount=0;
     String users_password;
     Button buyBtn;
     int flag=0;
@@ -85,6 +86,7 @@ public class PowerCards extends AppCompatActivity {
     StringBuilder stringBuilder;
     static CountDownTimer ct;
     static long millisinsec=0;
+    String id,team;
     RelativeLayout.LayoutParams bottomparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
     @Override
@@ -164,6 +166,12 @@ public class PowerCards extends AppCompatActivity {
 
         bottonSheetLayout = findViewById(R.id.botton_sheet_layout_id);
         bottomSheetBehavior = BottomSheetBehavior.from(bottonSheetLayout);
+        bottonSheetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         params = bottonSheetLayout.getLayoutParams();
         users_price=findViewById(R.id.card_pricevalue_edittext);
 
@@ -189,7 +197,9 @@ public class PowerCards extends AppCompatActivity {
                 {
                     try
                     {
-                        currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                        currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
+                        id = documentSnapshot.getString("roomid");
+                        team = documentSnapshot.getString("myteam");
                         currentNumOfCards = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
                         itemsPurchased = Objects.requireNonNull(documentSnapshot.getLong("itemsPurchased")).intValue();
                         itemsPurchased = itemsPurchased +1;
@@ -437,16 +447,16 @@ public class PowerCards extends AppCompatActivity {
         String cardName = txt_bs_name.getText().toString();
         switch (cardName)
         {
-            case "YORKER": card_amount = appConstants.Yorker_price ;
+            case "YORKER": //card_amount = appConstants.Yorker_price ;
                 flag=1;
                 break;
-            case "NO BALL" : card_amount = appConstants.noBall_price;
+            case "NO BALL" : //card_amount = appConstants.noBall_price;
                 flag=2;
                 break;
-            case "RIGHT TO MATCH": card_amount = appConstants.rightToMatch_price;
+            case "RIGHT TO MATCH": //card_amount = appConstants.rightToMatch_price;
                 flag=3;
                 break;
-            case "LEGEND CARDS": card_amount = appConstants.legendCards;
+            case "LEGEND CARDS": //card_amount = appConstants.legendCards;
                 flag=4;
                 break;
         }
@@ -469,27 +479,31 @@ public class PowerCards extends AppCompatActivity {
                         case 1:
                             //history = "Yorker#" + appConstants.Yorker_price;
                           //  payHistory.put("0","Yorker");
+                            card_amount = card_price_bid_value;
                             payHistory.put("yorker",card_price_bid_value);
                             documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 2:
                            // payHistory.put("0","No Ball");
+                            card_amount = card_price_bid_value;
                             payHistory.put("no ball",card_price_bid_value);
                             documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 3:
                             //payHistory.put("0","Right To Match");
+                            card_amount = card_price_bid_value;
                             payHistory.put("right to match",card_price_bid_value);
                             documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 4:
                             //payHistory.put("0","Legend Cards");
+                            card_amount = card_price_bid_value;
                             payHistory.put("legend cards",card_price_bid_value);
                             documentReference2.set(payHistory,SetOptions.merge());
                             break;
                     }
 
-                    int current_amount = currentAmount - card_amount;
+                    double current_amount = currentAmount - card_amount;
                     DocumentReference documentReference = db.collection("Players").document(userEmail);
                     documentReference.update("Current_Amount",current_amount);
                     documentReference.update("numberOfCards",currentNumOfCards+1)
@@ -515,6 +529,8 @@ public class PowerCards extends AppCompatActivity {
                                 }
                             })
                             ;
+                    DocumentReference opp_doc = db.collection(id).document("Opponents");
+                    opp_doc.update(team,current_amount);
 
                     showHistory();
 

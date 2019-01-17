@@ -76,6 +76,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     double bought_value;
     double currentAmount;
     int s;
+    String selectedTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +124,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     try
                     {
                         id = documentSnapshot.getString("roomid");
-                        currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                        currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
+                        selectedTeam = documentSnapshot.getString("myteam");
                         addUserList();
                         getStoryLine();
                         setCurrentPlayer();
@@ -395,7 +397,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 users = new ArrayList<>();
                 for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots)
                 {
-                    if(!documentSnapshot.getId().equals("CurrentPlayer") && !documentSnapshot.getId().equals("START GAME") && !documentSnapshot.getId().equals("Story"))
+                    if(!documentSnapshot.getId().equals("CurrentPlayer") && !documentSnapshot.getId().equals("START GAME") && !documentSnapshot.getId().equals("Story") && !documentSnapshot.getId().equals("State"))
                     users.add(documentSnapshot.getId());
                 }
                 users.remove(userEmail);
@@ -485,6 +487,9 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         DocumentReference updateNUm_doc = db.collection("Players").document(selectedUser);
         updateNUm_doc.update("players_bought",num_bought);
         updateNUm_doc.update("Current_Amount",currentAmount);
+
+        DocumentReference opp_doc = db.collection(id).document("Opponents");
+        opp_doc.update(selectedTeam,currentAmount);
     }
 
     public void setState(View view) {

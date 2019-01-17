@@ -16,8 +16,8 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
 
     public Context context;
     public String [] teams;
-    public int [] players;
-    public int [] balance;
+    //public int [] players;
+    public long [] balance;
     View view;
     ViewHolder viewHolder;
     CardView placeholder_team_cardview;
@@ -29,7 +29,7 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView opp_team_name;
-        public TextView opp_team_player;
+        //public TextView opp_team_player;
         public TextView opp_team_balance;
         public CardView opp_team_cardView;
 
@@ -38,7 +38,7 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
             super(view);
 
             opp_team_name = (TextView) view.findViewById(R.id.player_name_mtda);
-            opp_team_player = (TextView) view.findViewById(R.id.player_oda_text);
+            //opp_team_player = (TextView) view.findViewById(R.id.player_oda_text);
             opp_team_balance = (TextView) view.findViewById(R.id.price_mtda);
             opp_team_cardView = (CardView) view.findViewById(R.id.custom_opponent_oda);
             placeholder_team_cardview = opp_team_cardView;
@@ -47,11 +47,11 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
 
     }
 
-    public OpponentsDataAdapter(Context context, String[] teams, int[] players, int[] balance, Resources resources)
+    public OpponentsDataAdapter(Context context, String[] teams,long [] balance, Resources resources)
     {
         this.context = context;
         this.teams = teams;
-        this.players = players;
+        //this.players = players;
         this.balance = balance;
         this.resources = resources;
     }
@@ -67,7 +67,7 @@ public class OpponentsDataAdapter extends RecyclerView.Adapter<OpponentsDataAdap
     @Override
     public void onBindViewHolder(@NonNull OpponentsDataAdapter.ViewHolder holder, int position) {
         holder.opp_team_name.setText(teams[position]);
-        holder.opp_team_player.setText(String.valueOf(players[position]));
+        //holder.opp_team_player.setText(String.valueOf(players[position]));
         holder.opp_team_balance.setText(String.valueOf(balance[position]));
 
 

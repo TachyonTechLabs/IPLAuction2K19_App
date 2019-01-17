@@ -210,7 +210,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
      });
     }
 
-          /*  private void getphase_state() {
+        /*    private void getphase_state() {
 
                 DocumentReference doc = db.collection(id).document("State");
                 doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -281,9 +281,9 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 }
 
 
-        }*/
+        }
 
-
+*/
 
     public void getStoryLine()
     {
@@ -409,7 +409,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         {
                             fname = Objects.requireNonNull(documentSnapshot.getString("fname")).toString();
                             sname = Objects.requireNonNull(documentSnapshot.getString("sname")).toString();
-                            point = Objects.requireNonNull(documentSnapshot.getLong("p")).intValue();
+                            point1 = Objects.requireNonNull(documentSnapshot.getLong("p")).intValue();
                             //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
                             base_price = documentSnapshot.getString("price");
                             //color = Objects.requireNonNull(documentSnapshot.getString("color")).toString();
@@ -455,7 +455,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
             basep =  Double.parseDouble(bp[0]) * multiplier;
             total = basep+"";
         }
-        pointtext.setText(String.valueOf(point));
+        pointtext.setText(String.valueOf(point1));
         basetext.setText(pricebase);
 
         /*
@@ -706,15 +706,19 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
     @Override
     protected void onPause() {
-       /* query = db.collection(id);
+        super.onPause();
+        query = db.collection(id);
         registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
             }
         });
-        registration.remove();*/
-        super.onPause();
+        if(registration!=null){
+            registration.remove();
+        }
+
+
     }
 
     @Override

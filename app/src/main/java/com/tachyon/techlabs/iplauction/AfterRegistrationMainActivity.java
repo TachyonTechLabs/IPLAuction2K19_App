@@ -574,8 +574,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("1",userEmail);
         owner_details.put("numberOfCards",0);
         owner_details.put("Owner","true");
-        owner_details.put("Initial_Amount",1000000);
-        owner_details.put("Current_Amount",1000000);
+        owner_details.put("Initial_Amount",800000000);
+        owner_details.put("Current_Amount",800000000);
         owner_details.put("yorker",0);
         owner_details.put("no ball",0);
         owner_details.put("right to match",0);
@@ -586,6 +586,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("itemsPurchased",0);
         owner_details.put("myteam","");
         owner_details.put("players_bought",0);
+        owner_details.put("temp_current",800000000);
 
         //gamestart.put("start",0);
 
@@ -824,7 +825,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                 });
        AlertDialog alert=builder.create();
        alert.show();
-
     }
 
 
@@ -836,8 +836,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         members.put("1",userEmail);
         members.put("numberOfCards",0);
         members.put("Owner","false");
-        members.put("Initial_Amount",1000000);
-        members.put("Current_Amount",1000000);
+        members.put("Initial_Amount",800000000);
+        members.put("Current_Amount",800000000);
         members.put("yorker",0);
         members.put("no ball",0);
         members.put("right to match",0);
@@ -848,6 +848,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         members.put("itemsPurchased",0);
         members.put("myteam","");
         members.put("players_bought",0);
+        members.put("temp_current",800000000);
 
         docRef2
                 .set(members)
