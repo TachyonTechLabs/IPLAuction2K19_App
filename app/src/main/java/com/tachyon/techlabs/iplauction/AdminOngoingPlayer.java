@@ -12,6 +12,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,7 +61,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     FirebaseUser currentUser;
     String userEmail,id,boss_name;
     HashMap<String,Boolean> timer;
-    HashMap<String,Object> sell = new HashMap<>();
+    HashMap<String,String> sell = new HashMap<>();
     HashMap<String,Integer> statemap = new HashMap<>();
     Bundle extras;
     private Menu menu;
@@ -125,7 +126,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     {
                         id = documentSnapshot.getString("roomid");
                         currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
-                        selectedTeam = documentSnapshot.getString("myteam");
+                        //selectedTeam = documentSnapshot.getString("myteam");
+                        //Log.d("selectedTeam",selectedTeam);
                         addUserList();
                         getStoryLine();
                         setCurrentPlayer();
@@ -359,7 +361,15 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         else
         {
             selectedUser = spinner.getSelectedItem().toString();
-            getNumber();
+            DocumentReference getTeam_doc = db.collection("Players").document(selectedUser);
+            getTeam_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    selectedTeam = documentSnapshot.getString("myteam");
+                    getNumber();
+                }
+            });
+
         }
 
     }
@@ -461,8 +471,9 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         String multiply=amount_multipler.getSelectedItem().toString();
         double final_amt=multiply_with(bought_value,multiply);
         currentAmount = currentAmount - final_amt;
+        Long f = (long) final_amt;
         sell.clear();
-        sell.put(current_player,final_amt);
+        sell.put(current_player,String.valueOf(f));
      //   sell.put("2",final_amt);
         DocumentReference sell_doc = db.collection("Players").document(selectedUser)
                 .collection("MyTeam").document("1");
@@ -485,11 +496,17 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     public void updateNumber()
     {
         DocumentReference updateNUm_doc = db.collection("Players").document(selectedUser);
-        updateNUm_doc.update("players_bought",num_bought);
-        updateNUm_doc.update("Current_Amount",currentAmount);
+        //updateNUm_doc.update("players_bought",num_bought);
+        updateNUm_doc.update("Current_Amount",currentAmount).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("selectedTeam",selectedTeam);
+                DocumentReference opp_doc = db.collection(id).document("Opponents");
+                opp_doc.update(selectedTeam,currentAmount);
+            }
+        });
 
-        DocumentReference opp_doc = db.collection(id).document("Opponents");
-        opp_doc.update(selectedTeam,currentAmount);
+
     }
 
     public void setState(View view) {
