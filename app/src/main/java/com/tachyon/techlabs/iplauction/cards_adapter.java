@@ -2,6 +2,7 @@ package com.tachyon.techlabs.iplauction;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
@@ -9,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,6 +36,8 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
     private int[] carsimgs;
     private String[] names;
     private String[] disc;
+    FirebaseStorage storage=FirebaseStorage.getInstance();
+    StorageReference storageRef=storage.getReference();
     private String[] price;
     View view,view2;
     ViewHolder viewHolder;
@@ -36,6 +45,8 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
     private BottomSheetBehavior bottomSheetBehavior;
     View bgView;
     TextView bs_name,bs_desc;
+
+
 
 
     /*
@@ -54,6 +65,7 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
         public TextView textdiscCard;
         public TextView textpriceCard;
         public CardView cardView;
+
 
 
 
@@ -164,9 +176,26 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull cards_adapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final cards_adapter.ViewHolder holder, int position) {
        // holder.imageViewCard.setImageResource(carsimgs[position]);
-        Picasso.get().load(carsimgs[position]).into(holder.imageViewCard);
+       // Picasso.get().load(carsimgs[position]).into(holder.imageViewCard);
+      //  Glide.with(c).load(uri.toString()).into(player_img);
+        storageRef.child(names[position]+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+               // Log.d("playerimg",uri.toString());
+                Glide.with(c).load(uri.toString()).into(holder.imageViewCard);
+                //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                       // Log.d("playerimg","fail");
+                      //  Toast.makeText(this, "Not able to load player image", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         holder.textdiscCard.setText(disc[position]);
         holder.textnamesCard.setText(names[position]);
         holder.textpriceCard.setText(price[position]);
