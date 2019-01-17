@@ -68,6 +68,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
     Map<String, String> teammap = new HashMap<>();
     Map<String, Integer> opp_bugdet = new HashMap<>();
     Map<String, Integer> statemap = new HashMap<>();
+    Map<String, Integer> opp_map = new HashMap<>();
     String [] teams,story;
     List<String> teamnames,storynames,opp;
     List<Integer> money;
@@ -538,18 +539,18 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         state.set(statemap);
 
         DocumentReference opp = db.collection(roomid).document("Opponents");
-        statemap.clear();
-        statemap.put("MI",0);
-        statemap.put("CSK",0);
-        statemap.put("RCB",0);
-        statemap.put("DC",0);
-        statemap.put("RR",0);
-        statemap.put("GL",0);
-        statemap.put("SH",0);
-        statemap.put("KXIP",0);
-        statemap.put("KKR",0);
-        statemap.put("RPS",0);
-        opp.set(statemap);
+        opp_map.clear();
+        opp_map.put("MI",0);
+        opp_map.put("CSK",0);
+        opp_map.put("RCB",0);
+        opp_map.put("DC",0);
+        opp_map.put("RR",0);
+        opp_map.put("GL",0);
+        opp_map.put("SH",0);
+        opp_map.put("KXIP",0);
+        opp_map.put("KKR",0);
+        opp_map.put("RPS",0);
+        opp.set(opp_map);
 
     }
 
