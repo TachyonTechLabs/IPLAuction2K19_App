@@ -36,6 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,7 +73,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     String [] userTeam;
     Spinner spinner;
     String selectedUser;
-    int bought_value,currentAmount;
+    double bought_value;
+    double currentAmount;
     int s;
 
     @Override
@@ -453,16 +455,17 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void sellCurrentPlayer()
     {
-        bought_value = Integer.parseInt(bid_value.getText().toString().trim());
-        multiply_with();
-        currentAmount = currentAmount - bought_value;
+        bought_value = Double.parseDouble(bid_value.getText().toString().trim());
+        String multiply=amount_multipler.getSelectedItem().toString();
+        double final_amt=multiply_with(bought_value,multiply);
+        currentAmount = currentAmount - final_amt;
         sell.clear();
-        sell.put("1",current_player);
-        sell.put("2",bid_value.getText().toString().trim());
+        sell.put(current_player,final_amt);
+     //   sell.put("2",final_amt);
         DocumentReference sell_doc = db.collection("Players").document(selectedUser)
-                .collection("MyTeam").document(num_bought+"");
+                .collection("MyTeam").document("1");
 
-        sell_doc.set(sell).addOnSuccessListener(new OnSuccessListener<Void>() {
+        sell_doc.set(sell,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 updateNumber();
@@ -505,23 +508,23 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         amount_multipler.setAdapter(amountspin_adapter);
     }
 
-    private double multiply_with(String users_price,String multiply)
-    { double price=Double.parseDouble(users_price);
-        double basep;
+    private double multiply_with(Double users_price,String multiply)
+    {
+        double bid_amt;
 
 
         if(multiply.equals("Crore"))
         {
 
             double multiplier = 10000000;
-            basep = (price * multiplier);
-            return basep;
+            bid_amt = (users_price * multiplier);
+            return bid_amt;
         }
         else if(multiply.equals("Lakhs"))
         {
             double multiplier = 100000;
-            basep =  (price * multiplier);
-            return basep;
+            bid_amt =  (users_price * multiplier);
+            return bid_amt;
 
         }
         return 0;
