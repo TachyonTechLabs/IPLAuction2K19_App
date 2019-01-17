@@ -59,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     SharedPreferences sp;
     Spinner spin;
     TextView profile_myteam;
+    ImageView teamarrow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +78,16 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         progressBar_indeterminate_circle = findViewById(R.id.profile_progress);
         profile_myteam = findViewById(R.id.profile_myteam);
+        teamarrow = findViewById(R.id.myteam_arrow);
 
         profile_myteam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this,MyTeamActivity.class));
+            }
+        });
+
+        teamarrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this,MyTeamActivity.class));

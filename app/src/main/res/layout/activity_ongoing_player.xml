@@ -174,19 +174,6 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/my_team_op"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="@string/my_team"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
             android:id="@+id/point_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -86,6 +86,7 @@ public class PowerCards extends AppCompatActivity {
     StringBuilder stringBuilder;
     static CountDownTimer ct;
     static long millisinsec=0;
+    String id,team;
     RelativeLayout.LayoutParams bottomparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
     @Override
@@ -197,6 +198,8 @@ public class PowerCards extends AppCompatActivity {
                     try
                     {
                         currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
+                        id = documentSnapshot.getString("roomid");
+                        team = documentSnapshot.getString("myteam");
                         currentNumOfCards = Objects.requireNonNull(documentSnapshot.getLong("numberOfCards")).intValue();
                         itemsPurchased = Objects.requireNonNull(documentSnapshot.getLong("itemsPurchased")).intValue();
                         itemsPurchased = itemsPurchased +1;
@@ -526,6 +529,8 @@ public class PowerCards extends AppCompatActivity {
                                 }
                             })
                             ;
+                    DocumentReference opp_doc = db.collection(id).document("Opponents");
+                    opp_doc.update(team,current_amount);
 
                     showHistory();
 

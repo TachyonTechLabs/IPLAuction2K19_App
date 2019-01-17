@@ -52,9 +52,9 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
     String userEmail,id;
     List<String> opp;
     List<Integer> budget;
-    int [] bal = new int[10];
+    long [] bal = new long[10];
     String [] teams = {"MI", "CSK", "KKR", "RR","DC","RCB","SH","KXIP","GL","RPS"};
-    int [] players = {2,5,9,2,5,8,2,3,6,2};
+    //int [] players = {2,5,9,2,5,8,2,3,6,2};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
 
     public void getTeamName()
     {
-        DocumentReference getTeam_doc = db.collection(id).document("Opponents Budget");
+        DocumentReference getTeam_doc = db.collection(id).document("Opponents");
         getTeam_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -147,7 +147,7 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
 
     public void setOpp()
     {
-        opponents_data_adapter = new OpponentsDataAdapter(context,teams,players,bal,resources);
+        opponents_data_adapter = new OpponentsDataAdapter(context,teams,bal,resources);
 
         recyclerView.setAdapter(opponents_data_adapter);
     }
