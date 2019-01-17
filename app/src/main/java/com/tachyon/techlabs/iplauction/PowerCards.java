@@ -98,7 +98,7 @@ public class PowerCards extends AppCompatActivity {
 
 
 
-         ct= new CountDownTimer(1*60 * 1000, 1000) {
+         ct= new CountDownTimer(5*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);
