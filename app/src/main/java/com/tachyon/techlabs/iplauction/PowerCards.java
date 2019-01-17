@@ -50,7 +50,7 @@ import java.util.Objects;
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 
 public class PowerCards extends AppCompatActivity {
-    public static final String CHANNEL_ID="1001";
+  //  public static final String CHANNEL_ID="1001";
     Context context;
     ImageView cardback;
     RecyclerView recyclerView;
@@ -100,7 +100,7 @@ public class PowerCards extends AppCompatActivity {
 
 
 
-         ct= new CountDownTimer(1*60 * 1000, 1000) {
+         ct= new CountDownTimer(5*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);

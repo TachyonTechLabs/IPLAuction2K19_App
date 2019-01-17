@@ -48,6 +48,8 @@ import java.util.Objects;
 public class AdminOngoingPlayer extends AppCompatActivity {
 
     List<String> list,fix;
+    List<String> amount_multiply=new ArrayList<>();
+    Spinner amount_multipler;
     AllPlayerInfo allPlayerInfo = new AllPlayerInfo();
     ArrayAdapter<String> adapter;
     String [] players;
@@ -92,6 +94,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         ipl_player = findViewById(R.id.ipl_player_admin_text);
         bid_value = findViewById(R.id.text_input_value_admin);
         spinner = findViewById(R.id.player_spinner);
+        amount_multipler=findViewById(R.id.spinner_amount_multiplier);
+        amount_multiply_add();
         getId();
 
         extras = getIntent().getExtras();
@@ -350,7 +354,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         }
         else if(TextUtils.isEmpty(spinner.getSelectedItem().toString().trim()))
         {
-            Toast.makeText(this, "Select User who bought player", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Select the team who bought player", Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -454,10 +458,12 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     public void sellCurrentPlayer()
     {
         bought_value = Double.parseDouble(bid_value.getText().toString().trim());
-        currentAmount = currentAmount - bought_value;
+        String multiply=amount_multipler.getSelectedItem().toString();
+        double final_amt=multiply_with(bought_value,multiply);
+        currentAmount = currentAmount - final_amt;
         sell.clear();
-        //sell.put("1",current_player);
-        sell.put(current_player,bid_value.getText().toString());
+        sell.put(current_player,final_amt);
+     //   sell.put("2",final_amt);
         DocumentReference sell_doc = db.collection("Players").document(selectedUser)
                 .collection("MyTeam").document("1");
 
@@ -497,6 +503,39 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         s = 1;
         setFixedPlayer();
     }
+
+    private void amount_multiply_add() {
+        amount_multiply.add("Lakhs");
+        amount_multiply.add("Crore");
+
+        ArrayAdapter amountspin_adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,amount_multiply );
+        amountspin_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        amount_multipler.setAdapter(amountspin_adapter);
+    }
+
+    private double multiply_with(Double users_price,String multiply)
+    {
+        double bid_amt;
+
+
+        if(multiply.equals("Crore"))
+        {
+
+            double multiplier = 10000000;
+            bid_amt = (users_price * multiplier);
+            return bid_amt;
+        }
+        else if(multiply.equals("Lakhs"))
+        {
+            double multiplier = 100000;
+            bid_amt =  (users_price * multiplier);
+            return bid_amt;
+
+        }
+        return 0;
+
+    }
+
 
     public void phase_set(View view) {
 
