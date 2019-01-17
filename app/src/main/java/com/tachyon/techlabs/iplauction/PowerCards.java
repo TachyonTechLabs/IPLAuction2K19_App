@@ -90,7 +90,7 @@ public class PowerCards extends AppCompatActivity {
 
 
 
-         ct= new CountDownTimer(5*60 * 1000, 1000) {
+         ct= new CountDownTimer(1*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);
@@ -349,16 +349,16 @@ public class PowerCards extends AppCompatActivity {
 
     private void showDialogWarning() {
         final Dialog dialog=new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+       // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCanceledOnTouchOutside(false);
     //    dialog.setCancelable(false);  //onnBackPress if i want to cancel the dialogbox
         dialog.setContentView(R.layout.dialog_warning_timer);
-        WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
+      //  WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
+      //  lp.copyFrom(dialog.getWindow().getAttributes());
+       // lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
+        //lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
         dialog.show();
-        dialog.getWindow().setAttributes(lp);
+        //dialog.getWindow().setAttributes(lp);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

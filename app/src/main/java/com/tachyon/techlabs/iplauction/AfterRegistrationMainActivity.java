@@ -1,6 +1,4 @@
 package com.tachyon.techlabs.iplauction;
-
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
@@ -39,7 +37,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
 import com.github.ybq.android.spinkit.style.DoubleBounce;
