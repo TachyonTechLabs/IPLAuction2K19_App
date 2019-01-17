@@ -825,7 +825,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                 });
        AlertDialog alert=builder.create();
        alert.show();
-
     }
 
 
