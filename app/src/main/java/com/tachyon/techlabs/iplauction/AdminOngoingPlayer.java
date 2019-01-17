@@ -265,7 +265,6 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             }
         });
         */
-
     }
 
     @Override
