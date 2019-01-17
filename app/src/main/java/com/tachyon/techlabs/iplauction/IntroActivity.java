@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.heinrichreimersoftware.materialintro.app.NavigationPolicy;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
+import com.heinrichreimersoftware.materialintro.slide.Slide;
 import com.tachyon.techlabs.iplauction.R;
 
 public class IntroActivity extends com.heinrichreimersoftware.materialintro.app.IntroActivity {
@@ -40,10 +41,21 @@ public class IntroActivity extends com.heinrichreimersoftware.materialintro.app.
                 .backgroundDark(R.color.owlyellowdark)
                 .build());
 
+
+        addSlide(new SimpleSlide.Builder()
+                .title("Permissions")
+                .description("App would require camera and storage permissions !")
+                .background(R.color.owlblue)
+                .backgroundDark(R.color.dark_blue)
+                .scrollable(false)
+                .permissions(new String[]{Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE})
+                .build());
+
         setNavigationPolicy(new NavigationPolicy() {
             @Override
             public boolean canGoForward(int position) {
-                if(position==3)
+                if(position==4)
                 {
                     startActivity(new Intent(IntroActivity.this, AfterRegistrationMainActivity.class));
                 }

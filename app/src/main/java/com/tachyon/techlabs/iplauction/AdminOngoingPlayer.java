@@ -484,6 +484,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void updateNumber()
     {
+
         DocumentReference updateNUm_doc = db.collection("Players").document(selectedUser);
         updateNUm_doc.update("players_bought",num_bought);
         updateNUm_doc.update("Current_Amount",currentAmount);
