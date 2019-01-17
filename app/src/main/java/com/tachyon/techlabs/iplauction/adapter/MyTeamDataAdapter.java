@@ -261,7 +261,7 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
 
         DocumentReference setCurr_doc = db.collection("Players").document(user_email);
         setCurr_doc.update("Current_Amount",cur);
-        setCurr_doc.update("temp_Amount",tempcurr);
+        setCurr_doc.update("temp_Current",tempcurr);
     }
 
     public MyTeamDataAdapter(Context context, String[] players,List<Long> price, Resources resources,String id,String story,int phase)

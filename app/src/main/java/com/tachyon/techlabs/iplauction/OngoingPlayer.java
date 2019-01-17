@@ -408,7 +408,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         {
                             fname = Objects.requireNonNull(documentSnapshot.getString("fname")).toString();
                             sname = Objects.requireNonNull(documentSnapshot.getString("sname")).toString();
-                            point = Objects.requireNonNull(documentSnapshot.getLong("p")).intValue();
+                            point1 = Objects.requireNonNull(documentSnapshot.getLong("p")).intValue();
                             //base_price = Objects.requireNonNull(documentSnapshot.getLong("Price")).intValue();
                             base_price = documentSnapshot.getString("price");
                             //color = Objects.requireNonNull(documentSnapshot.getString("color")).toString();

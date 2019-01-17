@@ -69,7 +69,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     String [] userTeam;
     Spinner spinner;
     String selectedUser;
-    int bought_value,currentAmount;
+    double bought_value;
+    double currentAmount;
     int s;
 
     @Override
@@ -114,7 +115,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     try
                     {
                         id = documentSnapshot.getString("roomid");
-                        currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                        currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
                         addUserList();
                         getStoryLine();
                         setCurrentPlayer();
@@ -386,7 +387,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 users = new ArrayList<>();
                 for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots)
                 {
-                    if(!documentSnapshot.getId().equals("CurrentPlayer") && !documentSnapshot.getId().equals("START GAME") && !documentSnapshot.getId().equals("Story"))
+                    if(!documentSnapshot.getId().equals("CurrentPlayer") && !documentSnapshot.getId().equals("START GAME") && !documentSnapshot.getId().equals("Story") && !documentSnapshot.getId().equals("State"))
                     users.add(documentSnapshot.getId());
                 }
                 users.remove(userEmail);
@@ -446,11 +447,11 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void sellCurrentPlayer()
     {
-        bought_value = Integer.parseInt(bid_value.getText().toString().trim());
+        bought_value = Double.parseDouble(bid_value.getText().toString().trim());
         currentAmount = currentAmount - bought_value;
         sell.clear();
         //sell.put("1",current_player);
-        sell.put(current_player,bid_value.getText().toString().trim());
+        sell.put(current_player,bid_value.getText().toString());
         DocumentReference sell_doc = db.collection("Players").document(selectedUser)
                 .collection("MyTeam").document("1");
 
