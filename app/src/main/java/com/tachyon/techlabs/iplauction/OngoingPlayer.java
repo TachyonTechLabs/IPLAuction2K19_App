@@ -28,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -492,7 +493,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
             @Override
             public void onSuccess(Uri uri) {
                 Log.d("playerimg",uri.toString());
-                Glide.with(getApplicationContext()).load(uri.toString()).into(player_img);
+                Glide.with(getApplicationContext()).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(player_img);
                 //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
             }
         })
