@@ -50,7 +50,7 @@ import java.util.Objects;
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 
 public class PowerCards extends AppCompatActivity {
-    public static final String CHANNEL_ID="1001";
+  //  public static final String CHANNEL_ID="1001";
     Context context;
     ImageView cardback;
     RecyclerView recyclerView;

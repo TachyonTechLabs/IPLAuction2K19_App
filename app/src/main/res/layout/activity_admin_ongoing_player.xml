@@ -24,16 +24,18 @@
     <ListView
         android:id="@+id/adminlist"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
         android:divider="@null"
         android:dividerHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/sell_btn" />
 
     <Spinner
         android:id="@+id/player_spinner"
@@ -52,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/roboto_regular"
         android:text="@string/ongoing_player"
@@ -60,7 +62,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adminlist" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/ipl_player_admin_text"
@@ -109,18 +111,19 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout_admin"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/player_spinner">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/text_input_value_admin"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:hint="@string/amount"
@@ -128,6 +131,21 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/spinner_amount_multiplier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textInputLayout_admin"
+        app:layout_constraintTop_toBottomOf="@+id/player_spinner">
+
+    </Spinner>
+
 
     <Button
         android:id="@+id/fixed_players"
