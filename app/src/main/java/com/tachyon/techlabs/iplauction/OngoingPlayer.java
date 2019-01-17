@@ -191,22 +191,22 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
         DocumentReference documentReference = db.collection("Players").document(userEmail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                         @Override
-                                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                             if (documentSnapshot.exists()) {
-                                                                 try {
-                                                                     id = documentSnapshot.getString("roomid");
-                                                                     getStatePlayer();
-                                                                     //  getphase_state();
-                                                                     getStoryLine();
+         @Override
+         public void onSuccess(DocumentSnapshot documentSnapshot) {
+             if (documentSnapshot.exists()) {
+                 try {
+                     id = documentSnapshot.getString("roomid");
+                     getStatePlayer();
+                     //  getphase_state();
+                     getStoryLine();
 
-                                                                 } catch (Exception e) {
-                                                                     Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
-                                                                 }
-                                                             }
+                 } catch (Exception e) {
+                     Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                 }
+             }
 
-                                                         }
-                                                     });
+         }
+     });
     }
 
           /*  private void getphase_state() {
