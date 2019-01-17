@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/botton_sheet_layout_id"
@@ -32,20 +33,31 @@
             android:textSize="22sp"
             android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/card_pricevalue_edittext"
-            android:layout_alignParentEnd="true"
-            android:hint="Amount"
-            android:visibility="gone"
-            android:inputType="number"
-            android:layout_below="@id/card_name_bs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="48dp"
-            android:textSize="22sp"
-            android:textColor="@color/black"
-            />
+    <EditText
+        android:id="@+id/card_pricevalue_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/card_name_bs"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="88dp"
+        android:hint="Amount"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/card_pricevalue_edittext"
+        android:layout_marginStart="-88dp"
+        android:layout_marginTop="11dp"
+        android:id="@+id/spinner_amount"
+        android:layout_toEndOf="@+id/card_pricevalue_edittext">
+
+    </Spinner>
+    
+    
 
     <Button
         android:id="@+id/card_pay_bs"

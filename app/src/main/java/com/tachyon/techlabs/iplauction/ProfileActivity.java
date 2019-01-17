@@ -146,6 +146,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     Animation anim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadein);
                     txtUsername.setAnimation(anim);
                     imgUserphoto.setAnimation(anim);
+                    profile_myteam.setAnimation(anim);
                 }
                 else
                 {
@@ -209,6 +210,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein_slidedown);
         listView.startAnimation(animation);
+        listView.setVisibility(View.VISIBLE);
     }
 
 

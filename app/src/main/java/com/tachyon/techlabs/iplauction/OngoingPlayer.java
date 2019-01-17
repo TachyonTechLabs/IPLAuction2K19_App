@@ -705,14 +705,14 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
     @Override
     protected void onPause() {
-        query = db.collection(id);
+       /* query = db.collection(id);
         registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
             }
         });
-        registration.remove();
+        registration.remove();*/
         super.onPause();
     }
 
