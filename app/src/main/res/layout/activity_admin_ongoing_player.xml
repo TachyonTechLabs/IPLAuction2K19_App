@@ -137,7 +137,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:onClick="setState"
-        android:text="Fixed"
+        android:text="Storyline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -149,7 +149,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Phase"
+        android:text="Phase 0"
         android:onClick="phase_set"
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"

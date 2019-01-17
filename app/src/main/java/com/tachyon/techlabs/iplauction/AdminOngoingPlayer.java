@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -53,6 +54,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     ListView playerlist,fixlist;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
+    Button phase,fixed;
     FirebaseUser currentUser;
     String userEmail,id,boss_name;
     HashMap<String,Boolean> timer;
@@ -77,6 +79,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_ongoing_player);
+        phase=findViewById(R.id.phase);
+        fixed=findViewById(R.id.fixed_players);
 
 
         //list = new ArrayList<>(Arrays.asList(allPlayerInfo.fullname));
@@ -479,7 +483,12 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void setState(View view) {
         DocumentReference state_doc = db.collection(id).document("State");
-        state_doc.update("state",1);
+        state_doc.update("state",1).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                fixed.setText("Fixed Players");
+            }
+        });
         s = 1;
         setFixedPlayer();
     }
@@ -487,6 +496,13 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     public void phase_set(View view) {
 
         DocumentReference state_doc = db.collection(id).document("State");
-        state_doc.update("phase",1);
+        state_doc.update("phase",1).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                phase.setText("Phase 1");
+
+            }
+        });
+
     }
 }
