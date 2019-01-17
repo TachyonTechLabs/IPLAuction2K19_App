@@ -19,10 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.goodiebag.pinview.Pinview;
@@ -39,7 +41,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -62,6 +66,7 @@ public class PowerCards extends AppCompatActivity {
     DocumentReference mainDoc;
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    Spinner amount_multipler;
     String userEmail;
     int currentAmount,currentNumOfCards,itemsPurchased;
     AppConstants appConstants = new AppConstants();
@@ -76,6 +81,7 @@ public class PowerCards extends AppCompatActivity {
     PaymentInfo paymentInfo = new PaymentInfo();
     ViewGroup.LayoutParams params;
     String num="";
+    List<String> amount_multiply=new ArrayList<>();
     StringBuilder stringBuilder;
     static CountDownTimer ct;
     static long millisinsec=0;
@@ -86,11 +92,13 @@ public class PowerCards extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_recyclerview);
         circularProgress = findViewById(R.id.circular_progress);
+        amount_multipler=findViewById(R.id.spinner_amount);
+        amount_multiply_add();
         passwordDialog();
 
 
 
-         ct= new CountDownTimer(5*60 * 1000, 1000) {
+         ct= new CountDownTimer(1*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);
@@ -216,6 +224,7 @@ public class PowerCards extends AppCompatActivity {
                     //bottonSheetLayout.setLayoutParams(bottomparams);
                     buyBtn.setVisibility(View.VISIBLE);
                     users_price.setVisibility(View.GONE);
+                    amount_multipler.setVisibility(View.GONE);
                     bgView.setVisibility(View.GONE);
                     pinText.setVisibility(View.GONE);
                     pin.setVisibility(View.GONE);
@@ -238,6 +247,7 @@ public class PowerCards extends AppCompatActivity {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 bgView.setVisibility(View.VISIBLE);
                 users_price.setVisibility(View.GONE);
+                amount_multipler.setVisibility(View.GONE);
                 buyBtn.setVisibility(View.VISIBLE);
                 bgView.setAlpha(slideOffset);
             }
@@ -278,6 +288,15 @@ public class PowerCards extends AppCompatActivity {
 
         */
 
+    }
+
+    private void amount_multiply_add() {
+        amount_multiply.add("Lakhs");
+        amount_multiply.add("Crore");
+
+        ArrayAdapter amountspin_adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,amount_multiply );
+        amountspin_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        amount_multipler.setAdapter(amountspin_adapter);
     }
 
     private void passwordDialog() {
@@ -355,16 +374,16 @@ public class PowerCards extends AppCompatActivity {
 
     private void showDialogWarning() {
         final Dialog dialog=new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+       // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCanceledOnTouchOutside(false);
     //    dialog.setCancelable(false);  //onnBackPress if i want to cancel the dialogbox
         dialog.setContentView(R.layout.dialog_warning_timer);
-        WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
+      //  WindowManager.LayoutParams lp=new WindowManager.LayoutParams();
+      //  lp.copyFrom(dialog.getWindow().getAttributes());
+       // lp.width=WindowManager.LayoutParams.WRAP_CONTENT;
+        //lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
         dialog.show();
-        dialog.getWindow().setAttributes(lp);
+        //dialog.getWindow().setAttributes(lp);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -410,6 +429,9 @@ public class PowerCards extends AppCompatActivity {
         bottonSheetLayout.setLayoutParams(params);
         buyBtn.setVisibility(View.GONE);
         users_price.setVisibility(View.VISIBLE);
+        amount_multipler.setVisibility(View.VISIBLE);
+
+
 
 
         //bottomparams.setMargins(0,100,0,0);
@@ -442,7 +464,9 @@ public class PowerCards extends AppCompatActivity {
             @Override
             public void onDataEntered(Pinview pinview, boolean b)
             {    String price_string= users_price.getText().toString();
-                final long card_price_bid_value = Long.parseLong(price_string);
+                String multiply=amount_multipler.getSelectedItem().toString();
+
+                final double card_price_bid_value = multiply_with(price_string,multiply);;
                // DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
                 DocumentReference documentReference2 = db.collection("Players").document(userEmail);
                 if((pinview.getValue().equals(num))&& (card_price_bid_value<20000000) )
@@ -484,6 +508,7 @@ public class PowerCards extends AppCompatActivity {
                                     //bottomSheetBehavior.setPeekHeight(0);
                                     pin.setVisibility(View.GONE);
                                     pinText.setVisibility(View.GONE);
+                                    amount_multipler.setVisibility(View.GONE);
                                     users_price.setVisibility(View.GONE);
 
                                     //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
@@ -508,6 +533,29 @@ public class PowerCards extends AppCompatActivity {
             }
 
         });
+    }
+
+    private double multiply_with(String users_price,String multiply)
+    { double price=Double.parseDouble(users_price);
+    double basep;
+
+
+        if(multiply.equals("Crore"))
+        {
+
+            double multiplier = 10000000;
+           basep = (price * multiplier);
+           return basep;
+        }
+        else if(multiply.equals("Lakhs"))
+        {
+           double multiplier = 100000;
+           basep =  (price * multiplier);
+          return basep;
+
+        }
+        return 0;
+
     }
 
     public void showHistory()

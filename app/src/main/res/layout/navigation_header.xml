@@ -14,8 +14,8 @@
             android:id="@+id/profileImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:scaleType="centerCrop"
             android:background="@drawable/search"
-            android:src="@drawable/search"
             android:layout_marginStart="15dp"
             android:layout_gravity="bottom"/>
 
