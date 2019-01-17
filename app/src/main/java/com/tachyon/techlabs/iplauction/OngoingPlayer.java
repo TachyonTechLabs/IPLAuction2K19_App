@@ -454,7 +454,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
             basep =  Double.parseDouble(bp[0]) * multiplier;
             total = basep+"";
         }
-        pointtext.setText(String.valueOf(point));
+        pointtext.setText(String.valueOf(point1));
         basetext.setText(pricebase);
 
         /*

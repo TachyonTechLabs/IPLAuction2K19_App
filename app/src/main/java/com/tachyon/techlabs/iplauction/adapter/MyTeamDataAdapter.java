@@ -50,7 +50,7 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
     String id,story;
     int pos,phase;
     long pl_price;
-    double loss,profit;
+    double loss,profit,tempcurr;
 
     class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -196,22 +196,28 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
             switch (diff)
             {
                 case 1: loss = (0.9*play);
-                        cur = cur + loss;
+                        tempcurr = cur + loss;
+                        cur = cur + play;
                         break;
                 case 3: loss = (0.8*play);
-                        cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                         break;
                 case 5: loss = (0.7*play);
-                        cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                         break;
                 case -1: loss = (1.1*play);
-                        cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                         break;
                 case -3: loss = (1.2*play);
-                        cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                         break;
                 case -5: loss = (1.3*play);
-                        cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                         break;
                 default:break;
             }
@@ -223,22 +229,28 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
             switch (diff)
             {
                 case 1: loss = (0.9*play);
-                    cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                 break;
                 case 3: loss = (0.8*play);
-                    cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                     break;
                 case 5: loss = (0.7*play);
-                    cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                     break;
                 case -1: loss = (1.1*play);
-                    cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                     break;
                 case -3: loss = (1.2*play);
-                    cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                     break;
                 case -5: loss = (1.3*play);
-                    cur = cur + loss;
+                    tempcurr = cur + loss;
+                    cur = cur + play;
                     break;
                 default:break;
 
@@ -249,6 +261,7 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
 
         DocumentReference setCurr_doc = db.collection("Players").document(user_email);
         setCurr_doc.update("Current_Amount",cur);
+        setCurr_doc.update("temp_Amount",tempcurr);
     }
 
     public MyTeamDataAdapter(Context context, String[] players,List<Long> price, Resources resources,String id,String story,int phase)
