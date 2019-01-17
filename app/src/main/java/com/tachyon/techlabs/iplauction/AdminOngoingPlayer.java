@@ -481,4 +481,10 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         s = 1;
         setFixedPlayer();
     }
+
+    public void phase_set(View view) {
+
+        DocumentReference state_doc = db.collection(id).document("State");
+        state_doc.update("phase",1);
+    }
 }
