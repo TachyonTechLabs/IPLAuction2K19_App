@@ -191,22 +191,22 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
         DocumentReference documentReference = db.collection("Players").document(userEmail);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                         @Override
-                                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                             if (documentSnapshot.exists()) {
-                                                                 try {
-                                                                     id = documentSnapshot.getString("roomid");
-                                                                     getStatePlayer();
-                                                                     //  getphase_state();
-                                                                     getStoryLine();
+         @Override
+         public void onSuccess(DocumentSnapshot documentSnapshot) {
+             if (documentSnapshot.exists()) {
+                 try {
+                     id = documentSnapshot.getString("roomid");
+                     getStatePlayer();
+                     //  getphase_state();
+                     getStoryLine();
 
-                                                                 } catch (Exception e) {
-                                                                     Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
-                                                                 }
-                                                             }
+                 } catch (Exception e) {
+                     Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                 }
+             }
 
-                                                         }
-                                                     });
+         }
+     });
     }
 
           /*  private void getphase_state() {
@@ -318,6 +318,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     try
                     {
                         currentPlayer = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).get("curr")).toString();
+                        if(!currentPlayer.equals(""))
                         getTextPlayer();
                     }
                     catch(Exception exp)
@@ -336,10 +337,10 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     public void getStatePlayer()
     {
         DocumentReference doc = db.collection(id).document("State");
-        doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        doc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                s = Objects.requireNonNull(documentSnapshot.getLong("state")).intValue();
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                s = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("state")).intValue();
             }
         });
 

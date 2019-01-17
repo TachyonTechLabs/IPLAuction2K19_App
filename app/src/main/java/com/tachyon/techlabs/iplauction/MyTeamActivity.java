@@ -45,6 +45,9 @@ public class MyTeamActivity extends AppCompatActivity {
     int sizes , index;
     RecyclerView.LayoutManager layoutManager;
     Context context;
+    int point1,point2,point3;
+    String id;
+    int phasestate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +86,9 @@ public class MyTeamActivity extends AppCompatActivity {
                     try
                     {
                         team_name = documentSnapshot.getString("myteam");
+                        id = documentSnapshot.getString("roomid");
                         //Log.d("qwertyuiop",team_name);
+                        getPhaseState();
                         setTeamImg();
                     }
                     catch(Exception exp)
@@ -94,6 +99,27 @@ public class MyTeamActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+    }
+
+    public void getPhaseState()
+    {
+        DocumentReference phase_doc = db.collection(id).document("State");
+        phase_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        phasestate = Objects.requireNonNull(documentSnapshot.getLong("phase")).intValue();
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }

@@ -314,7 +314,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 list = new ArrayList<>();
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(queryDocumentSnapshots)) {
-                    if(!document.getId().equals("CurrentPlayer") && !document.getId().equals("START GAME") && !document.getId().equals("Story"))
+                    if(!document.getId().equals("CurrentPlayer") && !document.getId().equals("START GAME") && !document.getId().equals("Story") && !document.getId().equals("State"))
                     list.add(document.getId());
                     }
                 // Log.d(TAG, list.toString());
@@ -534,6 +534,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
         DocumentReference state = db.collection(roomid).document("State");
         statemap.put("state",0);
+        statemap.put("phase",0);
         state.set(statemap);
     }
 

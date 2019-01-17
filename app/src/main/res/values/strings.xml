@@ -85,6 +85,7 @@
     <string-array name="story_lines">
         <item>StoryLine1</item>
         <item>StoryLine2</item>
+        <item>StoryLine3</item>
     </string-array>
 
     <string name="ongoing_player">ONGOING PLAYER</string>
