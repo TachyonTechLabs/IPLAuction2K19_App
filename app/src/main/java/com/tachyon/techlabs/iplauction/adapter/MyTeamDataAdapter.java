@@ -47,6 +47,10 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
     Resources resources;
     TextView player_name_text;
     MyTeamActivity myTeamActivity = new MyTeamActivity();
+    String id,story;
+    int pos,phase;
+    long pl_price;
+    double loss,profit;
 
     class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -62,20 +66,21 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
             player_cardview = (CardView) view.findViewById(R.id.custom_myteam_mtda);
             placeholder_player_cardview = player_cardview;
 
+            getPlayerInfo(players[pos]);
+
             player_cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final int pos = getAdapterPosition();
+                    pos = getAdapterPosition();
                   //  myTeamActivity.showAlert(pos,context);
                     final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                     builder.setTitle("Sell Player");
                     builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, final int which) {
-                            user_email=FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                            DocumentReference docRef = db.collection("Players").document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection("MyTeam").document("1");
-
-// Remove the 'capital' field from the document
+                            user_email=Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+                            DocumentReference docRef = db.collection("Players").document(user_email).collection("MyTeam").document("1");
+                            // Remove the 'capital' field from the document
                             calculate(price.get(pos));
                             Map<String,Object> updates = new HashMap<>();
 
@@ -102,8 +107,22 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
         }
     }
 
-    private void calculate(Long aLong) {
+    public void getPlayerInfo(String pl)
+    {
+        DocumentReference info_doc = db.collection(story).document(pl);
+        info_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                point1 = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
+                point2 = Objects.requireNonNull(documentSnapshot.getLong("p2")).intValue();
+                point3 = Objects.requireNonNull(documentSnapshot.getLong("p3")).intValue();
+            }
+        });
+    }
 
+    private void calculate(Long aLong)
+    {
+        pl_price = aLong;
 
         DocumentReference documentReference = db.collection("Players").document(user_email);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -114,7 +133,8 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
                     try
                     {
                         //id = documentSnapshot.getString("roomid");
-                       long currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                       double currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
+                       calculateProfitLoss(currentAmount,pl_price);
                     }
                     catch(Exception e)
                     {
@@ -168,12 +188,78 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
 
     }
 
-    public MyTeamDataAdapter(Context context, String[] players,List<Long> price, Resources resources)
+    public void calculateProfitLoss(double cur,long play)
+    {
+        if(phase==0)
+        {
+            int diff = point2 - point1;
+            switch (diff)
+            {
+                case 1: loss = (0.9*play);
+                        cur = cur + loss;
+                        break;
+                case 3: loss = (0.8*play);
+                        cur = cur + loss;
+                        break;
+                case 5: loss = (0.7*play);
+                        cur = cur + loss;
+                        break;
+                case -1: loss = (1.1*play);
+                        cur = cur + loss;
+                        break;
+                case -3: loss = (1.2*play);
+                        cur = cur + loss;
+                        break;
+                case -5: loss = (1.3*play);
+                        cur = cur + loss;
+                        break;
+                default:break;
+            }
+        }
+        else
+        {
+            int diff = point3 - point2;
+
+            switch (diff)
+            {
+                case 1: loss = (0.9*play);
+                    cur = cur + loss;
+                break;
+                case 3: loss = (0.8*play);
+                    cur = cur + loss;
+                    break;
+                case 5: loss = (0.7*play);
+                    cur = cur + loss;
+                    break;
+                case -1: loss = (1.1*play);
+                    cur = cur + loss;
+                    break;
+                case -3: loss = (1.2*play);
+                    cur = cur + loss;
+                    break;
+                case -5: loss = (1.3*play);
+                    cur = cur + loss;
+                    break;
+                default:break;
+
+            }
+
+
+        }
+
+        DocumentReference setCurr_doc = db.collection("Players").document(user_email);
+        setCurr_doc.update("Current_Amount",cur);
+    }
+
+    public MyTeamDataAdapter(Context context, String[] players,List<Long> price, Resources resources,String id,String story,int phase)
     {
         this.context = context;
         this.players = players;
         this.price = price;
         this.resources = resources;
+        this.id = id;
+        this.story = story;
+        this.phase = phase;
     }
 
     @NonNull
@@ -194,27 +280,6 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
     @Override
     public int getItemCount() {
         return players.length;
-    }
-
-    private  View.OnClickListener onClickListener(final int position){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Sell Player");
-                builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, final int which) {
-
-                    }
-                });
-                builder.setNegativeButton(R.string.CANCEL,null);
-                builder.show();
-
-
-            }
-        };
     }
 
 

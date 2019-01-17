@@ -51,7 +51,7 @@ public class MyTeamActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     Context context;
     int point1,point2,point3;
-    String id;
+    String id,story;
     int phasestate,playerpos;
     Map<String,Object> playersData = new HashMap<>();
     List<String> playerKey = new ArrayList<>();
@@ -88,7 +88,7 @@ public class MyTeamActivity extends AppCompatActivity {
     public void showAlert(int position, final Context c)
     {
         playerpos = position;
-          }
+    }
 
     public void getTeamImg()
     {
@@ -103,6 +103,7 @@ public class MyTeamActivity extends AppCompatActivity {
                         team_name = documentSnapshot.getString("myteam");
                         id = documentSnapshot.getString("roomid");
                         //Log.d("qwertyuiop",team_name);
+                        getStoryline();
                         getPhaseState();
                         setTeamImg();
                     }
@@ -114,6 +115,27 @@ public class MyTeamActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+    }
+
+    public void getStoryline()
+    {
+        DocumentReference phase_doc = db.collection(id).document("Story");
+        phase_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        story = Objects.requireNonNull(documentSnapshot.getString("story"));
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
@@ -298,7 +320,7 @@ public class MyTeamActivity extends AppCompatActivity {
 
     public void showPLayerData()
     {
-        MyTeamDataAdapter myTeamDataAdapter = new MyTeamDataAdapter(getApplicationContext(),playernameArray,playerValue,getResources());
+        MyTeamDataAdapter myTeamDataAdapter = new MyTeamDataAdapter(getApplicationContext(),playernameArray,playerValue,getResources(),id,story,phasestate);
         my_players_view.setAdapter(myTeamDataAdapter);
     }
 }
