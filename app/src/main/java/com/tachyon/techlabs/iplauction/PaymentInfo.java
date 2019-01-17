@@ -172,7 +172,7 @@ public class PaymentInfo extends AppCompatActivity  {
     {
         currentIndex = index - total;
             DocumentReference documentReference = db.collection("Players").document(Objects.requireNonNull(currentUser.getEmail()))
-                    .collection("paymentHistory").document(total + "");
+                 /*   .collection("paymentHistory").document(total + "")*/;
             documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {

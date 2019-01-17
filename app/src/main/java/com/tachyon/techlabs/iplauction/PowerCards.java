@@ -52,7 +52,10 @@ import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 public class PowerCards extends AppCompatActivity {
   //  public static final String CHANNEL_ID="1001";
     Context context;
+    EditText pin;
+
     ImageView cardback;
+    Button confirm;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
@@ -77,7 +80,7 @@ public class PowerCards extends AppCompatActivity {
     int flag=0;
     String history;
     Map<String, Object> payHistory = new HashMap<>();
-    Pinview pin;
+    //Pinview pin;
     TextView pinText;
     PaymentInfo paymentInfo = new PaymentInfo();
     ViewGroup.LayoutParams params;
@@ -95,6 +98,8 @@ public class PowerCards extends AppCompatActivity {
         setContentView(R.layout.card_recyclerview);
         circularProgress = findViewById(R.id.circular_progress);
         amount_multipler=findViewById(R.id.spinner_amount);
+        pin=findViewById(R.id.pin_edit);
+        confirm=findViewById(R.id.confirm);
         amount_multiply_add();
         passwordDialog();
 
@@ -157,8 +162,8 @@ public class PowerCards extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
         buyBtn = findViewById(R.id.card_pay_bs);
-        pin = (Pinview) findViewById(R.id.pinView);
-        pinText = findViewById(R.id.pinText);
+     //   pin = (Pinview) findViewById(R.id.pinView);
+      //  pinText = findViewById(R.id.pinText);
 
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
@@ -230,7 +235,7 @@ public class PowerCards extends AppCompatActivity {
                     users_price.setVisibility(View.GONE);
                     amount_multipler.setVisibility(View.GONE);
                     bgView.setVisibility(View.GONE);
-                    pinText.setVisibility(View.GONE);
+                  //  pinText.setVisibility(View.GONE);
                     pin.setVisibility(View.GONE);
                     getWindow().setStatusBarColor(ContextCompat.getColor(bottomSheet.getContext(), R.color.white));
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -283,6 +288,13 @@ public class PowerCards extends AppCompatActivity {
                 buyCard();
             }
         });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirm_transaction();
+
+            }
+        });
 
         /*
         gv= (GridView) findViewById(R.id.gv);
@@ -293,6 +305,88 @@ public class PowerCards extends AppCompatActivity {
         */
 
     }
+
+    private void confirm_transaction() {
+
+
+
+        String price_string= users_price.getText().toString();
+                String multiply=amount_multipler.getSelectedItem().toString();
+
+                final double card_price_bid_value = multiply_with(price_string,multiply);;
+               // DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
+                DocumentReference documentReference2 = db.collection("Players").document(userEmail);
+                if((pin.getText().toString().equals(num))&& (card_price_bid_value<20000000) )
+                {
+                    switch (flag) {
+                        case 1:
+                            //history = "Yorker#" + appConstants.Yorker_price;
+                          //  payHistory.put("0","Yorker");
+                            card_amount = card_price_bid_value;
+                            payHistory.put("yorker",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
+                            break;
+                        case 2:
+                           // payHistory.put("0","No Ball");
+                            card_amount = card_price_bid_value;
+                            payHistory.put("no ball",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
+                            break;
+                        case 3:
+                            //payHistory.put("0","Right To Match");
+                            card_amount = card_price_bid_value;
+                            payHistory.put("right to match",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
+                            break;
+                        case 4:
+                            //payHistory.put("0","Legend Cards");
+                            card_amount = card_price_bid_value;
+                            payHistory.put("legend cards",card_price_bid_value);
+                            documentReference2.set(payHistory,SetOptions.merge());
+                            break;
+                    }
+
+                    double current_amount = currentAmount - card_amount;
+                    DocumentReference documentReference = db.collection("Players").document(userEmail);
+                    documentReference.update("Current_Amount",current_amount);
+                    documentReference.update("numberOfCards",currentNumOfCards+1)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                                    buyBtn.setVisibility(View.VISIBLE);
+                                    //bottomSheetBehavior.setPeekHeight(0);
+                                    pin.setVisibility(View.GONE);
+                                 //   pinText.setVisibility(View.GONE);
+                                    amount_multipler.setVisibility(View.GONE);
+                                    users_price.setVisibility(View.GONE);
+
+                                    //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            ;
+                    DocumentReference opp_doc = db.collection(id).document("Opponents");
+                    opp_doc.update(team,current_amount);
+
+                //    showHistory();
+
+
+
+
+                }
+                else
+                    Toast.makeText(context, "Please Enter Lesser Value or Check Your Password", Toast.LENGTH_SHORT).show();
+            }
+
+
+
 
     private void amount_multiply_add() {
         amount_multiply.add("Lakhs");
@@ -443,7 +537,9 @@ public class PowerCards extends AppCompatActivity {
         //bottomSheetBehavior.setPeekHeight(500);
         //recyclerView.setEnabled(false);
         pin.setVisibility(View.VISIBLE);
-        pinText.setVisibility(View.VISIBLE);
+
+
+       // pinText.setVisibility(View.VISIBLE);
         String cardName = txt_bs_name.getText().toString();
         switch (cardName)
         {
@@ -463,86 +559,86 @@ public class PowerCards extends AppCompatActivity {
 
         //payHistory.put("0",0);
         //documentReference2.set(payHistory);
-        pin.setPinViewEventListener(new Pinview.PinViewEventListener()
-        {
-            @Override
-            public void onDataEntered(Pinview pinview, boolean b)
-            {    String price_string= users_price.getText().toString();
-                String multiply=amount_multipler.getSelectedItem().toString();
-
-                final double card_price_bid_value = multiply_with(price_string,multiply);;
-               // DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
-                DocumentReference documentReference2 = db.collection("Players").document(userEmail);
-                if((pinview.getValue().equals(num))&& (card_price_bid_value<20000000) )
-                {
-                    switch (flag) {
-                        case 1:
-                            //history = "Yorker#" + appConstants.Yorker_price;
-                          //  payHistory.put("0","Yorker");
-                            card_amount = card_price_bid_value;
-                            payHistory.put("yorker",card_price_bid_value);
-                            documentReference2.set(payHistory,SetOptions.merge());
-                            break;
-                        case 2:
-                           // payHistory.put("0","No Ball");
-                            card_amount = card_price_bid_value;
-                            payHistory.put("no ball",card_price_bid_value);
-                            documentReference2.set(payHistory,SetOptions.merge());
-                            break;
-                        case 3:
-                            //payHistory.put("0","Right To Match");
-                            card_amount = card_price_bid_value;
-                            payHistory.put("right to match",card_price_bid_value);
-                            documentReference2.set(payHistory,SetOptions.merge());
-                            break;
-                        case 4:
-                            //payHistory.put("0","Legend Cards");
-                            card_amount = card_price_bid_value;
-                            payHistory.put("legend cards",card_price_bid_value);
-                            documentReference2.set(payHistory,SetOptions.merge());
-                            break;
-                    }
-
-                    double current_amount = currentAmount - card_amount;
-                    DocumentReference documentReference = db.collection("Players").document(userEmail);
-                    documentReference.update("Current_Amount",current_amount);
-                    documentReference.update("numberOfCards",currentNumOfCards+1)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                                    buyBtn.setVisibility(View.VISIBLE);
-                                    //bottomSheetBehavior.setPeekHeight(0);
-                                    pin.setVisibility(View.GONE);
-                                    pinText.setVisibility(View.GONE);
-                                    amount_multipler.setVisibility(View.GONE);
-                                    users_price.setVisibility(View.GONE);
-
-                                    //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            ;
-                    DocumentReference opp_doc = db.collection(id).document("Opponents");
-                    opp_doc.update(team,current_amount);
-
-                    showHistory();
-
-
-
-
-                }
-                else
-                    Toast.makeText(context, "Please Enter Lesser Value or Check Your Password", Toast.LENGTH_SHORT).show();
-            }
-
-        });
+//        pin.setPinViewEventListener(new Pinview.PinViewEventListener()
+//        {
+//            @Override
+//            public void onDataEntered(Pinview pinview, boolean b)
+//            {    String price_string= users_price.getText().toString();
+//                String multiply=amount_multipler.getSelectedItem().toString();
+//
+//                final double card_price_bid_value = multiply_with(price_string,multiply);;
+//               // DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
+//                DocumentReference documentReference2 = db.collection("Players").document(userEmail);
+//                if((pinview.getValue().equals(num))&& (card_price_bid_value<20000000) )
+//                {
+//                    switch (flag) {
+//                        case 1:
+//                            //history = "Yorker#" + appConstants.Yorker_price;
+//                          //  payHistory.put("0","Yorker");
+//                            card_amount = card_price_bid_value;
+//                            payHistory.put("yorker",card_price_bid_value);
+//                            documentReference2.set(payHistory,SetOptions.merge());
+//                            break;
+//                        case 2:
+//                           // payHistory.put("0","No Ball");
+//                            card_amount = card_price_bid_value;
+//                            payHistory.put("no ball",card_price_bid_value);
+//                            documentReference2.set(payHistory,SetOptions.merge());
+//                            break;
+//                        case 3:
+//                            //payHistory.put("0","Right To Match");
+//                            card_amount = card_price_bid_value;
+//                            payHistory.put("right to match",card_price_bid_value);
+//                            documentReference2.set(payHistory,SetOptions.merge());
+//                            break;
+//                        case 4:
+//                            //payHistory.put("0","Legend Cards");
+//                            card_amount = card_price_bid_value;
+//                            payHistory.put("legend cards",card_price_bid_value);
+//                            documentReference2.set(payHistory,SetOptions.merge());
+//                            break;
+//                    }
+//
+//                    double current_amount = currentAmount - card_amount;
+//                    DocumentReference documentReference = db.collection("Players").document(userEmail);
+//                    documentReference.update("Current_Amount",current_amount);
+//                    documentReference.update("numberOfCards",currentNumOfCards+1)
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//                                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                                    buyBtn.setVisibility(View.VISIBLE);
+//                                    //bottomSheetBehavior.setPeekHeight(0);
+//                                    pin.setVisibility(View.GONE);
+//                                    pinText.setVisibility(View.GONE);
+//                                    amount_multipler.setVisibility(View.GONE);
+//                                    users_price.setVisibility(View.GONE);
+//
+//                                    //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
+//                                }
+//                            })
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            })
+//                            ;
+//                    DocumentReference opp_doc = db.collection(id).document("Opponents");
+//                    opp_doc.update(team,current_amount);
+//
+//                //    showHistory();
+//
+//
+//
+//
+//                }
+//                else
+//                    Toast.makeText(context, "Please Enter Lesser Value or Check Your Password", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
     }
 
     private double multiply_with(String users_price,String multiply)
@@ -590,7 +686,7 @@ public class PowerCards extends AppCompatActivity {
             //bottomSheetBehavior.setPeekHeight(0);
             buyBtn.setVisibility(View.VISIBLE);
             pin.setVisibility(View.GONE);
-            pinText.setVisibility(View.GONE);
+           // pinText.setVisibility(View.GONE);
         }
         else
         {
