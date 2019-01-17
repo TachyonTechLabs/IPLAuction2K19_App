@@ -1,6 +1,8 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.primitives.Longs;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,7 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.tachyon.techlabs.iplauction.adapter.MyTeamDataAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MyTeamActivity extends AppCompatActivity {
@@ -47,7 +52,10 @@ public class MyTeamActivity extends AppCompatActivity {
     Context context;
     int point1,point2,point3;
     String id;
-    int phasestate;
+    int phasestate,playerpos;
+    Map<String,Object> playersData = new HashMap<>();
+    List<String> playerKey = new ArrayList<>();
+    List<Long> playerValue = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +81,14 @@ public class MyTeamActivity extends AppCompatActivity {
         my_players_view.setLayoutManager(layoutManager);
 
         getTeamImg();
+
+
     }
+
+    public void showAlert(int position, final Context c)
+    {
+        playerpos = position;
+          }
 
     public void getTeamImg()
     {
@@ -178,6 +193,7 @@ public class MyTeamActivity extends AppCompatActivity {
 
     public void getListOfPlayers()
     {
+        /*
         db.collection("Players").document(userEmail).collection("MyTeam")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -205,6 +221,39 @@ public class MyTeamActivity extends AppCompatActivity {
                 }
             }
         });
+        */
+
+        db.collection("Players").document(userEmail).collection("MyTeam").document("1").get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        try
+                        {
+                            playersData = documentSnapshot.getData();
+                            for(Map.Entry<String,Object> entry : Objects.requireNonNull(playersData).entrySet())
+                            {
+                                 playerKey.add(entry.getKey());
+                                 String v = String.valueOf(entry.getValue());
+                                 playerValue.add(Long.parseLong(v));
+                            }
+                            playernameArray = new String[playerKey.size()];
+                            playernameArray = playerKey.toArray(playernameArray);
+                            showPLayerData();
+                            //playerpriceArray = new long[playerValue.size()];
+                            //playerpriceArray = playerValue.toArray(playerpriceArray);
+                            //total = list.size();
+                            //playernameArray = new String[bought];
+                            //playerpriceArray = new long[bought];
+                            //setListOfPlayers(0);
+                            Log.d("playerdata",Objects.requireNonNull(playerKey).toString());
+                            Log.d("playerdata",Objects.requireNonNull(playerValue).toString());
+                        }
+                        catch(Exception e)
+                        {
+                            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     public void setListOfPlayers(int size)
@@ -249,7 +298,7 @@ public class MyTeamActivity extends AppCompatActivity {
 
     public void showPLayerData()
     {
-        MyTeamDataAdapter myTeamDataAdapter = new MyTeamDataAdapter(getApplicationContext(),playernameArray,playerpriceArray,getResources());
+        MyTeamDataAdapter myTeamDataAdapter = new MyTeamDataAdapter(getApplicationContext(),playernameArray,playerValue,getResources());
         my_players_view.setAdapter(myTeamDataAdapter);
     }
 }

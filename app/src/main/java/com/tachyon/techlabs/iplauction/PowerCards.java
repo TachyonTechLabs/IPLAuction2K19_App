@@ -156,6 +156,12 @@ public class PowerCards extends AppCompatActivity {
 
         bottonSheetLayout = findViewById(R.id.botton_sheet_layout_id);
         bottomSheetBehavior = BottomSheetBehavior.from(bottonSheetLayout);
+        bottonSheetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         params = bottonSheetLayout.getLayoutParams();
         users_price=findViewById(R.id.card_pricevalue_edittext);
 

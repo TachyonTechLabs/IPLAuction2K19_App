@@ -209,7 +209,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
      });
     }
 
-          /*  private void getphase_state() {
+        /*    private void getphase_state() {
 
                 DocumentReference doc = db.collection(id).document("State");
                 doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -280,9 +280,9 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 }
 
 
-        }*/
+        }
 
-
+*/
 
     public void getStoryLine()
     {
@@ -705,6 +705,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
     @Override
     protected void onPause() {
+        super.onPause();
         query = db.collection(id);
         registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -712,8 +713,11 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
             }
         });
-        registration.remove();
-        super.onPause();
+        if(registration!=null){
+            registration.remove();
+        }
+
+
     }
 
     @Override

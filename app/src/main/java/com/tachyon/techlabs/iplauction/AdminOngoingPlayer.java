@@ -35,6 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -448,12 +449,12 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         bought_value = Integer.parseInt(bid_value.getText().toString().trim());
         currentAmount = currentAmount - bought_value;
         sell.clear();
-        sell.put("1",current_player);
-        sell.put("2",bid_value.getText().toString().trim());
+        //sell.put("1",current_player);
+        sell.put(current_player,bid_value.getText().toString().trim());
         DocumentReference sell_doc = db.collection("Players").document(selectedUser)
-                .collection("MyTeam").document(num_bought+"");
+                .collection("MyTeam").document("1");
 
-        sell_doc.set(sell).addOnSuccessListener(new OnSuccessListener<Void>() {
+        sell_doc.set(sell,SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 updateNumber();
