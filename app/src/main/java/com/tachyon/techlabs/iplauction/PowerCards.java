@@ -125,7 +125,7 @@ public class PowerCards extends AppCompatActivity {
 
 
 
-        ct= new CountDownTimer(5*60 * 1000, 1000) {
+        ct= new CountDownTimer(2*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);
@@ -139,6 +139,7 @@ public class PowerCards extends AppCompatActivity {
             public void onFinish() {
                 // mTextField.setText("Done !");
                 showDialogWarning();
+
             }
         };
 
@@ -153,23 +154,19 @@ public class PowerCards extends AppCompatActivity {
                 R.drawable.rtmm,
                 R.drawable.legendd};
 
-        String[] names = {"YORKER",
-                "FREE HIT",
+        String[] names = {
+                "YORKER",
+                "FREE HIT 1",
+                "FREE HIT 2",
                 "RIGHT TO MATCH",
                 "LEGEND CARD"};
 
       //  String[] disc=res.getStringArray(R.array.description);
         Resources res = getResources();
-        String[] disc = {res.getString(R.string.yorker_desc),
-                "This card can be applied to change the preferred position of a player in your lineup after you have completed your team after the completion of the auction",
-                "A player which has been successfully bid by a team\n" +
-                        "can be purchased by another team at the same\n" +
-                        "price if the team possessing this card uses it for\n" +
-                        "that player","This card allows a team to purchase an extra\n" +
-                "legend"};
+        String[] disc = {res.getString(R.string.yorker_desc),res.getString(R.string.Free_hit_1_desc),res.getString(R.string.Free_hit_2_desc),res.getString(R.string.rtm_desc),res.getString(R.string.legend_desc)};
 
 
-        String[] price = {"PRICE",
+        String[] price = {"PRICE","PRICE",
                 "PRICE",
                 "PRICE",
                 "PRICE"};
@@ -563,12 +560,13 @@ public class PowerCards extends AppCompatActivity {
 
     public void readCardNum()
     {
-        File sdCard = getCacheDir();
-        File file = new File(sdCard,"CardNum.txt");
-        stringBuilder = new StringBuilder();
 
         try
         {
+            File sdCard = getCacheDir();
+            File file = new File(sdCard,"CardNum.txt");
+            stringBuilder = new StringBuilder();
+
             BufferedReader br =  new BufferedReader(new FileReader(file));
             String line;
 
@@ -576,14 +574,16 @@ public class PowerCards extends AppCompatActivity {
                 stringBuilder.append(line);
                 stringBuilder.append('\n');
             }
+            num = stringBuilder.substring(12,16);
             br.close();
         }
         catch (IOException e)
         {
             e.printStackTrace();
+            num="8286";
         }
 
-       num = stringBuilder.substring(12,16);
+
     }
 
     public void buyCard()

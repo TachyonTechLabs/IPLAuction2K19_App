@@ -119,6 +119,8 @@
     <string name="scan_qr_msg">Please Scan The QR Code \n To Join The Room</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="yorker_desc">After a particular player appears on the screen, a team, which uses this card on some other team, can prohibit the latter team from bidding for that player</string>
-
-
+<string name="Free_hit_1_desc">"This card can be applied to change the preferred position of a player in your lineup after you have completed your team after the completion of the auction"</string>
+    <string name="Free_hit_2_desc">"This card can be applied to change the preferred position of a player in your lineup after you have completed your team after the completion of the auction"</string>
+    <string name="rtm_desc">"A player which has been successfully bid by a team can be purchased by another team at the same price if the team possessing this card uses it for that player"</string>
+    <string name="legend_desc">"This card allows a team to purchase an extra legend"</string>
 </resources>
