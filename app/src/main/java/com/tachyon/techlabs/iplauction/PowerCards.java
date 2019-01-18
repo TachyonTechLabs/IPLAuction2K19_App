@@ -143,7 +143,17 @@ public class PowerCards extends AppCompatActivity {
             }
             public void onFinish() {
                 // mTextField.setText("Done !");
-                showDialogWarning();
+               // showDialogWarning();
+                Toast.makeText(context, "Cards Biding Time Is Up !", Toast.LENGTH_SHORT).show();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Do something after 5s = 5000ms
+                        startActivity(new Intent(PowerCards.this,PaymentInfo.class));
+                    }
+                }, 3000);
+
                 Conifrm_all_cards(tempview);
 
 
@@ -575,14 +585,6 @@ public class PowerCards extends AppCompatActivity {
         //lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
         dialog.show();
         //dialog.getWindow().setAttributes(lp);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-               startActivity(new Intent(PowerCards.this,PaymentInfo.class));
-            }
-        }, 3000);
 
     }
 
