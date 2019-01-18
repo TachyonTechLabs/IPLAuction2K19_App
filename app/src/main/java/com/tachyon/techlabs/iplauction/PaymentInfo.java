@@ -141,12 +141,14 @@ public class PaymentInfo extends AppCompatActivity  {
 
     public void readCardNum()
     {
-        File sdCard = getCacheDir();
-        File file = new File(sdCard,"CardNum.txt");
-        stringBuilder = new StringBuilder();
+
 
         try
         {
+
+            File sdCard = getCacheDir();
+            File file = new File(sdCard,"CardNum.txt");
+            stringBuilder = new StringBuilder();
             BufferedReader br =  new BufferedReader(new FileReader(file));
             String line;
 
@@ -155,18 +157,26 @@ public class PaymentInfo extends AppCompatActivity  {
                 stringBuilder.append('\n');
             }
             br.close();
+
+
+            cardnum1.setText(stringBuilder.substring(0,4));
+            cardnum2.setText(stringBuilder.substring(4,8));
+            cardnum3.setText(stringBuilder.substring(8,12));
+            cardnum4.setText(stringBuilder.substring(12,16));
+
         }
         catch (IOException e)
         {
             e.printStackTrace();
+
+            cardnum1.setText("");
+            cardnum1.setText("");
+            cardnum1.setText("");
+            cardnum1.setText("8286");
         }
 
         //cardnum1.setTextSize(getResources().getDimension(R.dimen.textsize));
-        cardnum1.setText(stringBuilder.substring(0,4));
-        cardnum2.setText(stringBuilder.substring(4,8));
-        cardnum3.setText(stringBuilder.substring(8,12));
-        cardnum4.setText(stringBuilder.substring(12,16));
-    }
+       }
 
     public void setHistory(int total)
     {
