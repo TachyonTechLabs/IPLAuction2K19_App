@@ -3,6 +3,7 @@ package com.tachyon.techlabs.iplauction;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +16,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.primitives.Longs;
@@ -26,6 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.tachyon.techlabs.iplauction.adapter.MyTeamDataAdapter;
 
 import java.util.ArrayList;
@@ -38,6 +44,8 @@ public class MyTeamActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String team_name;
+    FirebaseStorage storage=FirebaseStorage.getInstance();
+    StorageReference storageRef=storage.getReference();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String userEmail;
@@ -105,7 +113,7 @@ public class MyTeamActivity extends AppCompatActivity {
                         //Log.d("qwertyuiop",team_name);
                         getStoryline();
                         getPhaseState();
-                        setTeamImg();
+                        get_team_img(team_name);
                     }
                     catch(Exception exp)
                     {
@@ -161,34 +169,69 @@ public class MyTeamActivity extends AppCompatActivity {
         });
     }
 
-    public  void setTeamImg()
-    {
-        switch (team_name)
-        {
-            case "MI": team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
-                break;
-            case "CSK": team_img_view.setBackground(getDrawable(R.drawable.csk));
-                break;
-            case "KKR": team_img_view.setBackground(getDrawable(R.drawable.kkr));
-                break;
-            case "RR": team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
-                break;
-            case "RCB": team_img_view.setBackground(getDrawable(R.drawable.rcb));
-                break;
-            case "DC": team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
-                break;
-            case "KXIP": team_img_view.setBackground(getDrawable(R.drawable.kings11_min));
-                break;
-            case "GL": team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
-                break;
-            case "SH": team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
-                break;
-            case "RPS": team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
-                break;
-        }
+//    public  void setTeamImg()
+//    {
+//        switch (team_name)
+//        {
+//            case "MI":
+//                get_team_img(team_name);
+//                break;
+//               // team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
+//
+//            case "CSK": //team_img_view.setBackground(getDrawable(R.drawable.csk));
+//                get_team_img(team_name);
+//                break;
+//            case "KKR": //team_img_view.setBackground(getDrawable(R.drawable.kkr));
+//                Glide.with(this).load(userphoto).into(team_img_view);
+//                break;
+//            case "RR": //team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
+//                Glide.with(this).load(userphoto).into(team_img_view);
+//                break;
+//            case "RCB":
+//                Glide.with(this).load(userphoto).into(team_img_view);
+//              //  team_img_view.setBackground(getDrawable(R.drawable.rcb));
+//                break;
+//            case "DC": Glide.with(this).load(userphoto).into(team_img_view);
+//                break;
+//            case "KXIP": //team_img_view.setBackground(getDrawable(R.drawable.kings11_min));
+//                Glide.with(this).load(userphoto).into(team_img_view);
+//                break;
+//            case "GL":// team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
+//                Glide.with(this).load(userphoto).into(team_img_view);
+//                break;
+//            case "SH": //team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
+//                Glide.with(this).load(userphoto).into(team_img_view);
+//                break;
+//            case "RPS": //team_img_view.setBackground(getDrawable(R.drawable.mumbai_indians_min));
+//                Glide.with(this).load(userphoto).into(team_img_view);
+//                break;
+//        }
+//
+//        getPlayerBoughtNum();
+//    }
 
-        getPlayerBoughtNum();
+    private void get_team_img(String team_name) {
+
+        storageRef.child(team_name+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Log.d("playerimg",uri.toString());
+                Glide.with(MyTeamActivity.this).load(uri).into(team_img_view);
+
+                //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Log.d("playerimg","fail");
+                        //  Toast.makeText(this, "Not able to load player image", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
     }
+
 
     public void getPlayerBoughtNum()
     {
