@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -457,6 +458,7 @@ public class PowerCards extends AppCompatActivity {
         ArrayAdapter amountspin_adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,amount_multiply );
         amountspin_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         amount_multipler.setAdapter(amountspin_adapter);
+
     }
 
     private void passwordDialog() {

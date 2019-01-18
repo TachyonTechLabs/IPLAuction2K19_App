@@ -615,49 +615,47 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        query = db.collection(roomid);
-        registration= query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-            }
-        });
-        registration.remove();
-        query = db.collection("Players");
-        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-            }
-        });
-        registration.remove();
+//        query = db.collection(roomid);
+//        registration= query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//
+//            }
+//        });
+//        registration.remove();
+//        query = db.collection("Players");
+//        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//
+//            }
+//        });
+//        registration.remove();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        registration= query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-            }
-        });
-        registration.remove();
-        query = db.collection("Players");
-        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-            }
-        });
-        registration.remove();
+//        registration= query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//
+//            }
+//        });
+//        registration.remove();
+//        query = db.collection("Players");
+//        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//
+//            }
+//        });
+//        registration.remove();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
-
-
         super.onStop();
     }
 }

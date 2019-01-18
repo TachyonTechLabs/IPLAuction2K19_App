@@ -157,7 +157,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:onClick="setState"
-        android:text="Fixed Players"
+        android:text="Set to Story"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -170,7 +170,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:onClick="phase_set"
-        android:text="Phase 1"
+        android:text="Set Phase 1"
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

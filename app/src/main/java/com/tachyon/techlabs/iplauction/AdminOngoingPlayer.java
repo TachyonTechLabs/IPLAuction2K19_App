@@ -543,24 +543,25 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void setState(View view)
     {
+        Log.d("btnplayfix",storybtn.getText().toString().toLowerCase().trim());
         DocumentReference state_doc = db.collection(id).document("State");
-        if(storybtn.getText().toString().toLowerCase().equals("storyline"))
+        if(storybtn.getText().toString().toLowerCase().equals("set to fix"))
         {
-            state_doc.update("state",0).addOnSuccessListener(new OnSuccessListener<Void>() {
+            state_doc.update("state",1).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    fixed.setText("Fixed Players");
+                    fixed.setText("Set to Story");
                 }
             });
             s = 1;
             setFixedPlayer();
         }
-        else if(storybtn.getText().toString().trim().toLowerCase().equals("fixedplayers"))
+        else if(storybtn.getText().toString().toLowerCase().equals("set to story"))
         {
-            state_doc.update("state",1).addOnSuccessListener(new OnSuccessListener<Void>() {
+            state_doc.update("state",0).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    fixed.setText("Storyline");
+                    fixed.setText("Set to Fix");
                 }
             });
             s = 0;
@@ -603,22 +604,23 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
     public void phase_set(View view)
     {
+        Log.d("btnphasebtn",phasebtn.getText().toString().toLowerCase().trim());
         DocumentReference state_doc = db.collection(id).document("State");
-        if(phasebtn.getText().toString().trim().toLowerCase().equals("phase0"))
+        if(phasebtn.getText().toString().trim().toLowerCase().equals("set phase 0"))
         {
             state_doc.update("phase",0).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    phase.setText("Phase 1");
+                    phase.setText("Set Phase 1");
                 }
             });
         }
-        else if(phasebtn.getText().toString().trim().toLowerCase().equals("phase1"))
+        else if(phasebtn.getText().toString().trim().toLowerCase().equals("set phase 1"))
         {
             state_doc.update("phase",1).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    phase.setText("Phase 0");
+                    phase.setText("Set Phase 0");
                 }
             });
         }
