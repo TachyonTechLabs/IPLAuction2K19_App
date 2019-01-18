@@ -11,20 +11,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderHistoryListViewAdapter extends ArrayAdapter {
 
     private String [] listtext;
-    private int [] listvalue;
     private ArrayList<String> listName = new ArrayList<>();
-    private ArrayList<Integer> listValue = new ArrayList<>();
+    private List<Long> listValue = new ArrayList<>();
     private TextView txtText,txtValue;
     private String valueText="";
 
-    public OrderHistoryListViewAdapter(@NonNull Context context, String[] text ,int[] value) {
+    public OrderHistoryListViewAdapter(@NonNull Context context, String[] text ,List<Long> listValue) {
         super(context, R.layout.custom_orders_listview,R.id.history_order_id,text);
         this.listtext = text;
-        this.listvalue = value;
+        this.listValue = listValue;
        // this.listName = text;
         //this.listValue = value;
     }
@@ -40,7 +40,7 @@ public class OrderHistoryListViewAdapter extends ArrayAdapter {
         //Toast.makeText(row.getContext(),listtext[1], Toast.LENGTH_SHORT).show();
 
         txtText.setText(listtext[position]);
-        valueText = "₹ "+listvalue[position];
+        valueText = "₹ "+listValue.get(position);
         txtValue.setText(valueText);
 
         return row;
