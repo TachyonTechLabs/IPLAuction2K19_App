@@ -284,11 +284,13 @@ public class PaymentInfo extends AppCompatActivity  implements NavigationView.On
         val.add(pref.getLong("legend",0));
         val.add(pref.getLong("yorker",0));
         val.add(pref.getLong("rtm",0));
-        val.add(pref.getLong("freehit",0));
+        val.add(pref.getLong("freehit1",0));
+        val.add(pref.getLong("freehit2",0));
         item.add("Legend Card");
         item.add("Yorker Card");
         item.add("Right to Match Card");
-        item.add("Free Hit Card");
+        item.add("Free Hit Card 1");
+        item.add("Free Hit Card 2");
 
         itemNameArray = new String[item.size()];
         itemNameArray = item.toArray(itemNameArray);
