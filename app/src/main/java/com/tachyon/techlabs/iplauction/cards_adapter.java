@@ -117,12 +117,12 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
         }
     }
 
-    public cards_adapter(Context context,int[]img, String[] disc, String[] name,String [] price,
+    public cards_adapter(Context context,String[] disc, String[] name,String [] price,
                          RelativeLayout bottomSheetLayout,BottomSheetBehavior bottomSheetBehavior,
                          TextView bs_name,TextView bs_desc)
     {
         this.c = context;
-        this.carsimgs = img;
+       // this.carsimgs = img;
         this.disc = disc;
         this.names = name;
         this.price = price;

@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ProfileActivity"
+    android:id="@+id/drawerLayout"
+    android:fitsSystemWindows="true">
+
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,24 +19,31 @@
     android:background="@color/white"
     tools:context=".PaymentInfo">
 
+    <include
+        android:id="@+id/ongoing_toolbar"
+        layout="@layout/app_toolbar">
+
+    </include>
 
 
- <!--   <com.wajahatkarim3.easyflipview.EasyFlipView
-        android:id="@+id/cardFlipView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:flipOnTouch="true"
-        app:flipEnabled="true"
-        app:flipDuration="400"
-        app:flipType="vertical"
-        app:flipFrom="front"
-        app:autoFlipBack="true"
-        app:autoFlipBackTime="1000"
-        >
 
 
-    <include layout="@layout/payment_card_layout"
-            android:id="@+id/payment_card_id_back"/> -->
+    <!--   <com.wajahatkarim3.easyflipview.EasyFlipView
+           android:id="@+id/cardFlipView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:flipOnTouch="true"
+           app:flipEnabled="true"
+           app:flipDuration="400"
+           app:flipType="vertical"
+           app:flipFrom="front"
+           app:autoFlipBack="true"
+           app:autoFlipBackTime="1000"
+           >
+
+
+       <include layout="@layout/payment_card_layout"
+               android:id="@+id/payment_card_id_back"/> -->
 
         <!-- Front Layout Goes Here -->
       <!--  <include layout="@layout/payment_card_layout"
@@ -189,4 +207,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_orders_id" />
 
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/navigation_menu"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_header">
+
+    </android.support.design.widget.NavigationView>
+
 </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.DrawerLayout>

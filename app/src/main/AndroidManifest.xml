@@ -45,9 +45,6 @@
         <activity android:name=".ProfileActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".opponents_data" />
-        <activity android:name=".Room" />
-        <activity android:name=".activity_vertical_ntb" />
-        <activity android:name=".PLAYERS" />
         <activity android:name=".PaymentInfo"
             android:screenOrientation="portrait" />
 

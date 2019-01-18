@@ -55,7 +55,6 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     NavigationView navigationView;
     ActionBarDrawerToggle mToggle;
     Toolbar ongoing_toolbar;
-    AllPlayerInfo allPlayerInfo = new AllPlayerInfo();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String userEmail;

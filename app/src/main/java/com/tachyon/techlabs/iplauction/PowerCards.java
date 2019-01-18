@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +59,6 @@ public class PowerCards extends AppCompatActivity {
   //  public static final String CHANNEL_ID="1001";
     Context context;
     EditText pin;
-
     ImageView cardback;
     Button confirm;
     RecyclerView recyclerView;
@@ -78,6 +79,7 @@ public class PowerCards extends AppCompatActivity {
     FirebaseUser currentUser;
     Spinner amount_multipler;
     String passwordd;
+    View tempview;
     String userEmail;
     int currentNumOfCards,itemsPurchased;
     double currentAmount;
@@ -128,11 +130,11 @@ public class PowerCards extends AppCompatActivity {
 
 
 
-        ct= new CountDownTimer(5*60 * 1000, 1000) {
+        ct= new CountDownTimer(2*60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 millisinsec=(millisUntilFinished/1000);
                 String time=("Seconds remaining: " + millisUntilFinished / 1000);
-                circularProgress.setProgress(millisinsec, 300);
+                circularProgress.setProgress(millisinsec, 120);
                 circularProgress.setProgressTextAdapter(TIME_TEXT_ADAPTER);
                 //  TextView timee=findViewById(R.id.textView2);
                 //timee.setText(time);
@@ -142,6 +144,9 @@ public class PowerCards extends AppCompatActivity {
             public void onFinish() {
                 // mTextField.setText("Done !");
                 showDialogWarning();
+                Conifrm_all_cards(tempview);
+
+
             }
         };
 
@@ -151,28 +156,24 @@ public class PowerCards extends AppCompatActivity {
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        int[] imgs = {R.drawable.yorkerr,
-                R.drawable.no_ball_card,
-                R.drawable.rtmm,
-                R.drawable.legendd};
+//        int[] imgs = {R.drawable.yorkerr,
+//                R.drawable.no_ball_card,
+//                R.drawable.rtmm,
+//                R.drawable.legendd};
 
-        String[] names = {"YORKER",
-                "FREE HIT",
+        String[] names = {
+                "YORKER",
+                "FREE HIT 1",
+                "FREE HIT 2",
                 "RIGHT TO MATCH",
                 "LEGEND CARD"};
 
       //  String[] disc=res.getStringArray(R.array.description);
         Resources res = getResources();
-        String[] disc = {res.getString(R.string.yorker_desc),
-                "This card can be applied to change the preferred position of a player in your lineup after you have completed your team after the completion of the auction",
-                "A player which has been successfully bid by a team\n" +
-                        "can be purchased by another team at the same\n" +
-                        "price if the team possessing this card uses it for\n" +
-                        "that player","This card allows a team to purchase an extra\n" +
-                "legend"};
+        String[] disc = {res.getString(R.string.yorker_desc),res.getString(R.string.Free_hit_1_desc),res.getString(R.string.Free_hit_2_desc),res.getString(R.string.rtm_desc),res.getString(R.string.legend_desc)};
 
 
-        String[] price = {"PRICE",
+        String[] price = {"PRICE","PRICE",
                 "PRICE",
                 "PRICE",
                 "PRICE"};
@@ -212,7 +213,7 @@ public class PowerCards extends AppCompatActivity {
         //num = paymentInfo.stringBuilder.substring(12,16);
         readCardNum();
 
-        adapter = new cards_adapter(context,imgs,disc,names,price,bottonSheetLayout,bottomSheetBehavior,txt_bs_name,txt_bs_desc);
+        adapter = new cards_adapter(context,disc,names,price,bottonSheetLayout,bottomSheetBehavior,txt_bs_name,txt_bs_desc);
 
         recyclerView.setAdapter(adapter);
 
@@ -316,6 +317,7 @@ public class PowerCards extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirm_transaction();
+                dismissKeyboard(PowerCards.this);
 
 
             }
@@ -343,7 +345,7 @@ public class PowerCards extends AppCompatActivity {
                 final double card_price_bid_value = multiply_with(price_string,multiply);;
                // DocumentReference documentReference2 = db.collection("Players").document(userEmail).collection("paymentHistory").document(itemsPurchased+"");
                 DocumentReference documentReference2 = db.collection("Players").document(userEmail);
-                if(((pin.getText().toString().equals(num ))|| (pin.getText().toString().equals("8286")))&& (card_price_bid_value<20000000) )
+                if(((pin.getText().toString().equals(num ))|| (pin.getText().toString().equals("8286")))&& (card_price_bid_value<50000000) )
                 {
 
                     switch (flag) {
@@ -572,12 +574,13 @@ public class PowerCards extends AppCompatActivity {
 
     public void readCardNum()
     {
-        File sdCard = getCacheDir();
-        File file = new File(sdCard,"CardNum.txt");
-        stringBuilder = new StringBuilder();
 
         try
         {
+            File sdCard = getCacheDir();
+            File file = new File(sdCard,"CardNum.txt");
+            stringBuilder = new StringBuilder();
+
             BufferedReader br =  new BufferedReader(new FileReader(file));
             String line;
 
@@ -585,14 +588,16 @@ public class PowerCards extends AppCompatActivity {
                 stringBuilder.append(line);
                 stringBuilder.append('\n');
             }
+            num = stringBuilder.substring(12,16);
             br.close();
         }
         catch (IOException e)
         {
             e.printStackTrace();
+            num="8286";
         }
 
-       num = stringBuilder.substring(12,16);
+
     }
 
     public void buyCard()
@@ -894,6 +899,7 @@ public class PowerCards extends AppCompatActivity {
     };
 
     public void Conifrm_all_cards(View view) {
+        tempview=view;
         Toast.makeText(context, "confirm all cards", Toast.LENGTH_SHORT).show();
         DocumentReference documentReference = db.collection("Players").document(userEmail);
         pref= getApplicationContext().getSharedPreferences("Cards_Bid", 0);
@@ -906,5 +912,16 @@ public class PowerCards extends AppCompatActivity {
         documentReference.update("right to match",rtm);
         documentReference.update("yorker",yorker);
         documentReference.update("free hit",freehit);
+        startActivity(new Intent(this,PaymentInfo.class));
+        finish();
+    }
+
+    public void dismissKeyboard(Activity activity) {
+//        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        if (null != activity.getCurrentFocus())
+//            imm.hideSoftInputFromWindow(activity.getCurrentFocus()
+//                    .getApplicationWindowToken(), 0);
+      pin.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        users_price.onEditorAction(EditorInfo.IME_ACTION_DONE);
     }
 }

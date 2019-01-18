@@ -51,7 +51,6 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     List<String> list,fix;
     List<String> amount_multiply=new ArrayList<>();
     Spinner amount_multipler;
-    AllPlayerInfo allPlayerInfo = new AllPlayerInfo();
     ArrayAdapter<String> adapter;
     String [] players;
     ListView playerlist,fixlist;
