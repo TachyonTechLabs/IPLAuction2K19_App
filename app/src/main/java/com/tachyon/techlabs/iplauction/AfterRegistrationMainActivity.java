@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -192,9 +193,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-        //if(isAppInstalled(this,"com.njlabs.showjava"))
+       // if(isAppInstalled(this,"com.njlabs.showjava"))
         //Toast.makeText(this, "Unistall the Decompiler ", Toast.LENGTH_SHORT).show();
-       //  MediaPlayer mp = MediaPlayer.create(this,R.raw.zxing_beep);
+         //MediaPlayer mp = MediaPlayer.create(this,R.raw.zxing_beep);
          //mp.start();
          //mp.setLooping(true);
 

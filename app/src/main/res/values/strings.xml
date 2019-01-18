@@ -75,9 +75,11 @@
     <string-array name="team_names">
         <item>MI</item>
         <item>CSK</item>
-        <item>DC</item>
+        <item>DD</item>
         <item>KXIP</item>
         <item>KKR</item>
+        <item>GL</item>
+        <item>RPS</item>
         <item>RR</item>
         <item>RCB</item>
         <item>SH</item>
