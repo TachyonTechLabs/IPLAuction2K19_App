@@ -3,6 +3,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +71,8 @@ public class PowerCards extends AppCompatActivity {
     TextView txt_bs_name,txt_bs_desc,txt_bs_value;
     DocumentReference mainDoc;
     FirebaseAuth mAuth;
+    SharedPreferences pref ;
+    SharedPreferences.Editor editor ;
     FirebaseUser currentUser;
     Spinner amount_multipler;
     String passwordd;
@@ -102,6 +106,9 @@ public class PowerCards extends AppCompatActivity {
         amount_multipler=findViewById(R.id.spinner_amount);
         pin=findViewById(R.id.pin_edit);
         confirm=findViewById(R.id.confirm);
+        pref= getApplicationContext().getSharedPreferences("Cards_Bid", 0); // 0 - for private mode
+        editor=pref.edit();
+
         amount_multiply_add();
         passwordDialog();
 
@@ -338,33 +345,50 @@ public class PowerCards extends AppCompatActivity {
                             //history = "Yorker#" + appConstants.Yorker_price;
                           //  payHistory.put("0","Yorker");
                             card_amount = card_price_bid_value;
-                            payHistory.put("yorker",card_price_bid_value);
-                            setPayHistory(documentReference2);
+                           // payHistory.put("yorker",card_price_bid_value);
+                            //documentReference2.set(payHistory,SetOptions.merge());
+                            editor.putLong("yorker", (long) card_price_bid_value);
+                            editor.commit();
+                            hide_bottom_sheet();
                             break;
                         case 2:
                            // payHistory.put("0","No Ball");
                             card_amount = card_price_bid_value;
-                            payHistory.put("no ball",card_price_bid_value);
-                            documentReference2.set(payHistory,SetOptions.merge());
+                          //  payHistory.put("no ball",card_price_bid_value);
+                           // documentReference2.set(payHistory,SetOptions.merge());
+                            editor.putLong("no ball", (long) card_price_bid_value);
+                            editor.commit();
+                            hide_bottom_sheet();
                             break;
                         case 3:
                             //payHistory.put("0","Right To Match");
                             card_amount = card_price_bid_value;
-                            payHistory.put("right to match",card_price_bid_value);
-                            documentReference2.set(payHistory,SetOptions.merge());
+                            editor.putLong("right to match", (long) card_price_bid_value);
+                            editor.commit();
+                            hide_bottom_sheet();
+                           // payHistory.put("right to match",card_price_bid_value);
+                            //documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 4:
                             //payHistory.put("0","Legend Cards");
                             card_amount = card_price_bid_value;
-                            payHistory.put("legend cards",card_price_bid_value);
-                            documentReference2.set(payHistory,SetOptions.merge());
+                            editor.putLong("legend card", (long) card_price_bid_value);
+                            editor.commit();
+
+                            pref= getApplicationContext().getSharedPreferences("Cards_Bid", 0);
+                            Long legend= pref.getLong("legend card",0);
+                           // Toast.makeText(context,legend.toString() , Toast.LENGTH_SHORT).show();
+                            Log.d("legend",legend.toString());
+                            //payHistory.put("legend cards",card_price_bid_value);
+                            //documentReference2.set(payHistory,SetOptions.merge());
+                            hide_bottom_sheet();
                             break;
                     }
 
                     double current_amount = currentAmount - card_amount;
 //                    DocumentReference documentReference = db.collection("Players").document(userEmail);
 //                    documentReference.update("Current_Amount",current_amount);
-//                    documentReference.update("numberOfCards",currentNumOfCards+1)
+//                   documentReference.update("numberOfCards",currentNumOfCards+1)
 //                            .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                                @Override
 //                                public void onSuccess(Void aVoid) {
@@ -401,9 +425,8 @@ public class PowerCards extends AppCompatActivity {
                     Toast.makeText(context, "Please Enter Lesser Value or Check Your Password", Toast.LENGTH_SHORT).show();
     }
 
-    public void setPayHistory(DocumentReference doc)
+    public void hide_bottom_sheet()
     {
-        //doc.set(payHistory,SetOptions.merge());
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         buyBtn.setVisibility(View.VISIBLE);
@@ -414,11 +437,8 @@ public class PowerCards extends AppCompatActivity {
         amount_multipler.setVisibility(View.GONE);
         users_price.setVisibility(View.GONE);
 
-        //doc.set(payHistory,SetOptions.merge());
-
-                                    //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
     }
-
 
 
     private void amount_multiply_add() {
@@ -863,4 +883,7 @@ public class PowerCards extends AppCompatActivity {
         }
     };
 
+    public void Conifrm_all_cards(View view) {
+
+    }
 }

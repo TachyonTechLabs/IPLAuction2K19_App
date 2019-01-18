@@ -42,6 +42,11 @@
                     android:layout_gravity="center"
                     android:textSize="22sp"
                     android:textColor="@color/black"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="Conifrm_all_cards"
+                   android:background="@drawable/verification"/>
                 <TextView
                     android:layout_weight="0"
                     android:layout_width="50dp"
