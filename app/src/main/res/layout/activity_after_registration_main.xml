@@ -38,6 +38,7 @@
             android:layout_weight="1"
             android:elevation="0dp"
             android:onClick="create_room"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             android:id="@+id/create_room"
@@ -70,6 +71,8 @@
             android:layout_margin="20dp"
             android:layout_weight="1"
             android:onClick="Join_Room"
+            android:id="@+id/join_room"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">

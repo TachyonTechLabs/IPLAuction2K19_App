@@ -98,11 +98,13 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
     List<String> admin_list=new ArrayList<>();
     int value;
     int flag=0;
+    CardView cretecard,joincard;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_after_registration_main);
         add_admin_list();
 
 
@@ -120,6 +122,9 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
 
         appName = getString(R.string.app_name);
+
+        cretecard = findViewById(R.id.create_room);
+        joincard = findViewById(R.id.join_room);
         /*toolbarAppName = findViewById(R.id.app_toolbar);
         textViewAppName = findViewById(R.id.app_toolbar_nametxt);
         textViewAppName.setText(appName);*/
@@ -217,13 +222,19 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                             }
                             else
                             {
-                                setContentView(R.layout.activity_after_registration_main);
+                                //setContentView(R.layout.activity_after_registration_main);
                                 CardView create_room=findViewById(R.id.create_room);
                                 if(admin_list.contains(userEmail))
+                                {
                                     create_room.setVisibility(View.VISIBLE);
-                                else
-                                    create_room.setVisibility(View.GONE);
+                                    joincard.setVisibility(View.VISIBLE);
+                                }
 
+                                else
+                                {
+                                    create_room.setVisibility(View.GONE);
+                                    joincard.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                         catch (Exception exp)
@@ -234,11 +245,18 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     }
                     else
                     {
-                        setContentView(R.layout.activity_after_registration_main);
+                        //setContentView(R.layout.activity_after_registration_main);
                         CardView create_room=findViewById(R.id.create_room);
                         if(admin_list.contains(userEmail))
+                        {
                             create_room.setVisibility(View.VISIBLE);
+                            joincard.setVisibility(View.VISIBLE);
+                        }
                         else
+                        {
+                            create_room.setVisibility(View.GONE);
+                            joincard.setVisibility(View.VISIBLE);
+                        }
                             create_room.setVisibility(View.GONE);
 
 
