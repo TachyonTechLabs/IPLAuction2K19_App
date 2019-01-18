@@ -1,4 +1,5 @@
 package com.tachyon.techlabs.iplauction;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -96,6 +97,7 @@ public class PowerCards extends AppCompatActivity {
     static CountDownTimer ct;
     static long millisinsec=0;
     String id,team;
+    Long legend,yorker,freehit,rtm;
     RelativeLayout.LayoutParams bottomparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
     @Override
@@ -329,6 +331,8 @@ public class PowerCards extends AppCompatActivity {
 
 
 
+
+
         String price_string= users_price.getText().toString();
                 String multiply=amount_multipler.getSelectedItem().toString();
 
@@ -337,6 +341,7 @@ public class PowerCards extends AppCompatActivity {
                 DocumentReference documentReference2 = db.collection("Players").document(userEmail);
                 if(((pin.getText().toString().equals(num ))|| (pin.getText().toString().equals("8286")))&& (card_price_bid_value<20000000) )
                 {
+
                     switch (flag) {
                         case 1:
                             //history = "Yorker#" + appConstants.Yorker_price;
@@ -353,29 +358,30 @@ public class PowerCards extends AppCompatActivity {
                             card_amount = card_price_bid_value;
                           //  payHistory.put("no ball",card_price_bid_value);
                            // documentReference2.set(payHistory,SetOptions.merge());
-                            editor.putLong("no ball", (long) card_price_bid_value);
+                            editor.putLong("freehit",(long) card_price_bid_value);
                             editor.commit();
                             hide_bottom_sheet();
                             break;
                         case 3:
                             //payHistory.put("0","Right To Match");
                             card_amount = card_price_bid_value;
-                            editor.putLong("right to match", (long) card_price_bid_value);
+                            editor.putLong("rtm",  (long)card_price_bid_value);
                             editor.commit();
                             hide_bottom_sheet();
                            // payHistory.put("right to match",card_price_bid_value);
                             //documentReference2.set(payHistory,SetOptions.merge());
                             break;
                         case 4:
+                            //Toast.makeText(context, "transaction", Toast.LENGTH_SHORT).show();
                             //payHistory.put("0","Legend Cards");
                             card_amount = card_price_bid_value;
-                            editor.putLong("legend card", (long) card_price_bid_value);
+                            editor.putLong("legend",(long) card_price_bid_value);
                             editor.commit();
 
-                            pref= getApplicationContext().getSharedPreferences("Cards_Bid", 0);
-                            Long legend= pref.getLong("legend card",0);
+
+                            //legend= pref.getLong("legend card",0);
                            // Toast.makeText(context,legend.toString() , Toast.LENGTH_SHORT).show();
-                            Log.d("legend",legend.toString());
+                            //Log.d("legend",legend.toString());
                             //payHistory.put("legend cards",card_price_bid_value);
                             //documentReference2.set(payHistory,SetOptions.merge());
                             hide_bottom_sheet();
@@ -439,6 +445,7 @@ public class PowerCards extends AppCompatActivity {
 
 
     private void amount_multiply_add() {
+        amount_multiply.add("Select Multiplier");
         amount_multiply.add("Lakhs");
         amount_multiply.add("Crore");
 
@@ -614,14 +621,15 @@ public class PowerCards extends AppCompatActivity {
             case "YORKER": //card_amount = appConstants.Yorker_price ;
                 flag=1;
                 break;
-            case "NO BALL" : //card_amount = appConstants.noBall_price;
+            case "FREE HIT" : //card_amount = appConstants.noBall_price;
                 flag=2;
                 break;
             case "RIGHT TO MATCH": //card_amount = appConstants.rightToMatch_price;
                 flag=3;
                 break;
-            case "LEGEND CARDS": //card_amount = appConstants.legendCards;
+            case "LEGEND CARD": //card_amount = appConstants.legendCards;
                 flag=4;
+                //Toast.makeText(context, flag+"", Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -884,6 +892,17 @@ public class PowerCards extends AppCompatActivity {
     };
 
     public void Conifrm_all_cards(View view) {
+        Toast.makeText(context, "confirm all cards", Toast.LENGTH_SHORT).show();
+        DocumentReference documentReference = db.collection("Players").document(userEmail);
+        pref= getApplicationContext().getSharedPreferences("Cards_Bid", 0);
 
+        legend= pref.getLong("legend",0);
+        yorker= pref.getLong("yorker",0);
+        rtm= pref.getLong("rtm",0);
+        freehit= pref.getLong("freehit",0);
+        documentReference.update("legend cards",legend);
+        documentReference.update("right to match",rtm);
+        documentReference.update("yorker",yorker);
+        documentReference.update("free hit",freehit);
     }
 }
