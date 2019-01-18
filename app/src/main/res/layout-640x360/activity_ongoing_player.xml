@@ -148,30 +148,30 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/base_price_text"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/preffered_pos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="@string/preffered_position"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/base_price_text" />
+        <!--<TextView-->
+            <!--android:id="@+id/preffered_pos"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="32dp"-->
+            <!--android:layout_marginTop="32dp"-->
+            <!--android:fontFamily="@font/roboto_regular"-->
+            <!--android:text="@string/preffered_position"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="18sp"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/base_price_text" />-->
 
-        <TextView
-            android:id="@+id/preffered_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="5"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/preffered_pos"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <!--<TextView-->
+            <!--android:id="@+id/preffered_value"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="32dp"-->
+            <!--android:fontFamily="@font/roboto_regular"-->
+            <!--android:text="5"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="18sp"-->
+            <!--app:layout_constraintBaseline_toBaselineOf="@+id/preffered_pos"-->
+            <!--app:layout_constraintEnd_toEndOf="parent" />-->
 
         <TextView
             android:id="@+id/point_text"

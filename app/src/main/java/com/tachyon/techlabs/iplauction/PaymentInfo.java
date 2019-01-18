@@ -2,12 +2,21 @@ package com.tachyon.techlabs.iplauction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,7 +41,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-public class PaymentInfo extends AppCompatActivity  {
+public class PaymentInfo extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -42,14 +51,21 @@ public class PaymentInfo extends AppCompatActivity  {
     String [] itemNameArray;
     long [] itemValueArray;
     ListView listViewHistory;
+    Handler handler;
+    Runnable runnable;
     ArrayList<String> item = new ArrayList<>();
     ArrayList<Long> val = new ArrayList<>();
     int index,currentIndex;
     View view;
+    AfterRegistrationMainActivity afterRegistrationMainActivity;
     MainActivity mainActivity = new MainActivity();
     public TextView cardnum1,cardnum2,cardnum3,cardnum4,cardholder;
     public StringBuilder stringBuilder;
     SharedPreferences pref ;
+    DrawerLayout mDrawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle mToggle;
+    Toolbar ongoing_toolbar;
     // EasyFlipView easyFlipView = (EasyFlipView) findViewById(R.id.cardFlipView);
 
     @Override
@@ -57,12 +73,32 @@ public class PaymentInfo extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_info);
 
+        
 
-        if(Build.VERSION.SDK_INT>22)
-        {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        ongoing_toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(ongoing_toolbar);
+        //toolbar_text.setText(R.string.ongoing_player);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Payment Info");
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        //getSupportActionBar().setHomeAsUpIndicator(getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mydrawer);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,ongoing_toolbar,R.string.open,R.string.close);
+
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        NavigationView nav = (NavigationView) findViewById(R.id.navigation_view);
+        //View headerView = navigationView.getHeaderView(0);
+
+        //String name = getIntent().getExtras().getString("name");
+        nav.setNavigationItemSelectedListener(this);
+        handler = new Handler();
+
 
         pref= getApplicationContext().getSharedPreferences("Cards_Bid", 0); // 0 - for private mode
        // LayoutInflater li = LayoutInflater.from(this);
@@ -259,4 +295,99 @@ public class PaymentInfo extends AppCompatActivity  {
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        switch (id)
+        {
+            case R.id.nav_home:
+                break;
+
+            case R.id.nav_players:
+                //startActivity(new Intent(PaymentInfo.this,PLAYERS.class));
+                //finish();
+                break;
+
+            case R.id.nav_profile:
+                //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
+                //Handler handler = new Handler();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(PaymentInfo.this,ProfileActivity.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(runnable,150);
+
+                break;
+
+            case R.id.nav_opponents:
+                Runnable opp_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(PaymentInfo.this,OpponentsActivity.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(opp_runnable,150);
+                break;
+
+            case R.id.nav_payments_info:
+                break;
+
+            case R.id.nav_cards:
+                //afterRegistrationMainActivity.storagepermission();
+                //storagepermission();
+
+                break;
+
+            case R.id.nav_share:
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                startActivity(Intent.createChooser(share,"Share Via"));
+                break;
+
+            case R.id.nav_rules:
+                Uri uri = Uri.parse("https://drive.google.com/open?id=1JfX0bJFk_twjF4v_DdErvxr9O_5oVlB5"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                break;
+
+            case R.id.nav_developer:
+                //Handler handler = new Handler();
+                Runnable pay_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(PaymentInfo.this,about_developers.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(pay_runnable,150);
+                break;
+
+            case R.id.nav_about_app:
+                Runnable about_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(PaymentInfo.this,About.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(about_runnable,150);
+                break;
+
+
+            case R.id.nav_logout:
+                afterRegistrationMainActivity.signOut();
+
+                break;
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mydrawer);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
