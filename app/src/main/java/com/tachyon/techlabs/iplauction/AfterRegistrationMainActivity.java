@@ -218,6 +218,8 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                             int  in = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot).getLong("inRoom")).intValue();
                             if(in==1)
                             {
+                                final LinearLayout lyt_progress = (LinearLayout) findViewById(R.id.lyt_progress);
+                                lyt_progress.setVisibility(View.VISIBLE);
                                 checkIfStart();
                             }
                             else
