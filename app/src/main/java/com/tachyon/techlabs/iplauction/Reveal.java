@@ -2,6 +2,7 @@ package com.tachyon.techlabs.iplauction;
 
 import android.animation.RectEvaluator;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,12 +62,12 @@ public class Reveal extends AppCompatActivity {
                 {
                     try
                     {
-                        revealed_amount = Objects.requireNonNull(documentSnapshot.getLong("temp_curr_amount")).intValue();
+                        revealed_amount = Objects.requireNonNull(documentSnapshot.getLong("temp_current")).intValue();
                         fianl_amount_revealed.setText("₹"+revealed_amount+"");
                         }
                     catch(Exception exp)
                     {
-                        Toast.makeText(Reveal.this, exp.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Reveal.this, exp.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -138,7 +139,11 @@ public class Reveal extends AppCompatActivity {
 
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,OngoingPlayer.class));
+        finish();
+    }
 }
 

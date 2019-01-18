@@ -217,6 +217,17 @@ public class about_developers extends AppCompatActivity implements NavigationVie
                 handler.postDelayed(opp_runnable,150);
                 break;
 
+            case R.id.reveal:
+                Runnable rev_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(about_developers.this,Reveal.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(rev_runnable,150);
+                break;
+
             case R.id.nav_payments_info:
                 Runnable dev_runnable = new Runnable() {
                     @Override

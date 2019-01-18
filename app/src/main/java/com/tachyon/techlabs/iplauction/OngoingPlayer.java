@@ -555,6 +555,17 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 };
                 handler.postDelayed(dev_runnable,150);
                 break;
+            case R.id.reveal:
+                Runnable rev_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OngoingPlayer.this,Reveal.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(rev_runnable,150);
+                break;
+
 
             case R.id.nav_cards:
                 //afterRegistrationMainActivity.storagepermission();
