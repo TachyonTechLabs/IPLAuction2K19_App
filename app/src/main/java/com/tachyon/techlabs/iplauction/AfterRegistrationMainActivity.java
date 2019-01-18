@@ -264,7 +264,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
                         if( !isNetworkAvailable())
                             connecttoInternet();
-
                     }
                 }
             });
