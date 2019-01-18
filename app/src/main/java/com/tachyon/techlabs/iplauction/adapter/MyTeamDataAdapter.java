@@ -320,7 +320,6 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
         sp= context.getSharedPreferences("Story", 0); // 0 - for private mode
         this.story = sp.getString("Story","");
         Log.d("phasesad",this.phase+"");
-
     }
 
     @NonNull
