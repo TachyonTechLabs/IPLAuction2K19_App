@@ -277,7 +277,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         else
         {
           //  String text = R.string.membertextview+"";
-            boss_name.setText(boss_namee);
+            boss_name.setText(getResources().getString(R.string.admins));
             bossTextView.setText(R.string.membertextview);
             startgame.setVisibility(View.GONE);
         }

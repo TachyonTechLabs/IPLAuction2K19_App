@@ -70,6 +70,7 @@
     <string name="title_activity_power_cards">PowerCards</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="admins">Admins</string>
 
     <string-array name="team_names">
         <item>MI</item>
