@@ -604,7 +604,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         owner_details.put("itemsPurchased",0);
         owner_details.put("myteam","");
         owner_details.put("players_bought",0);
-        owner_details.put("temp_current",800000000);
+        owner_details.put("temp_curr_amount",800000000);
 
         //gamestart.put("start",0);
 
@@ -866,7 +866,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
         members.put("itemsPurchased",0);
         members.put("myteam","");
         members.put("players_bought",0);
-        members.put("temp_current",800000000);
+        members.put("temp_curr_amount",800000000);
 
         docRef2
                 .set(members)

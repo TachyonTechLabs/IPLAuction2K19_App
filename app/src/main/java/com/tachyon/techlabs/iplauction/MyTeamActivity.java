@@ -227,22 +227,22 @@ public class MyTeamActivity extends AppCompatActivity {
 
         try
         {
-//            storageRef.child(team_name+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                @Override
-//                public void onSuccess(Uri uri) {
-//                    // Log.d("playerimg",uri.toString());
-//                    Glide.with(MyTeamActivity.this).load(uri).into(team_img_view);
-//
-//                    //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
-//                }
-//            })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            // Log.d("playerimg","fail");
-//                            //  Toast.makeText(this, "Not able to load player image", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
+            storageRef.child(team_name+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Log.d("playerimg",uri.toString());
+                    Glide.with(MyTeamActivity.this).load(uri).into(team_img_view);
+
+                    //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Log.d("playerimg","fail");
+                            //  Toast.makeText(this, "Not able to load player image", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
         }
         catch(Exception e)
