@@ -235,6 +235,7 @@ public class PowerCards extends AppCompatActivity {
                     users_price.setVisibility(View.GONE);
                     amount_multipler.setVisibility(View.GONE);
                     bgView.setVisibility(View.GONE);
+                    confirm.setVisibility(View.GONE);
                   //  pinText.setVisibility(View.GONE);
                     pin.setVisibility(View.GONE);
                     getWindow().setStatusBarColor(ContextCompat.getColor(bottomSheet.getContext(), R.color.white));
@@ -255,9 +256,9 @@ public class PowerCards extends AppCompatActivity {
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 bgView.setVisibility(View.VISIBLE);
-                users_price.setVisibility(View.GONE);
-                amount_multipler.setVisibility(View.GONE);
-                buyBtn.setVisibility(View.VISIBLE);
+                //users_price.setVisibility(View.GONE);
+                //amount_multipler.setVisibility(View.GONE);
+                //buyBtn.setVisibility(View.VISIBLE);
                 bgView.setAlpha(slideOffset);
             }
         });
@@ -358,6 +359,7 @@ public class PowerCards extends AppCompatActivity {
                                     buyBtn.setVisibility(View.VISIBLE);
                                     //bottomSheetBehavior.setPeekHeight(0);
                                     pin.setVisibility(View.GONE);
+                                    confirm.setVisibility(View.GONE);
                                  //   pinText.setVisibility(View.GONE);
                                     amount_multipler.setVisibility(View.GONE);
                                     users_price.setVisibility(View.GONE);
@@ -383,7 +385,7 @@ public class PowerCards extends AppCompatActivity {
                 }
                 else
                     Toast.makeText(context, "Please Enter Lesser Value or Check Your Password", Toast.LENGTH_SHORT).show();
-            }
+    }
 
 
 
@@ -528,6 +530,7 @@ public class PowerCards extends AppCompatActivity {
         buyBtn.setVisibility(View.GONE);
         users_price.setVisibility(View.VISIBLE);
         amount_multipler.setVisibility(View.VISIBLE);
+        confirm.setVisibility(View.VISIBLE);
 
 
 
