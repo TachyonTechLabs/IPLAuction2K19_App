@@ -50,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView navigationView;
+    Handler handler;
     private ProgressBar progressBar_indeterminate_circle;
     private int animation_type = ItemAnimation.FADE_IN;
     int [] val = new int[5];
@@ -64,7 +65,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -272,6 +272,21 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
             case R.id.nav_profile:
                 break;
+
+            case R.id.reveal:
+                Runnable rev_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(ProfileActivity.this,Reveal.class));
+                        finish();
+                    }
+                };
+              handler.postDelayed(rev_runnable,150);
+                break;
+            case R.id.nav_payments_info:
+                startActivity(new Intent(ProfileActivity.this,PaymentInfo.class));
+                break;
+
 
             case R.id.nav_opponents:
                 startActivity(new Intent(ProfileActivity.this,OpponentsActivity.class));

@@ -20,6 +20,11 @@
         android:id="@+id/nav_payments_info"
         android:title="Payment Info" />
 
+    <item
+        android:id="@+id/reveal"
+        android:title="Reveal" />
+
+
     <item android:title="Power Ups">
 
         <menu>

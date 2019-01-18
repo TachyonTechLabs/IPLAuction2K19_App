@@ -184,6 +184,17 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
                 //finish();
                 break;
 
+            case R.id.reveal:
+                Runnable rev_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OpponentsActivity.this,Reveal.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(rev_runnable,150);
+                break;
+
             case R.id.nav_profile:
                 //Intent prof = new Intent(AfterRegistrationMainActivity.this,ProfileActivity.class);
                 //Handler handler = new Handler();

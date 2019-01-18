@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera2" />
 
@@ -17,24 +19,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".IntroActivity" />
-        <activity android:name=".AfterRegistrationMainActivity"
-            android:screenOrientation="portrait" >
+        <activity
+            android:name=".AfterRegistrationMainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WaitingForPlayersActivity"
+        <activity
+            android:name=".WaitingForPlayersActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".qr_code_generator"
+        <activity
+            android:name=".qr_code_generator"
             android:screenOrientation="portrait" />
-        <activity android:name=".qr_scanner"
+        <activity
+            android:name=".qr_scanner"
             android:screenOrientation="portrait" />
-        <activity android:name=".qrcode_scanner"
+        <activity
+            android:name=".qrcode_scanner"
             android:screenOrientation="portrait" />
         <activity
             android:name=".PowerCards"
@@ -42,10 +50,12 @@
             android:label="@string/title_activity_power_cards"
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".About" />
-        <activity android:name=".ProfileActivity"
+        <activity
+            android:name=".ProfileActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".opponents_data" />
-        <activity android:name=".PaymentInfo"
+        <activity
+            android:name=".PaymentInfo"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -64,18 +74,22 @@
         </activity>
         <activity
             android:name=".about_developers"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_about_developers"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".developers"
+        <activity
+            android:name=".developers"
             android:screenOrientation="portrait" />
-        <activity android:name=".MyTeamActivity"
+        <activity
+            android:name=".MyTeamActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".PranjalActivity" />
         <activity android:name=".AbhishekActivity" />
-        <activity android:name=".OpponentsActivity"
+        <activity
+            android:name=".OpponentsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Rules"></activity>
+        <activity android:name=".Rules" />
+        <activity android:name=".Reveal"></activity>
     </application>
 
 </manifest>

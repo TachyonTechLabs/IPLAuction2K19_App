@@ -123,8 +123,8 @@ public class MyTeamActivity extends AppCompatActivity {
                     }
                     catch(Exception exp)
                     {
-                        String error = exp.toString();
-                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                        //String error = exp.toString();
+                       // Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -151,7 +151,7 @@ public class MyTeamActivity extends AppCompatActivity {
                     }
                     catch(Exception e)
                     {
-                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -173,7 +173,7 @@ public class MyTeamActivity extends AppCompatActivity {
                     }
                     catch(Exception e)
                     {
-                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -270,7 +270,7 @@ public class MyTeamActivity extends AppCompatActivity {
                     }
                     catch(Exception e)
                     {
-                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -337,7 +337,7 @@ public class MyTeamActivity extends AppCompatActivity {
                         }
                         catch(Exception e)
                         {
-                            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -375,7 +375,7 @@ public class MyTeamActivity extends AppCompatActivity {
                     }
                     catch(Exception exp)
                     {
-                        Toast.makeText(context, exp.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(context, exp.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 

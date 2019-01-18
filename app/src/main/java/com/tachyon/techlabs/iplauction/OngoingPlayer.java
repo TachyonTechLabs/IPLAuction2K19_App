@@ -166,7 +166,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     }
                     catch(Exception e)
                     {
-                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -201,7 +201,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                      getStoryLine();
 
                  } catch (Exception e) {
-                     Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                     //Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                  }
              }
 
@@ -299,7 +299,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     }
                     catch(Exception e)
                     {
-                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -324,7 +324,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     catch(Exception exp)
                     {
                         exp.printStackTrace();
-                        Toast.makeText(OngoingPlayer.this, exp.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(OngoingPlayer.this, exp.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -388,7 +388,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         }
                         catch(Exception e)
                         {
-                            Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -416,7 +416,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         }
                         catch(Exception e)
                         {
-                            Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -555,6 +555,17 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                 };
                 handler.postDelayed(dev_runnable,150);
                 break;
+            case R.id.reveal:
+                Runnable rev_runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(OngoingPlayer.this,Reveal.class));
+                        finish();
+                    }
+                };
+                handler.postDelayed(rev_runnable,150);
+                break;
+
 
             case R.id.nav_cards:
                 //afterRegistrationMainActivity.storagepermission();
