@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -489,6 +490,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 updateNumber();
+                bid_value.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 Toast.makeText(AdminOngoingPlayer.this, "Player sold successfully", Toast.LENGTH_SHORT).show();
             }
         })

@@ -543,7 +543,7 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
         opp_map.put("MI",800000000);
         opp_map.put("CSK",800000000);
         opp_map.put("RCB",800000000);
-        opp_map.put("DC",800000000);
+        opp_map.put("DD",800000000);
         opp_map.put("RR",800000000);
         opp_map.put("GL",800000000);
         opp_map.put("SH",800000000);
