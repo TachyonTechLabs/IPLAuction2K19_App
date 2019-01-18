@@ -157,7 +157,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:onClick="setState"
-        android:text="Set to Story"
+        android:text="Set to Fix"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
