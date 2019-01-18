@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,8 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
     int pos,phase;
     long pl_price;
     double loss,profit,tempcurr;
+    SharedPreferences sp;
+    SharedPreferences.Editor ed;
 
     class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -66,12 +70,11 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
             player_cardview = (CardView) view.findViewById(R.id.custom_myteam_mtda);
             placeholder_player_cardview = player_cardview;
 
-            getPlayerInfo(players[pos]);
-
             player_cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pos = getAdapterPosition();
+                    getPlayerInfo(players[pos]);
                   //  myTeamActivity.showAlert(pos,context);
                     final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                     builder.setTitle("Sell Player");
@@ -109,6 +112,7 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
 
     public void getPlayerInfo(String pl)
     {
+        Log.d("platername",story);
         DocumentReference info_doc = db.collection(story).document(pl);
         info_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -116,6 +120,9 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
                 point1 = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
                 point2 = Objects.requireNonNull(documentSnapshot.getLong("p2")).intValue();
                 point3 = Objects.requireNonNull(documentSnapshot.getLong("p3")).intValue();
+                Log.d("points",point1+"");
+                Log.d("points",point2+"");
+                Log.d("points",point3+"");
             }
         });
     }
@@ -134,7 +141,8 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
                     {
                         //id = documentSnapshot.getString("roomid");
                        double currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
-                       calculateProfitLoss(currentAmount,pl_price);
+                       double temp = Objects.requireNonNull(documentSnapshot.getDouble("temp_curr_amount")).intValue();
+                       calculateProfitLoss(currentAmount,pl_price,temp);
                     }
                     catch(Exception e)
                     {
@@ -188,7 +196,7 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
 
     }
 
-    public void calculateProfitLoss(double cur,long play)
+    public void calculateProfitLoss(double cur,long play,double tem)
     {
         if(phase==0)
         {
@@ -196,27 +204,28 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
             switch (diff)
             {
                 case 1: loss = (0.9*play);
-                        tempcurr = cur + loss;
+                        tempcurr = tem + loss;
+                        Log.d("lossis",tempcurr+"");
                         cur = cur + play;
                         break;
                 case 3: loss = (0.8*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                         break;
                 case 5: loss = (0.7*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                         break;
                 case -1: loss = (1.1*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                         break;
                 case -3: loss = (1.2*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                         break;
                 case -5: loss = (1.3*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                         break;
                 default:break;
@@ -229,27 +238,28 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
             switch (diff)
             {
                 case 1: loss = (0.9*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
+                    Log.d("lossis",tempcurr+"");
                     cur = cur + play;
                 break;
                 case 3: loss = (0.8*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                     break;
                 case 5: loss = (0.7*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                     break;
                 case -1: loss = (1.1*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                     break;
                 case -3: loss = (1.2*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                     break;
                 case -5: loss = (1.3*play);
-                    tempcurr = cur + loss;
+                    tempcurr = tem + loss;
                     cur = cur + play;
                     break;
                 default:break;
@@ -260,8 +270,12 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
         }
 
         DocumentReference setCurr_doc = db.collection("Players").document(user_email);
+        setCurr_doc.update("temp_curr_amount",tempcurr);
         setCurr_doc.update("Current_Amount",cur);
-        setCurr_doc.update("temp_Current",tempcurr);
+
+
+        Log.d("tempamount",tempcurr+"");
+        Log.d("tempamount",cur+"");
     }
 
     public MyTeamDataAdapter(Context context, String[] players,List<Long> price, Resources resources,String id,String story,int phase)
@@ -273,6 +287,10 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
         this.id = id;
         this.story = story;
         this.phase = phase;
+        sp= context.getSharedPreferences("Story", 0); // 0 - for private mode
+        this.story = sp.getString("Story","");
+        //Log.d("storyadap",this.story);
+
     }
 
     @NonNull

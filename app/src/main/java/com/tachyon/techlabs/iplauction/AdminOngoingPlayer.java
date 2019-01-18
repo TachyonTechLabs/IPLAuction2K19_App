@@ -77,9 +77,9 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     Spinner spinner;
     String selectedUser;
     double bought_value;
-    double currentAmount;
+    double currentAmount,tempamount;
     int s=0;
-    double c;
+    double c,t;
     String selectedTeam;
     View views;
     Button storybtn,phasebtn;
@@ -394,6 +394,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     {
                         num_bought = Objects.requireNonNull(documentSnapshot.getLong("players_bought")).intValue();
                         currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
+                        tempamount = Objects.requireNonNull(documentSnapshot.getDouble("temp_curr_amount")).intValue();
                         num_bought+=1;
                         sellCurrentPlayer();
                     }
@@ -482,6 +483,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         Long f = (long) final_amt;
         c = currentAmount;
         c = c - final_amt;
+        t = tempamount;
+        t = t - final_amt;
 
         sell.clear();
         sell.put(current_player,String.valueOf(f));
@@ -515,7 +518,9 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             public void onSuccess(Void aVoid) {
                 Log.d("selectedTeam",selectedTeam);
                 DocumentReference opp_doc = db.collection(id).document("Opponents");
-                opp_doc.update(selectedTeam,currentAmount);
+                opp_doc.update(selectedTeam,c);
+                DocumentReference temp_doc = db.collection("Players").document(selectedUser);
+                temp_doc.update("temp_curr_amount",t);
                 getCurr();
             }
         });
@@ -533,6 +538,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     {
                         //id = documentSnapshot.getString("roomid");
                         currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
+                        tempamount = Objects.requireNonNull(documentSnapshot.getDouble("temp_curr_amount")).intValue();
                         //selectedTeam = documentSnapshot.getString("myteam");
                         //Log.d("selectedTeam",selectedTeam);
                     }

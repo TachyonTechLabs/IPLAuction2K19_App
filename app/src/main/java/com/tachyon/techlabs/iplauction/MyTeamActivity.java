@@ -3,6 +3,7 @@ package com.tachyon.techlabs.iplauction;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -64,6 +65,8 @@ public class MyTeamActivity extends AppCompatActivity {
     Map<String,Object> playersData = new HashMap<>();
     List<String> playerKey = new ArrayList<>();
     List<Long> playerValue = new ArrayList<>();
+    SharedPreferences sp;
+    SharedPreferences.Editor ed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class MyTeamActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         userEmail = Objects.requireNonNull(currentUser).getEmail();
+
+        sp= getApplicationContext().getSharedPreferences("Story", 0); // 0 - for private mode
 
         if(Build.VERSION.SDK_INT>22)
         {
@@ -139,6 +144,10 @@ public class MyTeamActivity extends AppCompatActivity {
                     try
                     {
                         story = Objects.requireNonNull(documentSnapshot.getString("story"));
+                        Log.d("storyline",story);
+                        ed=sp.edit();
+                        ed.putString("Story",story);
+                        ed.commit();
                     }
                     catch(Exception e)
                     {
@@ -160,6 +169,7 @@ public class MyTeamActivity extends AppCompatActivity {
                     try
                     {
                         phasestate = Objects.requireNonNull(documentSnapshot.getLong("phase")).intValue();
+                        Log.d("phasestate",phasestate+"");
                     }
                     catch(Exception e)
                     {
@@ -215,22 +225,31 @@ public class MyTeamActivity extends AppCompatActivity {
 
     private void get_team_img(String team_name) {
 
-        storageRef.child(team_name+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Log.d("playerimg",uri.toString());
-                Glide.with(MyTeamActivity.this).load(uri).into(team_img_view);
+        try
+        {
+//            storageRef.child(team_name+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    // Log.d("playerimg",uri.toString());
+//                    Glide.with(MyTeamActivity.this).load(uri).into(team_img_view);
+//
+//                    //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
+//                }
+//            })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            // Log.d("playerimg","fail");
+//                            //  Toast.makeText(this, "Not able to load player image", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
 
-                //GlideApp.with(OngoingPlayer.this).load(storageRef).into(player_img);
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Log.d("playerimg","fail");
-                        //  Toast.makeText(this, "Not able to load player image", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
 
 
     }
@@ -306,7 +325,7 @@ public class MyTeamActivity extends AppCompatActivity {
                             }
                             playernameArray = new String[playerKey.size()];
                             playernameArray = playerKey.toArray(playernameArray);
-                            showPLayerData();
+                            showPLayerData(story);
                             //playerpriceArray = new long[playerValue.size()];
                             //playerpriceArray = playerValue.toArray(playerpriceArray);
                             //total = list.size();
@@ -351,7 +370,7 @@ public class MyTeamActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            showPLayerData();
+                            //showPLayerData();
                         }
                     }
                     catch(Exception exp)
@@ -364,8 +383,9 @@ public class MyTeamActivity extends AppCompatActivity {
         });
     }
 
-    public void showPLayerData()
+    public void showPLayerData(String sto)
     {
+        //Log.d("storyadapter",sto);
         MyTeamDataAdapter myTeamDataAdapter = new MyTeamDataAdapter(getApplicationContext(),playernameArray,playerValue,getResources(),id,story,phasestate);
         my_players_view.setAdapter(myTeamDataAdapter);
     }

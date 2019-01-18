@@ -133,7 +133,7 @@ public class OpponentsActivity extends AppCompatActivity implements NavigationVi
                 bal[1] = Objects.requireNonNull(documentSnapshot.getLong("CSK")).intValue();
                 bal[2] = Objects.requireNonNull(documentSnapshot.getLong("KKR")).intValue();
                 bal[3] = Objects.requireNonNull(documentSnapshot.getLong("RR")).intValue();
-                bal[4] = Objects.requireNonNull(documentSnapshot.getLong("DC")).intValue();
+                bal[4] = Objects.requireNonNull(documentSnapshot.getLong("DD")).intValue();
                 bal[5] = Objects.requireNonNull(documentSnapshot.getLong("RCB")).intValue();
                 bal[6] = Objects.requireNonNull(documentSnapshot.getLong("SH")).intValue();
                 bal[7] = Objects.requireNonNull(documentSnapshot.getLong("KXIP")).intValue();
