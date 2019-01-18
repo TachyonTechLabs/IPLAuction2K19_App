@@ -166,7 +166,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     }
                     catch(Exception e)
                     {
-                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -201,7 +201,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                      getStoryLine();
 
                  } catch (Exception e) {
-                     Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                     //Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                  }
              }
 
@@ -299,7 +299,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     }
                     catch(Exception e)
                     {
-                        Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -324,7 +324,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                     catch(Exception exp)
                     {
                         exp.printStackTrace();
-                        Toast.makeText(OngoingPlayer.this, exp.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(OngoingPlayer.this, exp.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -388,7 +388,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         }
                         catch(Exception e)
                         {
-                            Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -416,7 +416,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
                         }
                         catch(Exception e)
                         {
-                            Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(OngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
