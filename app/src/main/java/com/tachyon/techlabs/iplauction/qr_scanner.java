@@ -19,7 +19,6 @@ public class qr_scanner extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         userEmail=FirebaseAuth.getInstance().getCurrentUser().getEmail();
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(qr_scanner.this, scannerView);
