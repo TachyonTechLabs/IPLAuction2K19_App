@@ -113,7 +113,8 @@ public class MyTeamActivity extends AppCompatActivity {
                         //Log.d("qwertyuiop",team_name);
                         getStoryline();
                         getPhaseState();
-                        get_team_img(team_name);
+                        setTeamImg();
+
                     }
                     catch(Exception exp)
                     {
@@ -169,8 +170,8 @@ public class MyTeamActivity extends AppCompatActivity {
         });
     }
 
-//    public  void setTeamImg()
-//    {
+    public  void setTeamImg()
+    {
 //        switch (team_name)
 //        {
 //            case "MI":
@@ -207,8 +208,10 @@ public class MyTeamActivity extends AppCompatActivity {
 //                break;
 //        }
 //
-//        getPlayerBoughtNum();
-//    }
+        get_team_img(team_name);
+        getPlayerBoughtNum();
+
+    }
 
     private void get_team_img(String team_name) {
 

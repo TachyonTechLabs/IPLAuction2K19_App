@@ -116,7 +116,7 @@ public class activity_vertical_ntb extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.rcb),
+                        getResources().getDrawable(R.drawable.rcb_min),
                         Color.parseColor(colors[8]))
                         .selectedIcon(getResources().getDrawable(R.drawable.rcb_min))
                         .title("ic_second")

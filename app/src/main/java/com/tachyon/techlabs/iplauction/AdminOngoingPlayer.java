@@ -76,8 +76,11 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     String selectedUser;
     double bought_value;
     double currentAmount;
-    int s;
+    int s=0;
+    double c;
     String selectedTeam;
+    View views;
+    Button storybtn,phasebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         bid_value = findViewById(R.id.text_input_value_admin);
         spinner = findViewById(R.id.player_spinner);
         amount_multipler=findViewById(R.id.spinner_amount_multiplier);
+        storybtn = findViewById(R.id.fixed_players);
+        phasebtn = findViewById(R.id.phase);
         amount_multiply_add();
         getId();
 
@@ -349,6 +354,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
 
     public void sellPlayer(View view) {
+        views = view;
         if(TextUtils.isEmpty(bid_value.getText().toString().trim()))
         {
             bid_value.setError("Enter Amount");
@@ -384,6 +390,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     try
                     {
                         num_bought = Objects.requireNonNull(documentSnapshot.getLong("players_bought")).intValue();
+                        currentAmount = Objects.requireNonNull(documentSnapshot.getLong("Current_Amount")).intValue();
                         num_bought+=1;
                         sellCurrentPlayer();
                     }
@@ -469,8 +476,10 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         bought_value = Double.parseDouble(bid_value.getText().toString().trim());
         String multiply=amount_multipler.getSelectedItem().toString();
         double final_amt=multiply_with(bought_value,multiply);
-        currentAmount = currentAmount - final_amt;
         Long f = (long) final_amt;
+        c = currentAmount;
+        c = c - final_amt;
+
         sell.clear();
         sell.put(current_player,String.valueOf(f));
      //   sell.put("2",final_amt);
@@ -497,28 +506,67 @@ public class AdminOngoingPlayer extends AppCompatActivity {
 
         DocumentReference updateNUm_doc = db.collection("Players").document(selectedUser);
         //updateNUm_doc.update("players_bought",num_bought);
-        updateNUm_doc.update("Current_Amount",currentAmount).addOnSuccessListener(new OnSuccessListener<Void>() {
+        updateNUm_doc.update("Current_Amount",c).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("selectedTeam",selectedTeam);
                 DocumentReference opp_doc = db.collection(id).document("Opponents");
                 opp_doc.update(selectedTeam,currentAmount);
+                getCurr();
             }
         });
-
-
     }
 
-    public void setState(View view) {
-        DocumentReference state_doc = db.collection(id).document("State");
-        state_doc.update("state",1).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void getCurr()
+    {
+        DocumentReference documentReference = db.collection("Players").document(selectedUser);
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(Void aVoid) {
-                fixed.setText("Fixed Players");
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    try
+                    {
+                        //id = documentSnapshot.getString("roomid");
+                        currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
+                        //selectedTeam = documentSnapshot.getString("myteam");
+                        //Log.d("selectedTeam",selectedTeam);
+                    }
+                    catch(Exception e)
+                    {
+                        Toast.makeText(AdminOngoingPlayer.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
         });
-        s = 1;
-        setFixedPlayer();
+    }
+
+    public void setState(View view)
+    {
+        DocumentReference state_doc = db.collection(id).document("State");
+        if(storybtn.getText().toString().toLowerCase().equals("storyline"))
+        {
+            state_doc.update("state",0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    fixed.setText("Fixed Players");
+                }
+            });
+            s = 1;
+            setFixedPlayer();
+        }
+        else if(storybtn.getText().toString().trim().toLowerCase().equals("fixedplayers"))
+        {
+            state_doc.update("state",1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    fixed.setText("Storyline");
+                }
+            });
+            s = 0;
+            setStoryLine();
+        }
     }
 
     private void amount_multiply_add() {
@@ -554,16 +602,28 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     }
 
 
-    public void phase_set(View view) {
-
+    public void phase_set(View view)
+    {
         DocumentReference state_doc = db.collection(id).document("State");
-        state_doc.update("phase",1).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                phase.setText("Phase 1");
+        if(phasebtn.getText().toString().trim().toLowerCase().equals("phase0"))
+        {
+            state_doc.update("phase",0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    phase.setText("Phase 1");
+                }
+            });
+        }
+        else if(phasebtn.getText().toString().trim().toLowerCase().equals("phase1"))
+        {
+            state_doc.update("phase",1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    phase.setText("Phase 0");
+                }
+            });
+        }
 
-            }
-        });
 
     }
 }

@@ -540,16 +540,16 @@ public class WaitingForPlayersActivity extends AppCompatActivity {
 
         DocumentReference opp = db.collection(roomid).document("Opponents");
         opp_map.clear();
-        opp_map.put("MI",0);
-        opp_map.put("CSK",0);
-        opp_map.put("RCB",0);
-        opp_map.put("DC",0);
-        opp_map.put("RR",0);
-        opp_map.put("GL",0);
-        opp_map.put("SH",0);
-        opp_map.put("KXIP",0);
-        opp_map.put("KKR",0);
-        opp_map.put("RPS",0);
+        opp_map.put("MI",800000000);
+        opp_map.put("CSK",800000000);
+        opp_map.put("RCB",800000000);
+        opp_map.put("DC",800000000);
+        opp_map.put("RR",800000000);
+        opp_map.put("GL",800000000);
+        opp_map.put("SH",800000000);
+        opp_map.put("KXIP",800000000);
+        opp_map.put("KKR",800000000);
+        opp_map.put("RPS",800000000);
         opp.set(opp_map);
 
     }

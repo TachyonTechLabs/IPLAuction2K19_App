@@ -311,7 +311,7 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
     public void getCurrent()
     {
         curr_doc = db.collection(id).document("CurrentPlayer");
-        curr_doc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        curr_doc.addSnapshotListener(OngoingPlayer.this,new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if(documentSnapshot.exists())
@@ -723,14 +723,14 @@ public class OngoingPlayer extends AppCompatActivity implements NavigationView.O
 
     @Override
     protected void onDestroy() {
-        query = db.collection(id);
-        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-            }
-        });
-        registration.remove();
+//        query = db.collection(id);
+//        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//
+//            }
+//        });
+//        registration.remove();
         super.onDestroy();
     }
 }

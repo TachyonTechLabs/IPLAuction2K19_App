@@ -259,7 +259,6 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                             create_room.setVisibility(View.GONE);
                             joincard.setVisibility(View.VISIBLE);
                         }
-                            create_room.setVisibility(View.GONE);
 
 
                         if( !isNetworkAvailable())
