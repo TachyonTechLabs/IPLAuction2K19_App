@@ -1,15 +1,11 @@
 package com.tachyon.techlabs.iplauction;
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -17,7 +13,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -27,20 +22,15 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.Circle;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -55,7 +45,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -874,7 +863,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     @Override
                     public void onSuccess(Void v) {
                         // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        proceedFurther();
+                        proceedFurther(user_joincode);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -891,7 +880,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
                     @Override
                     public void onSuccess(Void v) {
                         // Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        proceedFurther();
+                        proceedFurther(user_joincode);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -977,7 +966,7 @@ public class AfterRegistrationMainActivity extends AppCompatActivity  {
 
 
     }
-    public void proceedFurther()
+    public void proceedFurther(String user_joincode)
     {
         DocumentReference docRef = db.collection("keyValues").document(user_joincode);
 
