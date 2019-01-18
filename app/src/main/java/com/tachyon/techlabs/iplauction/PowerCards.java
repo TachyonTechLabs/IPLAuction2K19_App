@@ -100,7 +100,7 @@ public class PowerCards extends AppCompatActivity {
     static CountDownTimer ct;
     static long millisinsec=0;
     String id,team;
-    Long legend,yorker,freehit,rtm;
+    Long legend,yorker,freehit1,freehit2,rtm;
     RelativeLayout.LayoutParams bottomparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
     @Override
@@ -364,14 +364,14 @@ public class PowerCards extends AppCompatActivity {
                             card_amount = card_price_bid_value;
                           //  payHistory.put("no ball",card_price_bid_value);
                            // documentReference2.set(payHistory,SetOptions.merge());
-                            editor.putLong("freehit",(long) card_price_bid_value);
+                            editor.putLong("freehit1",(long) card_price_bid_value);
                             editor.commit();
                             hide_bottom_sheet();
                             break;
                         case 3:
                             //payHistory.put("0","Right To Match");
                             card_amount = card_price_bid_value;
-                            editor.putLong("rtm",  (long)card_price_bid_value);
+                            editor.putLong("freehit2",  (long)card_price_bid_value);
                             editor.commit();
                             hide_bottom_sheet();
                            // payHistory.put("right to match",card_price_bid_value);
@@ -381,12 +381,27 @@ public class PowerCards extends AppCompatActivity {
                             //Toast.makeText(context, "transaction", Toast.LENGTH_SHORT).show();
                             //payHistory.put("0","Legend Cards");
                             card_amount = card_price_bid_value;
-                            editor.putLong("legend",(long) card_price_bid_value);
+                            editor.putLong("rtm",(long) card_price_bid_value);
                             editor.commit();
 
 
                             //legend= pref.getLong("legend card",0);
                            // Toast.makeText(context,legend.toString() , Toast.LENGTH_SHORT).show();
+                            //Log.d("legend",legend.toString());
+                            //payHistory.put("legend cards",card_price_bid_value);
+                            //documentReference2.set(payHistory,SetOptions.merge());
+                            hide_bottom_sheet();
+                            break;
+                        case 5:
+                            //Toast.makeText(context, "transaction", Toast.LENGTH_SHORT).show();
+                            //payHistory.put("0","Legend Cards");
+                            card_amount = card_price_bid_value;
+                            editor.putLong("legend",(long) card_price_bid_value);
+                            editor.commit();
+
+
+                            //legend= pref.getLong("legend card",0);
+                            // Toast.makeText(context,legend.toString() , Toast.LENGTH_SHORT).show();
                             //Log.d("legend",legend.toString());
                             //payHistory.put("legend cards",card_price_bid_value);
                             //documentReference2.set(payHistory,SetOptions.merge());
@@ -628,15 +643,18 @@ public class PowerCards extends AppCompatActivity {
             case "YORKER": //card_amount = appConstants.Yorker_price ;
                 flag=1;
                 break;
-            case "FREE HIT" : //card_amount = appConstants.noBall_price;
+            case "FREE HIT 1" : //card_amount = appConstants.noBall_price;
                 flag=2;
                 break;
-            case "RIGHT TO MATCH": //card_amount = appConstants.rightToMatch_price;
+            case "FREE HIT 2": //card_amount = appConstants.rightToMatch_price;
                 flag=3;
                 break;
-            case "LEGEND CARD": //card_amount = appConstants.legendCards;
+            case "RIGHT TO MATCH": //card_amount = appConstants.legendCards;
                 flag=4;
                 //Toast.makeText(context, flag+"", Toast.LENGTH_SHORT).show();
+                break;
+            case "LEGEND CARD": //card_amount = appConstants.legendCards;
+                flag=5;
                 break;
         }
 
@@ -907,21 +925,23 @@ public class PowerCards extends AppCompatActivity {
         legend= pref.getLong("legend",0);
         yorker= pref.getLong("yorker",0);
         rtm= pref.getLong("rtm",0);
-        freehit= pref.getLong("freehit",0);
+        freehit1= pref.getLong("freehit1",0);
+        freehit2= pref.getLong("freehit2",0);
         documentReference.update("legend cards",legend);
         documentReference.update("right to match",rtm);
         documentReference.update("yorker",yorker);
-        documentReference.update("free hit",freehit);
+        documentReference.update("free hit1",freehit1);
+        documentReference.update("free hit2",freehit2);
         startActivity(new Intent(this,PaymentInfo.class));
         finish();
     }
 
     public void dismissKeyboard(Activity activity) {
-//        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-//        if (null != activity.getCurrentFocus())
-//            imm.hideSoftInputFromWindow(activity.getCurrentFocus()
-//                    .getApplicationWindowToken(), 0);
-      pin.onEditorAction(EditorInfo.IME_ACTION_DONE);
-        users_price.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (null != activity.getCurrentFocus())
+            imm.hideSoftInputFromWindow(activity.getCurrentFocus()
+                    .getApplicationWindowToken(), 0);
+        //pin.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        //users_price.onEditorAction(EditorInfo.IME_ACTION_DONE);
     }
 }

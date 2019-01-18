@@ -65,7 +65,7 @@ public class PaymentInfo extends AppCompatActivity  implements NavigationView.On
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle mToggle;
-    Toolbar ongoing_toolbar;
+    Toolbar info_toolbar;
     // EasyFlipView easyFlipView = (EasyFlipView) findViewById(R.id.cardFlipView);
 
     @Override
@@ -73,10 +73,10 @@ public class PaymentInfo extends AppCompatActivity  implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_info);
 
-        
 
-        ongoing_toolbar = (Toolbar) findViewById(R.id.app_toolbar);
-        setSupportActionBar(ongoing_toolbar);
+
+        info_toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(info_toolbar);
         //toolbar_text.setText(R.string.ongoing_player);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Payment Info");
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
@@ -86,13 +86,13 @@ public class PaymentInfo extends AppCompatActivity  implements NavigationView.On
         //getSupportActionBar().setHomeAsUpIndicator(getDrawable(android.R.drawable.ic_menu_close_clear_cancel));
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.mydrawer);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,ongoing_toolbar,R.string.open,R.string.close);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,info_toolbar,R.string.open,R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        NavigationView nav = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
         //View headerView = navigationView.getHeaderView(0);
 
         //String name = getIntent().getExtras().getString("name");
@@ -180,6 +180,16 @@ public class PaymentInfo extends AppCompatActivity  implements NavigationView.On
 
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
     public void readCardNum()
@@ -274,11 +284,13 @@ public class PaymentInfo extends AppCompatActivity  implements NavigationView.On
         val.add(pref.getLong("legend",0));
         val.add(pref.getLong("yorker",0));
         val.add(pref.getLong("rtm",0));
-        val.add(pref.getLong("freehit",0));
+        val.add(pref.getLong("freehit1",0));
+        val.add(pref.getLong("freehit2",0));
         item.add("Legend Card");
         item.add("Yorker Card");
         item.add("Right to Match Card");
-        item.add("Free Hit Card");
+        item.add("Free Hit Card 1");
+        item.add("Free Hit Card 2");
 
         itemNameArray = new String[item.size()];
         itemNameArray = item.toArray(itemNameArray);
@@ -386,7 +398,7 @@ public class PaymentInfo extends AppCompatActivity  implements NavigationView.On
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.mydrawer);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

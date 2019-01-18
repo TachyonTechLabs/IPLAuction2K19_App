@@ -45,8 +45,8 @@ public class IntroActivity extends com.heinrichreimersoftware.materialintro.app.
         addSlide(new SimpleSlide.Builder()
                 .title("Permissions")
                 .description("App would require camera and storage permissions !")
-                .background(R.color.owlblue)
-                .backgroundDark(R.color.dark_blue)
+                .background(R.color.legend_card_back)
+                .backgroundDark(R.color.rcb_text)
                 .scrollable(false)
                 .permissions(new String[]{Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE})

@@ -1,5 +1,6 @@
 package com.tachyon.techlabs.iplauction;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -353,7 +355,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
     }
 
 
-    public void sellPlayer(View view) {
+    public void sellPlayer(View view)
+    {
         views = view;
         if(TextUtils.isEmpty(bid_value.getText().toString().trim()))
         {
@@ -374,8 +377,8 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     getNumber();
                 }
             });
-
         }
+        dismissKeyboard(this);
 
     }
 
@@ -490,7 +493,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 updateNumber();
-                bid_value.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                //bid_value.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 Toast.makeText(AdminOngoingPlayer.this, "Player sold successfully", Toast.LENGTH_SHORT).show();
             }
         })
@@ -628,5 +631,14 @@ public class AdminOngoingPlayer extends AppCompatActivity {
         }
 
 
+    }
+
+    public void dismissKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (null != activity.getCurrentFocus())
+            imm.hideSoftInputFromWindow(activity.getCurrentFocus()
+                    .getApplicationWindowToken(), 0);
+        //pin.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        //users_price.onEditorAction(EditorInfo.IME_ACTION_DONE);
     }
 }

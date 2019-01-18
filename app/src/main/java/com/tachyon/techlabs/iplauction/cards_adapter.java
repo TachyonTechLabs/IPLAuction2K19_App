@@ -110,6 +110,12 @@ public class cards_adapter extends RecyclerView.Adapter<cards_adapter.ViewHolder
                            // bs_value.setText(R.string.legend_cards_price);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             break;
+                        case 4 :
+                            bs_name.setText(names[position]);
+                            //bs_desc.setText(disc[position]);
+                            // bs_value.setText(R.string.legend_cards_price);
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            break;
                     }
                 }
             });
