@@ -62,8 +62,8 @@ public class Reveal extends AppCompatActivity {
                 {
                     try
                     {
-                        revealed_amount = Objects.requireNonNull(documentSnapshot.getLong("temp_current")).intValue();
-                        fianl_amount_revealed.setText("₹"+revealed_amount+"");
+                        revealed_amount = Objects.requireNonNull(documentSnapshot.getLong("temp_curr_amount")).intValue();
+
                         }
                     catch(Exception exp)
                     {
@@ -102,6 +102,7 @@ public class Reveal extends AppCompatActivity {
                         //dialog.cancel();
                         // sign in the user ...
                         // Toast.makeText(this,"Joined successfully",Toast.LENGTH_SHORT).show();
+                        fianl_amount_revealed.setText("₹"+revealed_amount+"");
                     }
                 });
         final AlertDialog alert = builder.create();
