@@ -377,7 +377,7 @@ public class MyTeamActivity extends AppCompatActivity {
     public void showPLayerData(String sto)
     {
         //Log.d("storyadapter",sto);
-        MyTeamDataAdapter myTeamDataAdapter = new MyTeamDataAdapter(getApplicationContext(),playernameArray,playerValue,getResources(),id,story,phasestate);
+        MyTeamDataAdapter myTeamDataAdapter = new MyTeamDataAdapter(getApplicationContext(),playernameArray,playerValue,getResources(),id,story,phasestate,team_name);
         my_players_view.setAdapter(myTeamDataAdapter);
     }
 }

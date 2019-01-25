@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ramotion.foldingcell.FoldingCell;
+//import com.ramotion.foldingcell.FoldingCell;
 
 public class developers extends AppCompatActivity {
 
@@ -42,7 +42,7 @@ public class developers extends AppCompatActivity {
 
 
 
-
+/*
         // get our folding cell
         final FoldingCell fc = (FoldingCell) findViewById(R.id.folding_cell);
         final FoldingCell pc = (FoldingCell) findViewById(R.id.folding_cell_2);

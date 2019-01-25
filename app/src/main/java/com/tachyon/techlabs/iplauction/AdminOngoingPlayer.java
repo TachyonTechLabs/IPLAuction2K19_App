@@ -129,7 +129,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                     try
                     {
                         id = documentSnapshot.getString("roomid");
-                        currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
+                        //currentAmount = Objects.requireNonNull(documentSnapshot.getDouble("Current_Amount")).intValue();
                         //selectedTeam = documentSnapshot.getString("myteam");
                         //Log.d("selectedTeam",selectedTeam);
                         addUserList();
@@ -414,7 +414,7 @@ public class AdminOngoingPlayer extends AppCompatActivity {
                 users = new ArrayList<>();
                 for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots)
                 {
-                    if(!documentSnapshot.getId().equals("CurrentPlayer") && !documentSnapshot.getId().equals("START GAME") && !documentSnapshot.getId().equals("Story") && !documentSnapshot.getId().equals("State"))
+                    if(!documentSnapshot.getId().equals("CurrentPlayer") && !documentSnapshot.getId().equals("START GAME") && !documentSnapshot.getId().equals("Story") && !documentSnapshot.getId().equals("State") && !documentSnapshot.getId().equals("Opponents"))
                     users.add(documentSnapshot.getId());
                 }
                 users.remove(userEmail);

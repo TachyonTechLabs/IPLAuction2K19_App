@@ -52,6 +52,9 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
     double loss,profit,tempcurr;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
+    int flag=0;
+    View views;
+    String team;
 
     class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -61,6 +64,8 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
         public ViewHolder(View view)
         {
             super(view);
+
+            views = view;
 
             player_textview = (TextView) view.findViewById(R.id.player_name_mtda);
             price_textview = (TextView) view.findViewById(R.id.price_mtda);
@@ -73,35 +78,6 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
                     pos = getAdapterPosition();
                     getPlayerInfo(players[pos]);
                   //  myTeamActivity.showAlert(pos,context);
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                    builder.setTitle("Sell Player");
-                    builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, final int which) {
-                            user_email=Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-                            DocumentReference docRef = db.collection("Players").document(user_email).collection("MyTeam").document("1");
-                            // Remove the 'capital' field from the document
-                            calculate(price.get(pos));
-                            Map<String,Object> updates = new HashMap<>();
-
-                            updates.put(players[pos], FieldValue.delete());
-                            docRef.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(context, "Successfully Sold", Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
-
-
-
-                        }
-                    });
-                    builder.setNegativeButton(R.string.CANCEL,null);
-                    builder.show();
-
-
-
                 }
             });
         }
@@ -114,14 +90,56 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
         info_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                point1 = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
-                point2 = Objects.requireNonNull(documentSnapshot.getLong("p2")).intValue();
-                point3 = Objects.requireNonNull(documentSnapshot.getLong("p3")).intValue();
-                Log.d("points",point1+"");
-                Log.d("points",point2+"");
-                Log.d("points",point3+"");
+                try
+                {
+                    point1 = Objects.requireNonNull(documentSnapshot.getLong("p1")).intValue();
+                    point2 = Objects.requireNonNull(documentSnapshot.getLong("p2")).intValue();
+                    point3 = Objects.requireNonNull(documentSnapshot.getLong("p3")).intValue();
+                    flag=1;
+
+//                    Log.d("points",point1+"");
+//                    Log.d("points",point2+"");
+//                    Log.d("points",point3+"");
+
+                    showBox();
+                }
+                catch(Exception e)
+                {
+                    Toast.makeText(context, "Fixed players cannot be sold", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
+    }
+
+    public void showBox()
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(views.getContext());
+        builder.setTitle("Sell Player");
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, final int which) {
+                user_email=Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+                DocumentReference docRef = db.collection("Players").document(user_email).collection("MyTeam").document("1");
+                // Remove the 'capital' field from the document
+                calculate(price.get(pos));
+                Map<String,Object> updates = new HashMap<>();
+
+                updates.put(players[pos], FieldValue.delete());
+                docRef.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(context, "Successfully Sold", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+
+
+            }
+        });
+        builder.setNegativeButton(R.string.CANCEL,null);
+        builder.show();
     }
 
     private void calculate(Long aLong)
@@ -200,6 +218,10 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
             int diff = point2 - point1;
             switch (diff)
             {
+                case 0: loss = play;
+                    tempcurr = tem + loss;
+                    cur = cur + play;
+                    break;
                 case 1: loss = (0.9*play);
                         tempcurr = tem + loss;
                         Log.d("lossis",tempcurr+"");
@@ -234,6 +256,10 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
 
             switch (diff)
             {
+                case 0: loss = play;
+                    tempcurr = tem + loss;
+                    cur = cur + play;
+                    break;
                 case 1: loss = (0.9*play);
                     tempcurr = tem + loss;
                     Log.d("lossis",tempcurr+"");
@@ -266,16 +292,19 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
 
         }
 
+        DocumentReference opp_doc = db.collection(id).document("Opponents");
+
         DocumentReference setCurr_doc = db.collection("Players").document(user_email);
         setCurr_doc.update("temp_curr_amount",tempcurr);
         setCurr_doc.update("Current_Amount",cur);
+        opp_doc.update(team,cur);
 
 
-        Log.d("tempamount",tempcurr+"");
-        Log.d("tempamount",cur+"");
+        //Log.d("tempamount",tempcurr+"");
+        //Log.d("tempamount",cur+"");
     }
 
-    public MyTeamDataAdapter(Context context, String[] players,List<Long> price, Resources resources,String id,String story,int phase)
+    public MyTeamDataAdapter(Context context, String[] players,List<Long> price, Resources resources,String id,String story,int phase,String team)
     {
         this.context = context;
         this.players = players;
@@ -284,10 +313,10 @@ public class MyTeamDataAdapter extends RecyclerView.Adapter<MyTeamDataAdapter.Vi
         this.id = id;
         this.story = story;
         this.phase = phase;
+        this.team = team;
         sp= context.getSharedPreferences("Story", 0); // 0 - for private mode
         this.story = sp.getString("Story","");
-        //Log.d("storyadap",this.story);
-
+        Log.d("phasesad",this.phase+"");
     }
 
     @NonNull
