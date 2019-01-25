@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,15 +13,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,8 +27,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.wajahatkarim3.easyflipview.EasyFlipView;
-//import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
+
+//import com.wajahatkarim3.easyflipview.EasyFlipView;
 
 public class PaymentInfo extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();

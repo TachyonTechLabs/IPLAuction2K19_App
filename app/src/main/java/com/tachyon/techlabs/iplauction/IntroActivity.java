@@ -1,17 +1,11 @@
 package com.tachyon.techlabs.iplauction;
 
 import android.Manifest;
-import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.heinrichreimersoftware.materialintro.app.NavigationPolicy;
-import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
-import com.heinrichreimersoftware.materialintro.slide.Slide;
-import com.tachyon.techlabs.iplauction.R;
 
 public class IntroActivity extends com.heinrichreimersoftware.materialintro.app.IntroActivity {
 

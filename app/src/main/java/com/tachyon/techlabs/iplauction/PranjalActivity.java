@@ -1,7 +1,7 @@
 package com.tachyon.techlabs.iplauction;
 
-import android.content.Intent;
 import android.app.SharedElementCallback;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;

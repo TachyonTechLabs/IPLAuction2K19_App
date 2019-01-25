@@ -36,10 +36,10 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
-//import com.alimuzaffar.demo.textreflowexample.R;
-
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.alimuzaffar.demo.textreflowexample.R;
 
 //import io.plaidapp.util.FontUtil;
 
